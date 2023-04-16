@@ -1,0 +1,17 @@
+# Binaries
+mysh
+debug_mysh
+
+# Build
+?build
+.fast
+
+# Coverage
+*.gcda
+*.gcno
+
+# Lib
+*.a
+
+# Tests
+unittests
