@@ -1,0 +1,115 @@
+{
+  "nodes": {
+    "cs": {
+      "inputs": {
+        "flake-utils": "flake-utils",
+        "nixpkgs": [
+          "nixpkgs"
+        ],
+        "ruleset": "ruleset",
+        "vera-fork": "vera-fork"
+      },
+      "locked": {
+        "lastModified": 1678999232,
+        "narHash": "sha256-HJiMzgeg6n2yO2UPeZutbqZE2D8jA5uQILfMSERwb54=",
+        "owner": "Sigmanificient",
+        "repo": "coding-style-checker",
+        "rev": "f45a658a94c28d7b1ba6946afe52be0b14844714",
+        "type": "github"
+      },
+      "original": {
+        "owner": "Sigmanificient",
+        "ref": "user",
+        "repo": "coding-style-checker",
+        "type": "github"
+      }
+    },
+    "flake-utils": {
+      "locked": {
+        "lastModified": 1676283394,
+        "narHash": "sha256-XX2f9c3iySLCw54rJ/CZs+ZK6IQy7GXNY4nSOyu2QG4=",
+        "owner": "numtide",
+        "repo": "flake-utils",
+        "rev": "3db36a8b464d0c4532ba1c7dda728f4576d6d073",
+        "type": "github"
+      },
+      "original": {
+        "owner": "numtide",
+        "repo": "flake-utils",
+        "type": "github"
+      }
+    },
+    "nixpkgs": {
+      "locked": {
+        "lastModified": 1678972866,
+        "narHash": "sha256-YV8BcNWfNVgS449B6hFYFUg4kwVIQMNehZP+FNDs1LY=",
+        "owner": "NixOS",
+        "repo": "nixpkgs",
+        "rev": "cd34d6ed7ba7d5c4e44b04a53dc97edb52f2766c",
+        "type": "github"
+      },
+      "original": {
+        "owner": "NixOS",
+        "ref": "nixos-22.11",
+        "repo": "nixpkgs",
+        "type": "github"
+      }
+    },
+    "root": {
+      "inputs": {
+        "cs": "cs",
+        "nixpkgs": "nixpkgs",
+        "utils": "utils"
+      }
+    },
+    "ruleset": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1669714262,
+        "narHash": "sha256-fuUN4dYEI2c51veBvyM+vzxhA4AlmbrTJ+NJOzYq3Fo=",
+        "ref": "refs/heads/main",
+        "rev": "a97bb704dd0d341128e05aaa016930e787d6bc31",
+        "revCount": 9,
+        "type": "git",
+        "url": "ssh://git@github.com/Epitech/banana-coding-style-checker.git"
+      },
+      "original": {
+        "type": "git",
+        "url": "ssh://git@github.com/Epitech/banana-coding-style-checker.git"
+      }
+    },
+    "utils": {
+      "locked": {
+        "lastModified": 1678901627,
+        "narHash": "sha256-U02riOqrKKzwjsxc/400XnElV+UtPUQWpANPlyazjH0=",
+        "owner": "numtide",
+        "repo": "flake-utils",
+        "rev": "93a2b84fc4b70d9e089d029deacc3583435c2ed6",
+        "type": "github"
+      },
+      "original": {
+        "owner": "numtide",
+        "repo": "flake-utils",
+        "type": "github"
+      }
+    },
+    "vera-fork": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1661342940,
+        "narHash": "sha256-1nAKhUltQS1301JNrr0PQQrrf2W9Hj5gk1nbUhN4cXw=",
+        "owner": "Epitech",
+        "repo": "banana-vera",
+        "rev": "3a7d18d6249cd1790cc63fb9018e0914462ec219",
+        "type": "github"
+      },
+      "original": {
+        "owner": "Epitech",
+        "repo": "banana-vera",
+        "type": "github"
+      }
+    }
+  },
+  "root": "root",
+  "version": 7
+}
