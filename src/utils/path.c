@@ -1,0 +1,55 @@
+/*
+** EPITECH PROJECT, 2023
+** Minishell
+** File description:
+** Interpreter
+*/
+
+#include <stdlib.h>
+#include <stdio.h>
+#include <string.h>
+#include <unistd.h>
+
+#include "epitech/base.h"
+#include "epitech/list.h"
+#include "wololo/debug_mode.h"
+#include "shell/environment.h"
+
+char *path_concat(char *left, char *right)
+{
+    int i = 0;
+    size_t new_size = str_len(left) + 1 + str_len(right);
+    char *out = (char *)malloc((new_size + 1) * sizeof (char));
+
+    if (!out)
+        return NULL;
+    for (; left[i]; i++)
+        out[i] = left[i];
+    out[i++] = '/';
+    for (int j = 0; right[j]; j++)
+        out[i + j] = right[j];
+    out[new_size] = '\0';
+    return out;
+}
+
+char *path_find_cmd(list_t *env, char *cmd)
+{
+    char *checkpoint;
+    char *path = list_get(env, ENV_FIND_VAR(env, "PATH"));
+    char *path_copy = str_duplicate(path);
+    char *search_path = strtok_r(path_copy + 5, ":", &checkpoint);
+    char *cmd_path = path_concat(search_path, cmd);
+
+    while (access(cmd_path, F_OK)) {
+        search_path = strtok_r(NULL, ":", &checkpoint);
+        if (!search_path)
+            break;
+        free(cmd_path);
+        cmd_path = path_concat(search_path, cmd);
+    }
+    if (!search_path || !cmd_path) {
+        cmd_path = path_concat(getcwd(NULL, 0), cmd);
+        DEBUG("Defaulting path to %s", cmd_path);
+    }
+    return cmd_path;
+}
