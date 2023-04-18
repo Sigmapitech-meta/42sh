@@ -12,7 +12,7 @@ START_TIME := $(shell date +%s%3N)
 
 # ↓ Config
 CC := gcc
-NAME = mysh
+NAME = 42sh
 
 CFLAGS := -W -Wall -Wextra
 CFLAGS += -U_FORTIFY_SOURCE
