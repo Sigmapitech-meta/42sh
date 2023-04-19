@@ -31,33 +31,33 @@ VPATH :=
 
 # ↓ Sources
 VPATH += src
+SRC += main.c
+
+VPATH += src/core
 SRC += builtins.c
 SRC += command.c
 SRC += environment.c
-SRC += main.c
 SRC += shell.c
-SRC += status.c
 
-VPATH += src/base
-SRC += get_line.c
-
-VPATH += src/base/list
-SRC += list_append.c
-SRC += list_create.c
-SRC += list_destroy.c
-SRC += list_get.c
-SRC += list_remove.c
-
-VPATH += src/builtins
+VPATH += src/core/builtins
 SRC += builtin_cd.c
 SRC += builtin_env.c
 SRC += builtin_exit.c
 SRC += builtin_setenv.c
 SRC += builtin_unsetenv.c
 
+VPATH += src/list
+SRC += list_append.c
+SRC += list_create.c
+SRC += list_destroy.c
+SRC += list_get.c
+SRC += list_remove.c
+
 VPATH += src/utils
+SRC += get_line.c
 SRC += parameters.c
 SRC += path.c
+SRC += status.c
 
 vpath %.c $(VPATH)
 
