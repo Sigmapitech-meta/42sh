@@ -4,13 +4,14 @@
 ** File description:
 ** main.c
 */
+
 #include <unistd.h>
+#include <string.h>
 
 #include "epitech/exit_state.h"
+#include "shell/shell.h"
 #include "wololo/debug_mode.h"
 #include "wololo/write.h"
-#include "epitech/base.h"
-#include "shell/shell.h"
 
 const char USAGE[] = (
     "Minishell 2 - Usage: ./mysh [-h]\n"
@@ -26,7 +27,7 @@ const char USAGE[] = (
 int main(int argc, char **argv, char **env)
 {
     DEBUG("Received %d arg(s)", argc);
-    if (IS_ARG_EQ("-h"))
+    if (argc > 1 && !strncmp(argv[1], "-h", 2))
         return EXIT_OK_MSG(USAGE);
     if (argc >= MAX_ARG_COUNT)
         return EXIT_KO_MSG("Too many arguments\n");

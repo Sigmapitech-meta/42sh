@@ -8,7 +8,6 @@
 #include "epitech/bool.h"
 #include "shell/command.h"
 #include "shell/context.h"
-#include "wololo/debug_mode.h"
 #include "wololo/write.h"
 
 #include <unistd.h>

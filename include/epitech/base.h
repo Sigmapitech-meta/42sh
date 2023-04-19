@@ -14,9 +14,4 @@ typedef unsigned long size_t;
 
 size_t get_line(char **line);
 
-char *str_duplicate(char *src);
-int str_compare(char const *s1, char const *s2, int n);
-size_t str_len(char *src);
-void str_copy(char *src, char *dest);
-
 #endif /* !E_BASE_H_ */

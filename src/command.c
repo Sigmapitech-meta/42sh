@@ -6,19 +6,21 @@
 */
 
 #include <fcntl.h>
-#include <stdlib.h>
-#include <unistd.h>
-#include <sys/wait.h>
-#include <string.h>
 #include <errno.h>
+#include <stdlib.h>
+#include <stdio.h>
+#include <string.h>
+#include <sys/wait.h>
+#include <unistd.h>
 
 #include "epitech/bool.h"
-#include "epitech/printf.h"
+
 #include "shell/context.h"
 #include "shell/command.h"
 #include "shell/environment.h"
 #include "shell/status.h"
 #include "shell/utils.h"
+
 #include "wololo/debug_mode.h"
 #include "wololo/sentinel.h"
 #include "wololo/write.h"
@@ -50,10 +52,10 @@ static void command_run_internal(context_t *ctx, char *cmd_path, char **env)
     execve(cmd_path, cmd->argv, env + 1);
     DEBUG_MSG("STOP");
     if (errno == ENOEXEC)
-        w_printf(STDERR_FILENO,
+        dprintf(STDERR_FILENO,
             "%s: %s. Wrong Architecture.\n", cmd->argv[0], strerror(errno));
     else
-        w_printf(STDERR_FILENO, "%s: %s.\n", cmd->argv[0], strerror(errno));
+        dprintf(STDERR_FILENO, "%s: %s.\n", cmd->argv[0], strerror(errno));
     exit(W_SENTINEL);
 }
 
@@ -66,7 +68,7 @@ void command_run(context_t *ctx)
     if (!cmd_path)
         exit(W_SENTINEL);
     if (access(cmd_path, F_OK)) {
-        w_printf(STDERR_FILENO, "%s: Command not found.\n", cmd->argv[0]);
+        dprintf(STDERR_FILENO, "%s: Command not found.\n", cmd->argv[0]);
         exit(W_SENTINEL);
     }
     command_run_internal(ctx, cmd_path, env);

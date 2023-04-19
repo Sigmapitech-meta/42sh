@@ -5,20 +5,21 @@
 ** builtin_setenv.c
 */
 
-#include "epitech/base.h"
+#include <unistd.h>
+#include <stdlib.h>
+#include <string.h>
+
 #include "shell/builtins.h"
 #include "shell/command.h"
 #include "shell/context.h"
-#include "wololo/write.h"
 #include "shell/environment.h"
-#include "wololo/sentinel.h"
 
-#include <unistd.h>
-#include <stdlib.h>
+#include "wololo/write.h"
+#include "wololo/sentinel.h"
 
 static void env_set_value(list_t *env, command_t *cmd, char *new_val)
 {
-    int index = env_find(env, cmd->argv[1], str_len(cmd->argv[1]));
+    int index = env_find(env, cmd->argv[1], strlen(cmd->argv[1]));
     list_node_t *node;
 
     if (index == W_SENTINEL) {
@@ -33,7 +34,7 @@ static void env_set_value(list_t *env, command_t *cmd, char *new_val)
 static void env_create_value(list_t *env, command_t *cmd)
 {
     int i = 0;
-    int kv_size = str_len(cmd->argv[1]) + str_len(cmd->argv[2]) + 2;
+    int kv_size = strlen(cmd->argv[1]) + strlen(cmd->argv[2]) + 2;
     char *new_val = malloc(kv_size * sizeof (char));
 
     if (!new_val)

@@ -48,25 +48,6 @@ SRC += list_destroy.c
 SRC += list_get.c
 SRC += list_remove.c
 
-VPATH += src/base/printf
-SRC += handle_lookahead.c
-SRC += printf.c
-SRC += put_nbr.c
-SRC += putchar.c
-SRC += vprintf.c
-
-VPATH += src/base/printf/flags
-SRC += handle_char.c
-SRC += handle_int.c
-SRC += handle_str.c
-SRC += handle_unsigned.c
-
-VPATH += src/base/string
-SRC += str_compare.c
-SRC += str_copy.c
-SRC += str_duplicate.c
-SRC += str_len.c
-
 VPATH += src/builtins
 SRC += builtin_cd.c
 SRC += builtin_env.c

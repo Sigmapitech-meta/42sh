@@ -6,10 +6,11 @@
 */
 
 #include <unistd.h>
+#include <string.h>
 
 #include "shell/context.h"
 #include "shell/command.h"
-#include "epitech/base.h"
+
 #include "wololo/write.h"
 
 void builtin_env(context_t *ctx)
@@ -26,7 +27,7 @@ void builtin_env(context_t *ctx)
         return;
     }
     while (node) {
-        write(STDOUT_FILENO, node->value, str_len(node->value));
+        write(STDOUT_FILENO, node->value, strlen(node->value));
         node = node->next;
         W_OUTPUT_C("\n");
     }

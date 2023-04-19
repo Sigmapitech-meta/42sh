@@ -6,19 +6,19 @@
 */
 
 #include <stdlib.h>
-#include <stdio.h>
 #include <string.h>
 #include <unistd.h>
 
 #include "epitech/base.h"
 #include "epitech/list.h"
+
 #include "wololo/debug_mode.h"
 #include "shell/environment.h"
 
 char *path_concat(char *left, char *right)
 {
     int i = 0;
-    size_t new_size = str_len(left) + 1 + str_len(right);
+    size_t new_size = strlen(left) + 1 + strlen(right);
     char *out = (char *)malloc((new_size + 1) * sizeof (char));
 
     if (!out)
@@ -36,7 +36,7 @@ char *path_find_cmd(list_t *env, char *cmd)
 {
     char *checkpoint;
     char *path = list_get(env, ENV_FIND_VAR(env, "PATH"));
-    char *path_copy = str_duplicate(path);
+    char *path_copy = strdup(path);
     char *search_path = strtok_r(path_copy + 5, ":", &checkpoint);
     char *cmd_path = path_concat(search_path, cmd);
 

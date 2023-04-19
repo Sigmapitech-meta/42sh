@@ -5,14 +5,15 @@
 ** builtin_unsetenv.c
 */
 
-#include "epitech/base.h"
-#include "shell/context.h"
+#include <unistd.h>
+#include <string.h>
+
 #include "shell/command.h"
+#include "shell/context.h"
 #include "shell/environment.h"
+
 #include "wololo/sentinel.h"
 #include "wololo/write.h"
-
-#include <unistd.h>
 
 void builtin_unsetenv(context_t *ctx)
 {
@@ -24,7 +25,7 @@ void builtin_unsetenv(context_t *ctx)
         return;
     }
     for (int i = 1; i < cmd->argc; i++) {
-        index = env_find(ctx->env, cmd->argv[i], str_len(cmd->argv[i]));
+        index = env_find(ctx->env, cmd->argv[i], strlen(cmd->argv[i]));
         if (index != W_SENTINEL)
             list_remove(ctx->env, index);
     }

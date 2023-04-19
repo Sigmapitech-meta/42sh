@@ -6,8 +6,9 @@
 */
 
 #include <stddef.h>
-#include <malloc.h>
-#include "epitech/base.h"
+#include <stdlib.h>
+#include <string.h>
+
 #include "epitech/list.h"
 #include "shell/environment.h"
 #include "wololo/sentinel.h"
@@ -19,7 +20,7 @@ list_t *env_parse(char **env)
     if (!env_lst)
         return NULL;
     for (int i = 0; env[i]; i++)
-        if (!LIST_APPEND_CHECK(env_lst, str_duplicate(env[i])))
+        if (!LIST_APPEND_CHECK(env_lst, strdup(env[i])))
             list_destroy(env_lst);
     return env_lst;
 }
@@ -47,7 +48,7 @@ int env_find(list_t *env, char *name, int n)
     list_node_t *node = env->head;
 
     while (node) {
-        if (!str_compare(node->value, name, n))
+        if (!strncmp(node->value, name, n))
             return i;
         node = node->next;
         i++;

@@ -5,16 +5,14 @@
 ** Interpreter
 */
 
-#include <string.h>
 #include <stdlib.h>
-
-#include "epitech/base.h"
+#include <string.h>
 
 int param_count(const char *line)
 {
     int count = 0;
     char *checkpoint;
-    char *line_copy = str_duplicate((char *)line);
+    char *line_copy = strdup((char *)line);
     char *token = strtok_r(line_copy, " \t", &checkpoint);
 
     if (!token)

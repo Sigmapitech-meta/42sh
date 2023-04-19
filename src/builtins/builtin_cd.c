@@ -7,16 +7,17 @@
 
 #include <unistd.h>
 #include <errno.h>
+#include <string.h>
+#include <stdio.h>
 
-#include "epitech/base.h"
 #include "shell/context.h"
 #include "shell/command.h"
 #include "shell/environment.h"
+#include "shell/utils.h"
+
 #include "wololo/write.h"
 #include "wololo/sentinel.h"
-#include "shell/utils.h"
 #include "wololo/debug_mode.h"
-#include "epitech/printf.h"
 
 static void move_to_dir(context_t *ctx, char *dir)
 {
@@ -28,14 +29,14 @@ static void move_to_dir(context_t *ctx, char *dir)
         return;
     }
     if (errno == ENOTDIR) {
-        w_printf(STDERR_FILENO, "%s: Not a directory.\n", cmd->argv[1]);
+        dprintf(STDERR_FILENO, "%s: Not a directory.\n", cmd->argv[1]);
         return;
     }
     if (errno == EACCES) {
-        w_printf(STDERR_FILENO, "%s: Permission denied.\n", cmd->argv[1]);
+        dprintf(STDERR_FILENO, "%s: Permission denied.\n", cmd->argv[1]);
         return;
     }
-    w_printf(STDERR_FILENO, "%s: No such file or directory.\n", cmd->argv[1]);
+    dprintf(STDERR_FILENO, "%s: No such file or directory.\n", cmd->argv[1]);
 }
 
 static void move_to_home(context_t *ctx)
@@ -58,14 +59,14 @@ void builtin_cd(context_t *ctx)
         W_OUTPUT_LINE_C("cd: Too many arguments.");
         return;
     }
-    if (cmd->argc == 1 || !str_compare(cmd->argv[1], "~", 2))
+    if (cmd->argc == 1 || !strncmp(cmd->argv[1], "~", 2))
         return move_to_home(ctx);
-    if (!str_compare(cmd->argv[1], "/", 2))
+    if (!strncmp(cmd->argv[1], "/", 2))
         return move_to_dir(ctx, "/");
-    if (!str_compare(cmd->argv[1], "-", 2))
+    if (!strncmp(cmd->argv[1], "-", 2))
         return move_to_dir(ctx, ctx->prev_dir);
     DEBUG("moving to [%s]", cmd->argv[1]);
-    if (!str_compare(cmd->argv[1], "/", 1))
+    if (!strncmp(cmd->argv[1], "/", 1))
         move_to_dir(ctx, cmd->argv[1]);
     else
         move_to_dir(ctx, path_concat(getcwd(NULL, 0), cmd->argv[1]));

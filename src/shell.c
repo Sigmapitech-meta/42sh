@@ -4,6 +4,7 @@
 ** File description:
 ** shell.c
 */
+
 #include <unistd.h>
 #include <stdlib.h>
 #include <string.h>
@@ -13,10 +14,10 @@
 #include "shell/command.h"
 #include "shell/environment.h"
 #include "shell/shell.h"
+#include "shell/utils.h"
 #include "wololo/debug_mode.h"
 #include "wololo/sentinel.h"
 #include "wololo/write.h"
-#include "shell/utils.h"
 
 bool_t shell_read_line(context_t *ctx)
 {

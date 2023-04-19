@@ -9,9 +9,9 @@
 #include <unistd.h>
 #include <string.h>
 #include <sys/wait.h>
+#include <stdio.h>
 
 #include "epitech/exit_state.h"
-#include "epitech/printf.h"
 #include "shell/status.h"
 #include "wololo/write.h"
 
@@ -23,7 +23,7 @@ void status_show(int status)
     }
     if (!WIFEXITED(status) && WIFSIGNALED(status)) {
         if (WTERMSIG(status) != FLOATING_EXCEPTION)
-            w_printf(STDERR_FILENO, "%s", strsignal(WTERMSIG(status)));
+            dprintf(STDERR_FILENO, "%s", strsignal(WTERMSIG(status)));
         else
             W_ERROR_C("Floating exception");
         if (WCOREDUMP(status))
