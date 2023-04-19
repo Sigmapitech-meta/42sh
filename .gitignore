@@ -1,5 +1,5 @@
 # Binaries
-mysh
+42sh
 debug_mysh
 
 # Build
@@ -7,8 +7,7 @@ debug_mysh
 .fast
 
 # Coverage
-*.gcda
-*.gcno
+*.gc??
 
 # Lib
 *.a
