@@ -9,11 +9,9 @@
 #include <string.h>
 #include <unistd.h>
 
-#include "epitech/base.h"
-#include "epitech/list.h"
-
+#include "list.h"
+#include "shell/shell.h"
 #include "wololo/debug_mode.h"
-#include "shell/environment.h"
 
 char *path_concat(char *left, char *right)
 {

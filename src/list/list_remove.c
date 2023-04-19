@@ -6,7 +6,7 @@
 */
 
 #include <malloc.h>
-#include "epitech/list.h"
+#include "list.h"
 
 void list_remove_node(list_t *list, list_node_t *node)
 {

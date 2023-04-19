@@ -4,7 +4,8 @@
 ** File description:
 ** list_destroy.c
 */
-#include "epitech/list.h"
+
+#include "list.h"
 
 void list_destroy(list_t *list)
 {

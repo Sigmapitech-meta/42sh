@@ -7,10 +7,11 @@
 
 #include <string.h>
 
-#include "epitech/bool.h"
-#include "shell/command.h"
-#include "shell/context.h"
+#include "epitech.h"
+
 #include "shell/builtins.h"
+#include "shell/shell.h"
+
 #include "wololo/debug_mode.h"
 
 const builtin_t BUILTINS[] = {

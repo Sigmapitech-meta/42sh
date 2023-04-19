@@ -6,8 +6,7 @@
 */
 
 #include <malloc.h>
-#include "epitech/list.h"
-
+#include "list.h"
 
 list_t *list_create(void)
 {

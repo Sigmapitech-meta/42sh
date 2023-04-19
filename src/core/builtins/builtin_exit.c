@@ -5,12 +5,11 @@
 ** builtin_exit.c
 */
 
-#include "epitech/bool.h"
-#include "shell/command.h"
-#include "shell/context.h"
-#include "wololo/write.h"
-
 #include <unistd.h>
+
+#include "epitech.h"
+#include "shell/shell.h"
+#include "wololo/write.h"
 
 void builtin_exit(context_t *ctx)
 {

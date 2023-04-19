@@ -5,11 +5,11 @@
 ** builtin_env.c
 */
 
-#include <unistd.h>
 #include <string.h>
+#include <unistd.h>
 
-#include "shell/context.h"
-#include "shell/command.h"
+#include "list.h"
+#include "shell/shell.h"
 
 #include "wololo/write.h"
 

@@ -5,17 +5,17 @@
 ** builtin_setenv.c
 */
 
-#include <unistd.h>
-#include <stdlib.h>
 #include <string.h>
+#include <stdlib.h>
+#include <unistd.h>
+
+#include "list.h"
 
 #include "shell/builtins.h"
-#include "shell/command.h"
-#include "shell/context.h"
-#include "shell/environment.h"
+#include "shell/shell.h"
 
+#include "wololo/utils.h"
 #include "wololo/write.h"
-#include "wololo/sentinel.h"
 
 static void env_set_value(list_t *env, command_t *cmd, char *new_val)
 {

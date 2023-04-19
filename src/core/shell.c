@@ -5,19 +5,21 @@
 ** shell.c
 */
 
-#include <unistd.h>
 #include <stdlib.h>
 #include <string.h>
+#include <unistd.h>
 
-#include "epitech/base.h"
-#include "shell/context.h"
-#include "shell/command.h"
-#include "shell/environment.h"
+#include "epitech.h"
+#include "list.h"
+
+#include "shell/builtins.h"
 #include "shell/shell.h"
 #include "shell/utils.h"
+
 #include "wololo/debug_mode.h"
-#include "wololo/sentinel.h"
+#include "wololo/utils.h"
 #include "wololo/write.h"
+
 
 bool_t shell_read_line(context_t *ctx)
 {

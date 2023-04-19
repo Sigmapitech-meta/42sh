@@ -6,8 +6,9 @@
 */
 
 #include <malloc.h>
-#include "epitech/list.h"
-#include "wololo/sentinel.h"
+
+#include "list.h"
+#include "wololo/utils.h"
 
 uint_t list_append_node(list_t *list, list_node_t *node)
 {

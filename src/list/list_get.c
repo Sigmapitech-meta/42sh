@@ -6,8 +6,7 @@
 */
 
 #include <stddef.h>
-
-#include "epitech/list.h"
+#include "list.h"
 
 list_node_t *list_get_node(list_t *list, uint_t index)
 {

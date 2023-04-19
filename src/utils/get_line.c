@@ -5,7 +5,6 @@
 ** get_line.c
 */
 
-#include <stddef.h>
 #include <stdio.h>
 
 size_t get_line(char **line)

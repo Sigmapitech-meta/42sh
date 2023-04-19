@@ -5,14 +5,13 @@
 ** builtin_unsetenv.c
 */
 
-#include <unistd.h>
 #include <string.h>
+#include <unistd.h>
 
-#include "shell/command.h"
-#include "shell/context.h"
-#include "shell/environment.h"
+#include "list.h"
+#include "shell/shell.h"
 
-#include "wololo/sentinel.h"
+#include "wololo/utils.h"
 #include "wololo/write.h"
 
 void builtin_unsetenv(context_t *ctx)

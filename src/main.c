@@ -5,10 +5,11 @@
 ** main.c
 */
 
-#include <unistd.h>
 #include <string.h>
+#include <unistd.h>
 
-#include "epitech/exit_state.h"
+#include "epitech.h"
+
 #include "shell/shell.h"
 #include "wololo/debug_mode.h"
 #include "wololo/write.h"

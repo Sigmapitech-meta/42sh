@@ -9,9 +9,8 @@
 #include <stdlib.h>
 #include <string.h>
 
-#include "epitech/list.h"
-#include "shell/environment.h"
-#include "wololo/sentinel.h"
+#include "list.h"
+#include "wololo/utils.h"
 
 list_t *env_parse(char **env)
 {

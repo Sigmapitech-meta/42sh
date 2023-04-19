@@ -5,14 +5,13 @@
 ** status.c
 */
 
-#include <stdlib.h>
-#include <unistd.h>
+#include <stdio.h>
 #include <string.h>
 #include <sys/wait.h>
-#include <stdio.h>
+#include <unistd.h>
 
-#include "epitech/exit_state.h"
-#include "shell/status.h"
+#include "epitech.h"
+#include "shell/utils.h"
 #include "wololo/write.h"
 
 void status_show(int status)

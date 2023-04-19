@@ -5,17 +5,24 @@
 ** Character mapping
 */
 
-#ifndef EPITECH_EXIT_STATE_H
-    #define EPITECH_EXIT_STATE_H
+#ifndef EPITECH_H
+    #define EPITECH_H
 
     #define EXIT_MSG(msg, w, v) (w(msg) ? v : v)
 
     #define EXIT_KO_MSG(msg) EXIT_MSG(msg, W_ERROR_C, EXIT_KO)
     #define EXIT_OK_MSG(msg) EXIT_MSG(msg, W_OUTPUT_C, EXIT_OK)
 
+typedef _Bool bool_t;
+
+enum {
+    TRUE = 1,
+    FALSE = 0
+};
+
 enum {
     EXIT_OK = 0,
     EXIT_KO = 84
 };
 
-#endif /* !EPITECH_EXIT_STATE_H */
+#endif /* !EPITECH_H */

@@ -5,19 +5,19 @@
 ** builtin_cd.c
 */
 
-#include <unistd.h>
 #include <errno.h>
-#include <string.h>
 #include <stdio.h>
+#include <string.h>
+#include <unistd.h>
 
-#include "shell/context.h"
-#include "shell/command.h"
-#include "shell/environment.h"
+#include "list.h"
+
+#include "shell/shell.h"
 #include "shell/utils.h"
 
-#include "wololo/write.h"
-#include "wololo/sentinel.h"
 #include "wololo/debug_mode.h"
+#include "wololo/utils.h"
+#include "wololo/write.h"
 
 static void move_to_dir(context_t *ctx, char *dir)
 {

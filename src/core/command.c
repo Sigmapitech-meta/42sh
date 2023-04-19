@@ -5,25 +5,20 @@
 ** command.c
 */
 
-#include <fcntl.h>
 #include <errno.h>
-#include <stdlib.h>
 #include <stdio.h>
+#include <stdlib.h>
 #include <string.h>
 #include <sys/wait.h>
 #include <unistd.h>
 
-#include "epitech/bool.h"
-
-#include "shell/context.h"
-#include "shell/command.h"
-#include "shell/environment.h"
-#include "shell/status.h"
+#include "shell/shell.h"
 #include "shell/utils.h"
 
 #include "wololo/debug_mode.h"
-#include "wololo/sentinel.h"
+#include "wololo/utils.h"
 #include "wololo/write.h"
+
 
 char *command_get_full_path(context_t *ctx, char **params)
 {
