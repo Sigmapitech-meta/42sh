@@ -13,6 +13,17 @@
     #define ENV_FIND_FIXED(env, name) env_find(env, name, sizeof(name) - 1)
     #define ENV_FIND_VAR(env, name) (ENV_FIND_FIXED(env, name "="))
 
+static const char USAGE[] = (
+    "Minishell 2 - Usage: ./mysh [-h]\n"
+    "\nAll commands in the path are available.\n"
+    "Within the shell, press CTRL+D or enter exit to quit.\n"
+    "Alternatively, you can provide commands from standard input.\n\n"
+    "The following builtins are present:\n"
+    "- env, unsetenv, cd, exit\n\n"
+    "As long as the following operators:\n"
+    "- ; | > < >> <<\n"
+);
+
 typedef _Bool bool_t;
 typedef struct list_s list_t;
 typedef unsigned long size_t;
