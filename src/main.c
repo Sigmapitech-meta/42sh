@@ -14,17 +14,6 @@
 #include "wololo/debug_mode.h"
 #include "wololo/write.h"
 
-const char USAGE[] = (
-    "Minishell 2 - Usage: ./mysh [-h]\n"
-    "\nAll commands in the path are available.\n"
-    "Within the shell, press CTRL+D or enter exit to quit.\n"
-    "Alternatively, you can provide commands from standard input.\n\n"
-    "The following builtins are present:\n"
-    "- env, unsetenv, cd, exit\n\n"
-    "As long as the following operators:\n"
-    "- ; | > < >> <<\n"
-);
-
 int main(int argc, char **argv, char **env)
 {
     DEBUG("Received %d arg(s)", argc);

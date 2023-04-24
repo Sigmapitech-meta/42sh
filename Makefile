@@ -32,14 +32,12 @@ VPATH :=
 # ↓ Sources
 VPATH += src
 SRC += main.c
-
-VPATH += src/core
 SRC += builtins.c
 SRC += command.c
 SRC += environment.c
 SRC += shell.c
 
-VPATH += src/core/builtins
+VPATH += src/builtins
 SRC += builtin_cd.c
 SRC += builtin_env.c
 SRC += builtin_exit.c

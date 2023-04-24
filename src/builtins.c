@@ -14,16 +14,6 @@
 
 #include "wololo/debug_mode.h"
 
-const builtin_t BUILTINS[] = {
-    {"cd", &builtin_cd},
-    {"env", &builtin_env},
-    {"exit", &builtin_exit},
-    {"setenv", &builtin_setenv},
-    {"unsetenv", &builtin_unsetenv},
-};
-
-const int BUILTIN_COUNT = CONST_ARR_SIZE(BUILTINS);
-
 bool_t builtins_check(context_t *ctx)
 {
     char *builtin_name;

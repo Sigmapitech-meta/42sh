@@ -19,7 +19,6 @@
 #include "wololo/utils.h"
 #include "wololo/write.h"
 
-
 char *command_get_full_path(context_t *ctx, char **params)
 {
     char *path;
