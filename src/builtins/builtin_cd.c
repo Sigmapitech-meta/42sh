@@ -15,9 +15,9 @@
 #include "shell/shell.h"
 #include "shell/utils.h"
 
+#include "printf_expansion.h"
 #include "wololo/debug_mode.h"
 #include "wololo/utils.h"
-#include "wololo/write.h"
 
 static void move_to_dir(context_t *ctx, char *dir)
 {
@@ -29,14 +29,14 @@ static void move_to_dir(context_t *ctx, char *dir)
         return;
     }
     if (errno == ENOTDIR) {
-        dprintf(STDERR_FILENO, "%s: Not a directory.\n", cmd->argv[1]);
+        eprintf("%s: Not a directory.\n", cmd->argv[1]);
         return;
     }
     if (errno == EACCES) {
-        dprintf(STDERR_FILENO, "%s: Permission denied.\n", cmd->argv[1]);
+        eprintf("%s: Permission denied.\n", cmd->argv[1]);
         return;
     }
-    dprintf(STDERR_FILENO, "%s: No such file or directory.\n", cmd->argv[1]);
+    eprintf("%s: No such file or directory.\n", cmd->argv[1]);
 }
 
 static void move_to_home(context_t *ctx)
@@ -45,7 +45,7 @@ static void move_to_home(context_t *ctx)
     char *new_dir = (char *)(list_get(ctx->env, i) + 5);
 
     if (!new_dir) {
-        W_ERROR_LINE_C("No $home variable set");
+        eprintf("No $home variable set\n");
         return;
     }
     move_to_dir(ctx, new_dir);
@@ -56,7 +56,7 @@ void builtin_cd(context_t *ctx)
     command_t *cmd = ctx->cmd;
 
     if (cmd->argc > 2) {
-        W_OUTPUT_LINE_C("cd: Too many arguments.");
+        eprintf("cd: Too many arguments.\n");
         return;
     }
     if (cmd->argc == 1 || !strncmp(cmd->argv[1], "~", 2))

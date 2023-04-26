@@ -6,21 +6,24 @@
 */
 
 #include <string.h>
-#include <unistd.h>
 
 #include "epitech.h"
 
 #include "shell/shell.h"
 #include "wololo/debug_mode.h"
-#include "wololo/write.h"
+#include "printf_expansion.h"
 
 int main(int argc, char **argv, char **env)
 {
     DEBUG("Received %d arg(s)", argc);
-    if (argc > 1 && !strncmp(argv[1], "-h", 2))
-        return EXIT_OK_MSG(USAGE);
-    if (argc >= MAX_ARG_COUNT)
-        return EXIT_KO_MSG("Too many arguments\n");
+    if (argc > 1 && !strncmp(argv[1], "-h", 2)) {
+        printf("%s", USAGE);
+        return EXIT_OK;
+    }
+    if (argc >= MAX_ARG_COUNT) {
+        eprintf("Too many arguments\n");
+        return EXIT_OK;
+    }
     DEBUG_MSG("Starting minishell");
     shell_run_from_env(env);
     return EXIT_OK;

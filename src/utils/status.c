@@ -8,25 +8,24 @@
 #include <stdio.h>
 #include <string.h>
 #include <sys/wait.h>
-#include <unistd.h>
 
 #include "epitech.h"
 #include "shell/utils.h"
-#include "wololo/write.h"
+#include "printf_expansion.h"
 
 void status_show(int status)
 {
     if (status == EXIT_KO) {
-        W_ERROR_LINE_C("Error Handling");
+        eprintf("Error Handling\n");
         return;
     }
     if (!WIFEXITED(status) && WIFSIGNALED(status)) {
         if (WTERMSIG(status) != FLOATING_EXCEPTION)
-            dprintf(STDERR_FILENO, "%s", strsignal(WTERMSIG(status)));
+            eprintf("%s", strsignal(WTERMSIG(status)));
         else
-            W_ERROR_C("Floating exception");
+            printf("Floating exception");
         if (WCOREDUMP(status))
-            W_ERROR_C(" (core dumped)");
-        W_ERROR_C("\n");
+            printf(" (core dumped)");
+        printf("\n");
     }
 }

@@ -17,7 +17,7 @@
 
 #include "wololo/debug_mode.h"
 #include "wololo/utils.h"
-#include "wololo/write.h"
+#include "printf_expansion.h"
 
 char *command_get_full_path(context_t *ctx, char **params)
 {
@@ -39,7 +39,7 @@ static void command_run_internal(context_t *ctx, char *cmd_path, char **env)
     command_t *cmd = ctx->cmd;
 
     if (cmd->argv[cmd->argc - 1][0] == '|' && !cmd->argv[cmd->argc - 1][1]) {
-        W_ERROR_LINE_C("Invalid null command.");
+        eprintf("Invalid null command.\n");
         return;
     }
     DEBUG("running [%s]", cmd_path);
@@ -49,7 +49,7 @@ static void command_run_internal(context_t *ctx, char *cmd_path, char **env)
         dprintf(STDERR_FILENO,
             "%s: %s. Wrong Architecture.\n", cmd->argv[0], strerror(errno));
     else
-        dprintf(STDERR_FILENO, "%s: %s.\n", cmd->argv[0], strerror(errno));
+        eprintf("%s: %s.\n", cmd->argv[0], strerror(errno));
     exit(W_SENTINEL);
 }
 
@@ -62,7 +62,7 @@ void command_run(context_t *ctx)
     if (!cmd_path)
         exit(W_SENTINEL);
     if (access(cmd_path, F_OK)) {
-        dprintf(STDERR_FILENO, "%s: Command not found.\n", cmd->argv[0]);
+        eprintf("%s: Command not found.\n", cmd->argv[0]);
         exit(W_SENTINEL);
     }
     command_run_internal(ctx, cmd_path, env);

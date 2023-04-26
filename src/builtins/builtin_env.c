@@ -5,30 +5,27 @@
 ** builtin_env.c
 */
 
-#include <string.h>
-#include <unistd.h>
+#include <stdio.h>
 
 #include "list.h"
+#include "printf_expansion.h"
 #include "shell/shell.h"
-
-#include "wololo/write.h"
 
 void builtin_env(context_t *ctx)
 {
     list_node_t *node;
 
     if (ctx->cmd->argc > 1) {
-        W_ERROR_LINE_C("env: Too many arguments.");
+        eprintf("env: Too many arguments.\n");
         return;
     }
     node = ctx->env->head;
     if (!node) {
-        W_ERROR_LINE_C("env: No environment.");
+        eprintf("env: No environment.\n");
         return;
     }
     while (node) {
-        write(STDOUT_FILENO, node->value, strlen(node->value));
+        printf("%s\n", (char *)node->value);
         node = node->next;
-        W_OUTPUT_C("\n");
     }
 }

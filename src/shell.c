@@ -6,6 +6,7 @@
 */
 
 #include <stdlib.h>
+#include <stdio.h>
 #include <string.h>
 #include <unistd.h>
 
@@ -18,7 +19,6 @@
 
 #include "wololo/debug_mode.h"
 #include "wololo/utils.h"
-#include "wololo/write.h"
 
 
 bool_t shell_read_line(context_t *ctx)
@@ -27,7 +27,7 @@ bool_t shell_read_line(context_t *ctx)
     DEBUG("[%zu] characters entered", ctx->input_size);
     if (ctx->input_size == (size_t)W_SENTINEL) {
         if (isatty(STDIN_FILENO))
-            W_OUTPUT_LINE_C("exit");
+            printf("exit\n");
         ctx->is_running = FALSE;
         return FALSE;
     }
@@ -70,7 +70,7 @@ void shell_run_from_ctx(context_t *ctx)
     DEBUG_MSG("Entering main loop.");
     while (ctx->is_running) {
         if (ctx->ran_from_tty)
-            W_OUTPUT_C("$> ");
+            printf("$> ");
         if (shell_read_line(ctx))
             shell_evaluate(ctx);
     }

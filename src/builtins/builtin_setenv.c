@@ -7,7 +7,6 @@
 
 #include <string.h>
 #include <stdlib.h>
-#include <unistd.h>
 
 #include "list.h"
 
@@ -15,7 +14,7 @@
 #include "shell/shell.h"
 
 #include "wololo/utils.h"
-#include "wololo/write.h"
+#include "printf_expansion.h"
 
 static void env_set_value(list_t *env, command_t *cmd, char *new_val)
 {
@@ -57,7 +56,8 @@ void builtin_setenv(context_t *ctx)
         return;
     }
     if (cmd->argc >= 3) {
-        W_ERROR_LINE_C("setenv: Too many arguments.");
+        eprintf("setenv: Too many arguments.\n");
+        return;
     }
     env_create_value(ctx->env, cmd);
     return;

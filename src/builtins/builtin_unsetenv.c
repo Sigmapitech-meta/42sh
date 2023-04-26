@@ -6,13 +6,12 @@
 */
 
 #include <string.h>
-#include <unistd.h>
 
 #include "list.h"
 #include "shell/shell.h"
 
+#include "printf_expansion.h"
 #include "wololo/utils.h"
-#include "wololo/write.h"
 
 void builtin_unsetenv(context_t *ctx)
 {
@@ -20,7 +19,7 @@ void builtin_unsetenv(context_t *ctx)
     command_t *cmd = ctx->cmd;
 
     if (cmd->argc == 1) {
-        W_ERROR_LINE_C("unsetenv: Too few arguments.");
+        eprintf("unsetenv: Too few arguments.\n");
         return;
     }
     for (int i = 1; i < cmd->argc; i++) {
