@@ -25,6 +25,5 @@ int main(int argc, char **argv, char **env)
         return EXIT_OK;
     }
     DEBUG_MSG("Starting minishell");
-    shell_run_from_env(env);
-    return EXIT_OK;
+    return shell_run_from_env(env);
 }

@@ -77,7 +77,7 @@ void shell_run_from_ctx(context_t *ctx)
     free(ctx->user_input);
 }
 
-void shell_run_from_env(char **env)
+int shell_run_from_env(char **env)
 {
     context_t ctx = {0};
 
@@ -89,10 +89,13 @@ void shell_run_from_env(char **env)
     ctx.prev_dir = getcwd(NULL, 0);
     DEBUG("Running in [%s]", ctx.prev_dir);
     ctx.cmd = malloc(sizeof (command_t));
+    if (!ctx.cmd)
+        return W_SENTINEL;
     shell_run_from_ctx(&ctx);
     LIST_FOREACH(ctx.env, node)
         free(node->value);
     list_destroy(ctx.env);
     free(ctx.prev_dir);
     free(ctx.cmd);
+    return ctx.status;
 }

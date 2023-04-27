@@ -34,6 +34,7 @@ typedef struct command_s {
 } command_t;
 
 typedef struct context_s {
+    unsigned char status;
     bool_t is_running;
     bool_t ran_from_tty;
     list_t *env;
@@ -44,7 +45,7 @@ typedef struct context_s {
 } context_t;
 
 bool_t command_run_subprocess(context_t *ctx);
-void shell_run_from_env(char **env);
+int shell_run_from_env(char **env);
 
 list_t *env_parse(char **env);
 char **env_rebuild(list_t *env);
