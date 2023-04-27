@@ -1,12 +1,12 @@
 /*
 ** EPITECH PROJECT, 2023
-** auto_completion.h
+** 42sh
 ** File description:
-** auto_complet header
+** auto_completion.h
 */
 
-#ifndef AUTO_H
-    #define AUTO_H
+#ifndef AUTO_COMPLETION_H
+    #define AUTO_COMPLETION_H
 
 typedef struct list_s list_t;
 
