@@ -1,6 +1,6 @@
 /*
 ** EPITECH PROJECT, 2023
-** minishell_1
+** 42sh
 ** File description:
 ** status.c
 */

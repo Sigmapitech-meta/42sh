@@ -1,8 +1,8 @@
 /*
 ** EPITECH PROJECT, 2023
-** minishell2
+** 42sh
 ** File description:
-** context.h
+** shell.h
 */
 
 #ifndef SHELL_H

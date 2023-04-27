@@ -1,8 +1,8 @@
 /*
 ** EPITECH PROJECT, 2023
-** Minishell
+** 42sh
 ** File description:
-** Interpreter
+** path.c
 */
 
 #include <stdlib.h>

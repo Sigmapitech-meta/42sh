@@ -1,9 +1,10 @@
 /*
 ** EPITECH PROJECT, 2023
-** minishell2
+** 42sh
 ** File description:
 ** list.h
 */
+
 #ifndef LIST_H_
     #define LIST_H_
 

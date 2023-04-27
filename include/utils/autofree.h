@@ -1,9 +1,10 @@
 /*
 ** EPITECH PROJECT, 2023
-** rpg
+** 42sh
 ** File description:
 ** autofree.h
 */
+
 
 #ifndef AUTOFREE_H_
     #define AUTOFREE_H_

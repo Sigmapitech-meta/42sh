@@ -2,7 +2,7 @@
 ** EPITECH PROJECT, 2023
 ** 42sh
 ** File description:
-** utils.h
+** sentinel.h
 */
 
 #ifndef WOLO_SENTINEL_H
