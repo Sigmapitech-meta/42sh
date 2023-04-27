@@ -48,6 +48,9 @@ SRC += builtin_exit.c
 SRC += builtin_setenv.c
 SRC += builtin_unsetenv.c
 
+VPATH += src/helpers
+SRC += file_interaction.c
+
 VPATH += src/list
 SRC += list_append.c
 SRC += list_management.c
