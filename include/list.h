@@ -7,7 +7,12 @@
 #ifndef LIST_H_
     #define LIST_H_
 
-    #define LIST_FOREACH(l, n) for (list_node_t *n = l->head; n; n = n->next)
+    #define _ const
+    /* The coding style is a mess... */
+    #define EQ =
+
+    #define LIST_FOREACH(l, n) for (list_node_t *n EQ l->head; n; n EQ n->next)
+
     #define LIST_APPEND_CHECK(l, v) (list_append(l, v) != W_SENTINEL)
 
 typedef unsigned int uint_t;

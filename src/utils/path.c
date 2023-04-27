@@ -35,8 +35,8 @@ char *path_find_cmd(list_t *env, char *cmd)
 {
     char *checkpoint;
     char *path = list_get(env, ENV_FIND_VAR(env, "PATH"));
+    AUTOFREE char *cur_dir = NULL;
     AUTOFREE char *path_copy = strdup(path);
-    AUTOFREE char *cur_dir;
     char *search_path = strtok_r(path_copy + 5, ":", &checkpoint);
     char *cmd_path = path_concat(search_path, cmd);
 
