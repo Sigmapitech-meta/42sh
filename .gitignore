@@ -12,5 +12,8 @@ debug_42sh
 # Lib
 *.a
 
+# Logs
+*.log
+
 # Tests
 unittests
