@@ -19,3 +19,9 @@ list_t *list_create(void)
     list->size = 0;
     return list;
 }
+
+void list_destroy(list_t *list)
+{
+    list_clear(list);
+    free(list);
+}

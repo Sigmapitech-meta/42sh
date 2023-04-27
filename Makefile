@@ -47,8 +47,7 @@ SRC += builtin_unsetenv.c
 
 VPATH += src/list
 SRC += list_append.c
-SRC += list_create.c
-SRC += list_destroy.c
+SRC += list_management.c
 SRC += list_get.c
 SRC += list_remove.c
 

@@ -34,3 +34,9 @@ void list_remove(list_t *list, uint_t index)
     if (node)
         list_remove_node(list, node);
 }
+
+void list_clear(list_t *list)
+{
+    while (list->size)
+        list_remove_node(list, list->tail);
+}
