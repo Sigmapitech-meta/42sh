@@ -33,11 +33,12 @@ VPATH :=
 
 # ↓ Sources
 VPATH += src
-SRC += main.c
-SRC += eprintf.c
 SRC += builtins.c
 SRC += command.c
 SRC += environment.c
+SRC += eprintf.c
+SRC += main.c
+SRC += prompt.c
 SRC += shell.c
 
 VPATH += src/builtins

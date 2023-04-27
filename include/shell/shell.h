@@ -51,4 +51,6 @@ list_t *env_parse(char **env);
 char **env_rebuild(list_t *env);
 int env_find(list_t *env, char *name, int n);
 
+void prompt_display(context_t *ctx);
+
 #endif /* !SHELL_H */

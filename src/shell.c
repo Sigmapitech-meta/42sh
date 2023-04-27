@@ -70,7 +70,7 @@ void shell_run_from_ctx(context_t *ctx)
     DEBUG_MSG("Entering main loop.");
     while (ctx->is_running) {
         if (ctx->ran_from_tty)
-            printf("$> ");
+            prompt_display(ctx);
         if (shell_read_line(ctx))
             shell_evaluate(ctx);
     }

@@ -8,6 +8,7 @@
 #ifndef AUTOFREE_H_
     #define AUTOFREE_H_
 
+    #include <stdlib.h>
     #include "utils/attributes.h"
 
     #define _CLEAN_UP_CALL cleanup(free_stack)
