@@ -23,7 +23,9 @@ ifeq ($(FORCE_DEBUG),1)
 endif
 
 BUILD_DIR := .build
-NAME_DEBUG := debug_$(NAME)
+
+NAME_DEBUG := debug
+NAME_ANGRY := angry
 
 # ↓ Clear all possible junk
 SRC :=
@@ -76,6 +78,7 @@ endif
 # ↓ Generators
 OBJ := $(SRC:%.c=$(BUILD_DIR)/release/%.o)
 DEBUG_OBJ := $(SRC:%.c=$(BUILD_DIR)/debug/%.o)
+ANGRY_OBJ := $(SRC:%.c=$(BUILD_DIR)/angry/%.o)
 
 # ↓ Utils
 ifneq ($(shell tput colors),0)
@@ -126,17 +129,25 @@ $(BUILD_DIR)/release/%.o: %.c
 	$Q $(CC) $(CFLAGS) -c $< -o $@
 	$(call LOG, ":c" $(notdir $@))
 
-debug: CFLAGS += -g3 -D DEBUG_MODE
-debug: HEADER += "debug"
-debug: $(NAME_DEBUG)
-
-.PHONY: debug
-
+$(NAME_DEBUG): CFLAGS += -g3 -D DEBUG_MODE
+$(NAME_DEBUG): HEADER += "debug"
 $(NAME_DEBUG): $(DEBUG_OBJ)
 	$Q $(CC) $(CFLAGS) $(LIBFLAGS) $(LDLIBS) -o $@ $^
 	$(call LOG,":g$@")
 
 $(BUILD_DIR)/debug/%.o: %.c
+	@ mkdir -p $(dir $@)
+	$Q $(CC) $(CFLAGS) -c $< -o $@
+	$(call LOG, ":c" $(notdir $@))
+
+$(NAME_ANGRY): CFLAGS += -g3 -D DEBUG_MODE -fsanitize=address,leak,undefined
+$(NAME_ANGRY): LDFLAGS += -lasan
+$(NAME_ANGRY): HEADER += "angry"
+$(NAME_ANGRY): $(ANGRY_OBJ)
+	$Q $(CC) -o $@ $^ $(CFLAGS) $(LDFLAGS) $(LDLIBS)
+	$(call LOG,":g$@")
+
+$(BUILD_DIR)/angry/%.o: %.c
 	@ mkdir -p $(dir $@)
 	$Q $(CC) $(CFLAGS) -c $< -o $@
 	$(call LOG, ":c" $(notdir $@))
