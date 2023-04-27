@@ -7,6 +7,7 @@
 
 #include <errno.h>
 #include <stdio.h>
+#include <stdlib.h>
 #include <string.h>
 #include <unistd.h>
 
@@ -18,13 +19,16 @@
 #include "printf_expansion.h"
 #include "utils/debug_mode.h"
 #include "utils/sentinel.h"
+#include "utils/autofree.h"
 
-static void move_to_dir(context_t *ctx, char *dir)
+static
+void move_to_dir(context_t *ctx, char *dir)
 {
     command_t *cmd = ctx->cmd;
     char *current_dir = getcwd(NULL, 0);
 
     if (chdir(dir) != W_SENTINEL) {
+        free(ctx->prev_dir);
         ctx->prev_dir = current_dir;
         return;
     }
@@ -39,7 +43,8 @@ static void move_to_dir(context_t *ctx, char *dir)
     eprintf("%s: No such file or directory.\n", cmd->argv[1]);
 }
 
-static void move_to_home(context_t *ctx)
+static
+void move_to_home(context_t *ctx)
 {
     int i = ENV_FIND_VAR(ctx->env, "HOME");
     char *new_dir = (char *)(list_get(ctx->env, i) + 5);
@@ -51,23 +56,36 @@ static void move_to_home(context_t *ctx)
     move_to_dir(ctx, new_dir);
 }
 
+static
+void move_relative(context_t *ctx)
+{
+    AUTOFREE char *current_dir;
+    AUTOFREE char *target_path;
+    command_t *cmd = ctx->cmd;
+
+    current_dir = getcwd(NULL, 0);
+    target_path = path_concat(current_dir, cmd->argv[1]);
+    move_to_dir(ctx, target_path);
+}
+
 void builtin_cd(context_t *ctx)
 {
     command_t *cmd = ctx->cmd;
+    char *target_path = cmd->argv[1];
 
     if (cmd->argc > 2) {
         eprintf("cd: Too many arguments.\n");
         return;
     }
-    if (cmd->argc == 1 || !strncmp(cmd->argv[1], "~", 2))
+    if (cmd->argc == 1 || !strncmp(target_path, "~", 2))
         return move_to_home(ctx);
-    if (!strncmp(cmd->argv[1], "/", 2))
+    if (!strncmp(target_path, "/", 2))
         return move_to_dir(ctx, "/");
-    if (!strncmp(cmd->argv[1], "-", 2))
+    if (!strncmp(target_path, "-", 2))
         return move_to_dir(ctx, ctx->prev_dir);
-    DEBUG("moving to [%s]", cmd->argv[1]);
-    if (!strncmp(cmd->argv[1], "/", 1))
-        move_to_dir(ctx, cmd->argv[1]);
+    DEBUG("moving to [%s]", target_path);
+    if (!strncmp(target_path, "/", 1))
+        move_to_dir(ctx, target_path);
     else
-        move_to_dir(ctx, path_concat(getcwd(NULL, 0), cmd->argv[1]));
+        move_relative(ctx);
 }

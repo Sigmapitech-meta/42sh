@@ -36,6 +36,7 @@ char *path_find_cmd(list_t *env, char *cmd)
     char *checkpoint;
     char *path = list_get(env, ENV_FIND_VAR(env, "PATH"));
     AUTOFREE char *path_copy = strdup(path);
+    AUTOFREE char *cur_dir;
     char *search_path = strtok_r(path_copy + 5, ":", &checkpoint);
     char *cmd_path = path_concat(search_path, cmd);
 
@@ -47,7 +48,8 @@ char *path_find_cmd(list_t *env, char *cmd)
         cmd_path = path_concat(search_path, cmd);
     }
     if (!search_path || !cmd_path) {
-        cmd_path = path_concat(getcwd(NULL, 0), cmd);
+        cur_dir = getcwd(NULL, 0);
+        cmd_path = path_concat(cur_dir, cmd);
         DEBUG("Defaulting path to %s", cmd_path);
     }
     return cmd_path;

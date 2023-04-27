@@ -20,13 +20,12 @@
 #include "utils/debug_mode.h"
 #include "utils/sentinel.h"
 
-
 bool_t shell_read_line(context_t *ctx)
 {
     ctx->input_size = get_line(&ctx->user_input);
     DEBUG("[%zu] characters entered", ctx->input_size);
     if (ctx->input_size == W_SENTINEL_OF(size_t)) {
-        if (isatty(STDIN_FILENO))
+        if (ctx->ran_from_tty)
             printf("exit\n");
         ctx->is_running = FALSE;
         return FALSE;
@@ -91,6 +90,8 @@ void shell_run_from_env(char **env)
     DEBUG("Running in [%s]", ctx.prev_dir);
     ctx.cmd = malloc(sizeof (command_t));
     shell_run_from_ctx(&ctx);
+    LIST_FOREACH(ctx.env, node)
+        free(node->value);
     list_destroy(ctx.env);
     free(ctx.prev_dir);
     free(ctx.cmd);
