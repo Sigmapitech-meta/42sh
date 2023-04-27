@@ -26,15 +26,13 @@ list_t *env_parse(char **env)
 
 char **env_rebuild(list_t *env)
 {
-    list_node_t *node = env->head;
     char **out = malloc((env->size + 1) * sizeof (char *));
     int i = 0;
 
     if (!out)
         return NULL;
-    while (node) {
+    LIST_FOREACH(env, node) {
         out[i] = list_get(env, i);
-        node = node->next;
         i++;
     }
     out[i] = NULL;
@@ -44,12 +42,10 @@ char **env_rebuild(list_t *env)
 int env_find(list_t *env, char *name, int n)
 {
     int i = 0;
-    list_node_t *node = env->head;
 
-    while (node) {
+    LIST_FOREACH(env, node) {
         if (!strncmp(node->value, name, n))
             return i;
-        node = node->next;
         i++;
     }
     return W_SENTINEL;
