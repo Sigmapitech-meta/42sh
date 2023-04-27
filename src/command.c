@@ -37,19 +37,20 @@ char *command_get_full_path(context_t *ctx, char **params)
 static void command_run_internal(context_t *ctx, char *cmd_path, char **env)
 {
     command_t *cmd = ctx->cmd;
+    char *last_arg = cmd->argv[cmd->argc - 1];
+    char *binary_name = cmd->argv[0];
 
-    if (cmd->argv[cmd->argc - 1][0] == '|' && !cmd->argv[cmd->argc - 1][1]) {
+    if (last_arg[0] == '|' && !last_arg[1]) {
         eprintf("Invalid null command.\n");
         return;
     }
     DEBUG("running [%s]", cmd_path);
     execve(cmd_path, cmd->argv, env + 1);
     DEBUG_MSG("STOP");
+    eprintf("%s: %s.", binary_name, strerror(errno));
     if (errno == ENOEXEC)
-        dprintf(STDERR_FILENO,
-            "%s: %s. Wrong Architecture.\n", cmd->argv[0], strerror(errno));
-    else
-        eprintf("%s: %s.\n", cmd->argv[0], strerror(errno));
+        eprintf(" Wrong Architecture.", binary_name, strerror(errno));
+    eprintf("\n");
     exit(W_SENTINEL);
 }
 

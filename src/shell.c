@@ -25,7 +25,7 @@ bool_t shell_read_line(context_t *ctx)
 {
     ctx->input_size = get_line(&ctx->user_input);
     DEBUG("[%zu] characters entered", ctx->input_size);
-    if (ctx->input_size == (size_t)W_SENTINEL) {
+    if (ctx->input_size == W_SENTINEL_OF(size_t)) {
         if (isatty(STDIN_FILENO))
             printf("exit\n");
         ctx->is_running = FALSE;
@@ -61,6 +61,7 @@ void shell_evaluate(context_t *ctx)
         cmd->argv[cmd->argc] = NULL;
         shell_evaluate_expression(ctx);
         ctx->user_input = strtok_r(NULL, ";", &checkpoint);
+        free(cmd->argv);
     }
     ctx->user_input = raw_inp;
 }
@@ -90,6 +91,7 @@ void shell_run_from_env(char **env)
     DEBUG("Running in [%s]", ctx.prev_dir);
     ctx.cmd = malloc(sizeof (command_t));
     shell_run_from_ctx(&ctx);
-    free(ctx.env);
+    list_destroy(ctx.env);
     free(ctx.prev_dir);
+    free(ctx.cmd);
 }

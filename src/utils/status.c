@@ -23,9 +23,9 @@ void status_show(int status)
         if (WTERMSIG(status) != FLOATING_EXCEPTION)
             eprintf("%s", strsignal(WTERMSIG(status)));
         else
-            printf("Floating exception");
+            eprintf("Floating exception");
         if (WCOREDUMP(status))
-            printf(" (core dumped)");
-        printf("\n");
+            eprintf(" (core dumped)");
+        eprintf("\n");
     }
 }

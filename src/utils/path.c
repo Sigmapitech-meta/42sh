@@ -12,6 +12,7 @@
 #include "list.h"
 #include "shell/shell.h"
 #include "utils/debug_mode.h"
+#include "utils/autofree.h"
 
 char *path_concat(char *left, char *right)
 {
@@ -34,7 +35,7 @@ char *path_find_cmd(list_t *env, char *cmd)
 {
     char *checkpoint;
     char *path = list_get(env, ENV_FIND_VAR(env, "PATH"));
-    char *path_copy = strdup(path);
+    AUTOFREE char *path_copy = strdup(path);
     char *search_path = strtok_r(path_copy + 5, ":", &checkpoint);
     char *cmd_path = path_concat(search_path, cmd);
 
