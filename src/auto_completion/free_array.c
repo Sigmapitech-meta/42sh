@@ -1,14 +1,16 @@
 /*
 ** EPITECH PROJECT, 2023
-** free_array.c
+** 42sh
 ** File description:
-** to free an array
+** free_array.c
 */
 
-int free_array(char **array)
+#include <stdlib.h>
+#include "shell/auto_completion.h"
+
+void free_array(char **array)
 {
     for (int i = 0; array[i]; i ++)
         free(array[i]);
     free(array);
-    return 0;
 }

@@ -1,41 +1,47 @@
 /*
 ** EPITECH PROJECT, 2023
-** my_get_alias.c
+** 42sh
 ** File description:
 ** my_get_alias.c
 */
 
-#include "shell/auto_completion.h"
+#include <stdlib.h>
+#include <string.h>
 
-static bool is_alias(char *str)
+#include "epitech.h"
+#include "shell/auto_completion.h"
+#include "shell/helpers.h"
+#include "utils/autofree.h"
+
+static
+bool_t is_alias(char *str)
 {
-    if (my_strlen(str) > 5 && str[0] == 'a' && str[1] == 'l' && str[2] == 'i' &&
-        str[3] == 'a' && str[4] == 's')
-        return true;
-    return false;
+    return strncmp(str, "alias", 5);
 }
 
 static int count_alias(char **file_content)
 {
     int count = 0;
 
-    for (int i = 0; file_content[i]; i ++)
+    for (int i = 0; file_content[i]; i++)
         if (is_alias(file_content[i]))
-            count ++;
+            count++;
     return count;
 }
 
 static char **parse_alias(char **file)
 {
     int line_nbr = count_alias(file);
-    char **alias = my_calloc(sizeof(char *), (line_nbr + 1));
+    char **alias = calloc(sizeof(char *), (line_nbr + 1));
     char **one_alias = NULL;
     int j = 0;
 
+    if (!alias)
+        return NULL;
     for (int i = 0; file[i]; i ++)
         if (is_alias(file[i])) {
             one_alias = my_str_split(file[i], " =");
-            alias[j ++] = my_strdup(one_alias[1]);
+            alias[j++] = my_strdup(one_alias[1]);
             free_array(one_alias);
         }
     alias[line_nbr] = NULL;
@@ -45,16 +51,11 @@ static char **parse_alias(char **file)
 char **my_get_alias(void)
 {
     char **alias = NULL;
-    int fd = open(".42shrc", O_RDONLY);
-    char *file_content = NULL;
-    struct stat stats;
+    AUTOFREE char *file_content = file_read(".42shrc");
 
-    stat(".42shrc", &stats);
-    file_content = my_calloc(1, stats.st_size + 1);
-    read(fd, file_content, stats.st_size);
-    file_content[stats.st_size] = '\0';
+    if (!file_content)
+        return NULL;
     alias = my_str_split(str, "\n");
     alias = parse_alias(alias);
-    free(file_content);
     return alias;
 }
