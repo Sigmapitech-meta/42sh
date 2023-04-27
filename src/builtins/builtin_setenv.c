@@ -13,8 +13,8 @@
 #include "shell/builtins.h"
 #include "shell/shell.h"
 
-#include "wololo/utils.h"
 #include "printf_expansion.h"
+#include "utils/sentinel.h"
 
 static void env_set_value(list_t *env, command_t *cmd, char *new_val)
 {

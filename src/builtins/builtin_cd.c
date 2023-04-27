@@ -16,8 +16,8 @@
 #include "shell/utils.h"
 
 #include "printf_expansion.h"
-#include "wololo/debug_mode.h"
-#include "wololo/utils.h"
+#include "utils/debug_mode.h"
+#include "utils/sentinel.h"
 
 static void move_to_dir(context_t *ctx, char *dir)
 {

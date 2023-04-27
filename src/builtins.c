@@ -12,7 +12,7 @@
 #include "shell/builtins.h"
 #include "shell/shell.h"
 
-#include "wololo/debug_mode.h"
+#include "utils/debug_mode.h"
 
 bool_t builtins_check(context_t *ctx)
 {

@@ -11,7 +11,7 @@
 #include "shell/shell.h"
 
 #include "printf_expansion.h"
-#include "wololo/utils.h"
+#include "utils/sentinel.h"
 
 void builtin_unsetenv(context_t *ctx)
 {

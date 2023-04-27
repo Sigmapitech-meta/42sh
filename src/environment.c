@@ -10,7 +10,7 @@
 #include <string.h>
 
 #include "list.h"
-#include "wololo/utils.h"
+#include "utils/sentinel.h"
 
 list_t *env_parse(char **env)
 {

@@ -10,7 +10,7 @@
 #include "epitech.h"
 
 #include "shell/shell.h"
-#include "wololo/debug_mode.h"
+#include "utils/debug_mode.h"
 #include "printf_expansion.h"
 
 int main(int argc, char **argv, char **env)

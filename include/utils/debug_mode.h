@@ -1,9 +1,10 @@
 /*
 ** EPITECH PROJECT, 2023
-** My Paint
+** 42sh
 ** File description:
-** Debug Mode header
+** debug_mode.h
 */
+
 #ifndef WOLOLO_DEBUG_MODE_H
     #define WOLOLO_DEBUG_MODE_H
 

@@ -5,10 +5,10 @@
 ** list_append.c
 */
 
-#include <malloc.h>
+#include <stdlib.h>
 
 #include "list.h"
-#include "wololo/utils.h"
+#include "utils/sentinel.h"
 
 uint_t list_append_node(list_t *list, list_node_t *node)
 {

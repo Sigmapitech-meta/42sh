@@ -5,7 +5,7 @@
 ** list_create.c
 */
 
-#include <malloc.h>
+#include <stdlib.h>
 #include "list.h"
 
 list_t *list_create(void)

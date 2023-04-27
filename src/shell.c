@@ -17,8 +17,8 @@
 #include "shell/shell.h"
 #include "shell/utils.h"
 
-#include "wololo/debug_mode.h"
-#include "wololo/utils.h"
+#include "utils/debug_mode.h"
+#include "utils/sentinel.h"
 
 
 bool_t shell_read_line(context_t *ctx)

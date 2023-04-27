@@ -11,7 +11,7 @@
 
 #include "list.h"
 #include "shell/shell.h"
-#include "wololo/debug_mode.h"
+#include "utils/debug_mode.h"
 
 char *path_concat(char *left, char *right)
 {
