@@ -16,7 +16,8 @@
 #include "printf_expansion.h"
 #include "utils/sentinel.h"
 
-static void env_set_value(list_t *env, command_t *cmd, char *new_val)
+static
+void env_set_value(list_t *env, command_t *cmd, char *new_val)
 {
     int index = env_find(env, cmd->argv[1], strlen(cmd->argv[1]));
     list_node_t *node;
@@ -33,7 +34,8 @@ static void env_set_value(list_t *env, command_t *cmd, char *new_val)
     node->value = new_val;
 }
 
-static void env_create_value(list_t *env, command_t *cmd)
+static
+void env_create_value(list_t *env, command_t *cmd)
 {
     int i = 0;
     int kv_size = strlen(cmd->argv[1]) + strlen(cmd->argv[2]) + 1;
@@ -51,13 +53,22 @@ static void env_create_value(list_t *env, command_t *cmd)
     env_set_value(env, cmd, new_val);
 }
 
+static
+void command_run_env(context_t *ctx)
+{
+    command_t *cmd = ctx->cmd;
+
+    cmd->argv[0] = "env";
+    cmd->argv[1] = NULL;
+    command_run_subprocess(ctx);
+}
+
 void builtin_setenv(context_t *ctx)
 {
     command_t *cmd = ctx->cmd;
 
     if (cmd->argc == 1) {
-        builtin_env(ctx);
-        return;
+        return command_run_env(ctx);
     }
     if (cmd->argc > 3) {
         eprintf("setenv: Too many arguments.\n");

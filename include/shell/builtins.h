@@ -29,7 +29,6 @@ void builtin_unsetenv(context_t *ctx);
 USED
 static const builtin_t BUILTINS[] = {
     {"cd", &builtin_cd},
-    {"env", &builtin_env},
     {"exit", &builtin_exit},
     {"setenv", &builtin_setenv},
     {"unsetenv", &builtin_unsetenv},

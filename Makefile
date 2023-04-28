@@ -43,7 +43,6 @@ SRC += shell.c
 
 VPATH += src/builtins
 SRC += builtin_cd.c
-SRC += builtin_env.c
 SRC += builtin_exit.c
 SRC += builtin_setenv.c
 SRC += builtin_unsetenv.c
