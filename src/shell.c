@@ -84,7 +84,7 @@ int shell_run_from_env(char **env)
     ctx.ran_from_tty = isatty(STDIN_FILENO);
     DEBUG_MSG_IF(ctx.ran_from_tty, "stdin is a tty");
     ctx.env = env_parse(env);
-    DEBUG("Registered %d values withing env", ctx.env->size);
+    DEBUG("Registered %zd values withing env", ctx.env->size);
     ctx.is_running = TRUE;
     ctx.prev_dir = getcwd(NULL, 0);
     DEBUG("Running in [%s]", ctx.prev_dir);

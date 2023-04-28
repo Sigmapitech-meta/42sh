@@ -10,7 +10,7 @@
 #include "list.h"
 #include "utils/sentinel.h"
 
-int list_append_node(list_t *list, list_node_t *node)
+ssize_t list_append_node(list_t *list, list_node_t *node)
 {
     list->size++;
     if (!list->tail) {
@@ -24,7 +24,7 @@ int list_append_node(list_t *list, list_node_t *node)
     return list->size - 1;
 }
 
-int list_append(list_t *list, void *value)
+ssize_t list_append(list_t *list, void *value)
 {
     list_node_t *node;
 
