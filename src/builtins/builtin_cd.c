@@ -6,15 +6,14 @@
 */
 
 #include <errno.h>
+#include <limits.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include <unistd.h>
 
 #include "list.h"
-
 #include "shell/shell.h"
-#include "shell/utils.h"
 
 #include "printf_expansion.h"
 #include "utils/debug_mode.h"
@@ -22,50 +21,51 @@
 #include "utils/autofree.h"
 
 static
-void move_to_dir(context_t *ctx, char *dir)
+void move_relative(context_t *ctx, char *relative_path)
 {
     command_t *cmd = ctx->cmd;
-    char *current_dir = getcwd(NULL, 0);
+    char target_path[PATH_MAX];
 
-    if (chdir(dir) != W_SENTINEL) {
-        free(ctx->prev_dir);
-        ctx->prev_dir = current_dir;
-        return;
-    }
-    if (errno == ENOTDIR) {
-        eprintf("%s: Not a directory.\n", cmd->argv[1]);
-        return;
-    }
-    if (errno == EACCES) {
-        eprintf("%s: Permission denied.\n", cmd->argv[1]);
-        return;
-    }
-    eprintf("%s: No such file or directory.\n", cmd->argv[1]);
+    DEBUG("Solving rel path: [%s]", relative_path);
+    if (!realpath(relative_path, target_path))
+        return perror(cmd->argv[1]);
+    ctx->prev_dir = getcwd(ctx->prev_dir, 0);
+    if (chdir(target_path) == W_SENTINEL)
+        eprintf("%s: %s.\n", cmd->argv[1], strerror(errno));
+}
+
+static
+char *concat_home(context_t *ctx, char *home)
+{
+    size_t len = strlen(home);
+    char *abs_dir = calloc(len + strlen(ctx->cmd->argv[1]), sizeof(char));
+
+    if (!abs_dir)
+        return NULL;
+    strcat(abs_dir, home);
+    abs_dir[len] = '/';
+    strcat(abs_dir, ctx->cmd->argv[1] + 2);
+    return abs_dir;
 }
 
 static
 void move_to_home(context_t *ctx)
 {
+    command_t *cmd = ctx->cmd;
     int i = ENV_FIND_VAR(ctx->env, "HOME");
-    char *new_dir = (char *)(list_get(ctx->env, i) + 5);
+    AUTOFREE char *abs_dir = NULL;
+    char *home;
 
     if (i == W_SENTINEL) {
         eprintf("No $home variable set\n");
         return;
     }
-    move_to_dir(ctx, new_dir);
-}
-
-static
-void move_relative(context_t *ctx)
-{
-    AUTOFREE char *current_dir;
-    AUTOFREE char *target_path;
-    command_t *cmd = ctx->cmd;
-
-    current_dir = getcwd(NULL, 0);
-    target_path = path_concat(current_dir, cmd->argv[1]);
-    move_to_dir(ctx, target_path);
+    home = (char *)(list_get(ctx->env, i) + 5);
+    if (cmd->argc != 2 || strlen(cmd->argv[1]) <= 2)
+        return move_relative(ctx, home);
+    abs_dir = concat_home(ctx, home);
+    if (abs_dir)
+        move_relative(ctx, abs_dir);
 }
 
 void builtin_cd(context_t *ctx)
@@ -77,15 +77,14 @@ void builtin_cd(context_t *ctx)
         eprintf("cd: Too many arguments.\n");
         return;
     }
-    if (cmd->argc == 1 || !strcmp(target_path, "--"))
+    if (
+        cmd->argc == 1
+        || !strncmp(target_path, "~", 1)
+        || !strcmp(target_path, "--")
+    )
         return move_to_home(ctx);
-    if (!strncmp(target_path, "/", 2))
-        return move_to_dir(ctx, "/");
     if (!strcmp(target_path, "-"))
-        return move_to_dir(ctx, ctx->prev_dir);
+        return move_relative(ctx, ctx->prev_dir);
     DEBUG("moving to [%s]", target_path);
-    if (!strncmp(target_path, "/", 1))
-        move_to_dir(ctx, target_path);
-    else
-        move_relative(ctx);
+    move_relative(ctx, target_path);
 }
