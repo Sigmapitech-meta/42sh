@@ -43,11 +43,16 @@ typedef struct context_s {
     char *user_input;
     char *prev_dir;
     size_t input_size;
+    char **original_env;
 } context_t;
 
 bool_t command_run_subprocess(context_t *ctx);
 int shell_run_from_env(char **env);
 
 void prompt_display(void);
+
+char *env_get_setter(char *key, char *value);
+void env_free_key(char *key);
+void env_free(char **original_env);
 
 #endif /* !SHELL_H */

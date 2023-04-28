@@ -35,6 +35,7 @@ VPATH :=
 VPATH += src
 SRC += builtins.c
 SRC += command.c
+SRC += environment.c
 SRC += eprintf.c
 SRC += main.c
 SRC += prompt.c

@@ -8,6 +8,7 @@
 #include <string.h>
 #include <stdlib.h>
 #include <errno.h>
+
 #include "shell/builtins.h"
 #include "shell/shell.h"
 
@@ -24,21 +25,6 @@ void command_run_env(context_t *ctx)
     command_run_subprocess(ctx);
 }
 
-static char *get_env_setter(command_t *cmd)
-{
-    char *key = cmd->argv[1];
-    char *val = cmd->argv[2];
-    int size = strlen(key) + strlen(val) + 1;
-    char *setter = calloc((size + 1), sizeof (char));
-
-    if (!setter)
-        return NULL;
-    strncat(setter, key, size);
-    strncat(setter, "=", size);
-    strncat(setter, val, size);
-    return setter;
-}
-
 void builtin_setenv(context_t *ctx)
 {
     command_t *cmd = ctx->cmd;
@@ -50,7 +36,9 @@ void builtin_setenv(context_t *ctx)
         eprintf("setenv: Too many arguments.\n");
         return;
     }
-    env_setter = get_env_setter(cmd);
+    if (getenv(cmd->argv[1]))
+        env_free_key(cmd->argv[1]);
+    env_setter = env_get_setter(cmd->argv[1], cmd->argv[2]);
     if (!env_setter)
         return;
     if (putenv(env_setter) == W_SENTINEL)

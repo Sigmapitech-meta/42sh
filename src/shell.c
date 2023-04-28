@@ -76,7 +76,7 @@ void shell_run_from_ctx(context_t *ctx)
     free(ctx->user_input);
 }
 
-int shell_run(void)
+int shell_run_from_env(char **env)
 {
     context_t ctx = {0};
 
@@ -88,8 +88,10 @@ int shell_run(void)
     ctx.cmd = malloc(sizeof (command_t));
     if (!ctx.cmd)
         return W_SENTINEL;
+    ctx.original_env = env;
     shell_run_from_ctx(&ctx);
     free(ctx.prev_dir);
     free(ctx.cmd);
+    env_free(ctx.original_env);
     return ctx.status;
 }
