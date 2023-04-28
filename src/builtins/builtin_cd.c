@@ -12,7 +12,6 @@
 #include <string.h>
 #include <unistd.h>
 
-#include "list.h"
 #include "shell/shell.h"
 
 #include "printf_expansion.h"
@@ -52,15 +51,13 @@ static
 void move_to_home(context_t *ctx)
 {
     command_t *cmd = ctx->cmd;
-    int i = ENV_FIND_VAR(ctx->env, "HOME");
     AUTOFREE char *abs_dir = NULL;
-    char *home;
+    char *home = getenv("HOME");
 
-    if (i == W_SENTINEL) {
+    if (!home) {
         eprintf("No $home variable set\n");
         return;
     }
-    home = (char *)(list_get(ctx->env, i) + 5);
     if (cmd->argc != 2 || strlen(cmd->argv[1]) <= 2)
         return move_relative(ctx, home);
     abs_dir = concat_home(ctx, home);

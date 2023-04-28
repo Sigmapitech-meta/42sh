@@ -9,7 +9,6 @@
 #include <string.h>
 #include <unistd.h>
 
-#include "list.h"
 #include "shell/shell.h"
 #include "utils/debug_mode.h"
 #include "utils/autofree.h"
@@ -31,10 +30,10 @@ char *path_concat(char *left, char *right)
     return out;
 }
 
-char *path_find_cmd(list_t *env, char *cmd)
+char *path_find_cmd(char *cmd)
 {
     char *checkpoint;
-    char *path = list_get(env, ENV_FIND_VAR(env, "PATH"));
+    char *path = getenv("PATH");
     AUTOFREE char *cur_dir = NULL;
     AUTOFREE char *path_copy = strdup(path);
     char *search_path = strtok_r(path_copy + 5, ":", &checkpoint);

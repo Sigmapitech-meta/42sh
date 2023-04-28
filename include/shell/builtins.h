@@ -22,7 +22,6 @@ typedef struct {
 bool_t builtins_check(context_t *ctx);
 void builtin_cd(context_t *ctx);
 void builtin_exit(context_t *ctx);
-void builtin_env(context_t *ctx);
 void builtin_setenv(context_t *ctx);
 void builtin_unsetenv(context_t *ctx);
 

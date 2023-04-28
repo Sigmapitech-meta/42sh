@@ -11,7 +11,6 @@
 #include <unistd.h>
 
 #include "epitech.h"
-#include "list.h"
 
 #include "shell/builtins.h"
 #include "shell/shell.h"
@@ -70,21 +69,19 @@ void shell_run_from_ctx(context_t *ctx)
     DEBUG_MSG("Entering main loop.");
     while (ctx->is_running) {
         if (ctx->ran_from_tty)
-            prompt_display(ctx);
+            prompt_display();
         if (shell_read_line(ctx))
             shell_evaluate(ctx);
     }
     free(ctx->user_input);
 }
 
-int shell_run_from_env(char **env)
+int shell_run(void)
 {
     context_t ctx = {0};
 
     ctx.ran_from_tty = isatty(STDIN_FILENO);
     DEBUG_MSG_IF(ctx.ran_from_tty, "stdin is a tty");
-    ctx.env = env_parse(env);
-    DEBUG("Registered %zd values withing env", ctx.env->size);
     ctx.is_running = TRUE;
     ctx.prev_dir = getcwd(NULL, 0);
     DEBUG("Running in [%s]", ctx.prev_dir);
@@ -92,9 +89,6 @@ int shell_run_from_env(char **env)
     if (!ctx.cmd)
         return W_SENTINEL;
     shell_run_from_ctx(&ctx);
-    LIST_FOREACH(ctx.env, node)
-        free(node->value);
-    list_destroy(ctx.env);
     free(ctx.prev_dir);
     free(ctx.cmd);
     return ctx.status;

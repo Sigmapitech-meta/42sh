@@ -20,21 +20,19 @@
 #include "printf_expansion.h"
 #include "utils/autofree.h"
 
-char *command_get_full_path(context_t *ctx, char **params)
+char *command_get_full_path(char **params)
 {
     char *path;
     char *target_path = params[0];
     AUTOFREE char *dir = NULL;
 
-    if (!ctx->env)
-        return NULL;
     if (target_path[0] == '/')
         return strdup(target_path);
     if (target_path[0] == '.') {
         dir = getcwd(NULL, 0);
         path = path_concat(dir, target_path);
     } else
-        path = path_find_cmd(ctx->env, target_path);
+        path = path_find_cmd(target_path);
     return path;
 }
 
@@ -61,8 +59,7 @@ static void command_run_internal(context_t *ctx, char *cmd_path, char **env)
 void command_run(context_t *ctx)
 {
     command_t *cmd = ctx->cmd;
-    AUTOFREE char *cmd_path = command_get_full_path(ctx, cmd->argv);
-    char **env = env_rebuild(ctx->env);
+    AUTOFREE char *cmd_path = command_get_full_path(cmd->argv);
 
     if (!cmd_path)
         exit(W_SENTINEL);
@@ -70,10 +67,7 @@ void command_run(context_t *ctx)
         eprintf("%s: Command not found.\n", cmd->argv[0]);
         exit(W_SENTINEL);
     }
-    command_run_internal(ctx, cmd_path, env);
-    for (int i = 0; env[i]; i++)
-        free(env[i]);
-    free(env);
+    command_run_internal(ctx, cmd_path, environ);
 }
 
 bool_t command_run_subprocess(context_t *ctx)
