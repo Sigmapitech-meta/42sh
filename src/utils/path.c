@@ -15,18 +15,17 @@
 
 char *path_concat(char *left, char *right)
 {
-    int i = 0;
-    size_t new_size = strlen(left) + 1 + strlen(right);
-    char *out = (char *)malloc((new_size + 1) * sizeof (char));
+    int written;
+    int new_size = strlen(left) + 1 + strlen(right) + 1;
+    char *out = malloc(new_size * sizeof (char));
 
     if (!out)
         return NULL;
-    for (; left[i]; i++)
-        out[i] = left[i];
-    out[i++] = '/';
-    for (int j = 0; right[j]; j++)
-        out[i + j] = right[j];
-    out[new_size] = '\0';
+    written = snprintf(out, new_size, "%s/%s", left, right);
+    if (++written != new_size) {
+        free(out);
+        return NULL;
+    }
     return out;
 }
 

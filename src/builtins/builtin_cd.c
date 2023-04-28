@@ -18,33 +18,25 @@
 #include "utils/debug_mode.h"
 #include "utils/sentinel.h"
 #include "utils/autofree.h"
+#include "shell/utils.h"
 
 static
 void move_relative(context_t *ctx, char *relative_path)
 {
     command_t *cmd = ctx->cmd;
     char target_path[PATH_MAX];
+    char *old_dir;
 
     DEBUG("Solving rel path: [%s]", relative_path);
     if (!realpath(relative_path, target_path))
         return perror(cmd->argv[1]);
-    ctx->prev_dir = getcwd(ctx->prev_dir, 0);
-    if (chdir(target_path) == W_SENTINEL)
+    old_dir = getcwd(ctx->prev_dir, 0);
+    if (chdir(target_path) == W_SENTINEL) {
         eprintf("%s: %s.\n", cmd->argv[1], strerror(errno));
-}
-
-static
-char *concat_home(context_t *ctx, char *home)
-{
-    size_t len = strlen(home);
-    char *abs_dir = calloc(len + strlen(ctx->cmd->argv[1]), sizeof(char));
-
-    if (!abs_dir)
-        return NULL;
-    strcat(abs_dir, home);
-    abs_dir[len] = '/';
-    strcat(abs_dir, ctx->cmd->argv[1] + 2);
-    return abs_dir;
+        return;
+    }
+    free(ctx->prev_dir);
+    ctx->prev_dir = old_dir;
 }
 
 static
@@ -60,7 +52,7 @@ void move_to_home(context_t *ctx)
     }
     if (cmd->argc != 2 || strlen(cmd->argv[1]) <= 2)
         return move_relative(ctx, home);
-    abs_dir = concat_home(ctx, home);
+    abs_dir = path_concat(home, cmd->argv[1] + 2);
     if (abs_dir)
         move_relative(ctx, abs_dir);
 }
