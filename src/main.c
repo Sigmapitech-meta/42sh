@@ -1,6 +1,6 @@
 /*
 ** EPITECH PROJECT, 2023
-** minishell_2
+** 42sh
 ** File description:
 ** main.c
 */

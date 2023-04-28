@@ -1,6 +1,6 @@
 /*
 ** EPITECH PROJECT, 2023
-** minishell2
+** 42sh
 ** File description:
 ** builtin_cd.c
 */
@@ -49,7 +49,7 @@ void move_to_home(context_t *ctx)
     int i = ENV_FIND_VAR(ctx->env, "HOME");
     char *new_dir = (char *)(list_get(ctx->env, i) + 5);
 
-    if (!new_dir) {
+    if (i == W_SENTINEL) {
         eprintf("No $home variable set\n");
         return;
     }
@@ -77,11 +77,11 @@ void builtin_cd(context_t *ctx)
         eprintf("cd: Too many arguments.\n");
         return;
     }
-    if (cmd->argc == 1 || !strncmp(target_path, "~", 2))
+    if (cmd->argc == 1 || !strcmp(target_path, "--"))
         return move_to_home(ctx);
     if (!strncmp(target_path, "/", 2))
         return move_to_dir(ctx, "/");
-    if (!strncmp(target_path, "-", 2))
+    if (!strcmp(target_path, "-"))
         return move_to_dir(ctx, ctx->prev_dir);
     DEBUG("moving to [%s]", target_path);
     if (!strncmp(target_path, "/", 1))

@@ -1,8 +1,8 @@
 /*
 ** EPITECH PROJECT, 2023
-** minishell2
+** 42sh
 ** File description:
-** list_create.c
+** list_management.c
 */
 
 #include <stdlib.h>
