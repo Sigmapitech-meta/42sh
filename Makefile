@@ -33,19 +33,18 @@ VPATH :=
 
 # ↓ Sources
 VPATH += src
-SRC += builtins.c
-SRC += command.c
 SRC += environment.c
 SRC += eprintf.c
 SRC += main.c
 SRC += prompt.c
 SRC += shell.c
 
-VPATH += src/builtins
-SRC += builtin_cd.c
-SRC += builtin_exit.c
-SRC += builtin_setenv.c
-SRC += builtin_unsetenv.c
+VPATH += src/commands
+SRC += builtins.c
+SRC += debug_builtins.c
+SRC += command_runner.c
+SRC += change_directory.c
+SRC += env_manipulation.c
 
 VPATH += src/utils
 SRC += get_line.c
@@ -161,7 +160,7 @@ fclean:
 			"no build dir to remove."))
 	@ $(RM) -r $(BUILD_DIR)
 	$(eval REMOVED =                                           \
-		$(shell $(RM) -v $(NAME) $(NAME_DEBUG) $(NAME_ANGRY)   \
+		$(shell $(RM) -v $(NAME) $(NAME_DEBUG)                 \
 			| grep "removed" | cut -d ' ' -f 2))
 	$(call LOG,                                                \
 		$(if $(REMOVED),"removed:g" $(REMOVED), "no binary to remove."))
