@@ -1,3 +1,10 @@
+##
+## EPITECH PROJECT, 2023
+## 42sh
+## File description:
+## Makefile
+##
+
 BINS := div_zero
 BINS += double_free
 BINS += free_invalid_pointer
