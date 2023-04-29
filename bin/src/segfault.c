@@ -12,7 +12,7 @@
 void handle_sigsegv(int signum __attribute__((unused)))
 {
     fprintf(stderr, "Segmentation fault\n");
-    _exit(1);
+    _exit(SIGSEGV);
 }
 
 int main(void)
