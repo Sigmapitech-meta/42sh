@@ -47,7 +47,7 @@ static void command_run_internal(context_t *ctx, char *cmd_path, char **env)
         return;
     }
     DEBUG("running [%s]", cmd_path);
-    execve(cmd_path, cmd->argv, env + 1);
+    execve(cmd_path, cmd->argv, env);
     DEBUG_MSG("STOP");
     eprintf("%s: %s.", binary_name, strerror(errno));
     if (errno == ENOEXEC)
