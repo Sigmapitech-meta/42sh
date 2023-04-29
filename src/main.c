@@ -13,8 +13,12 @@
 #include "utils/debug_mode.h"
 #include "printf_expansion.h"
 
+DEBUG_EXPR(void ncurses_init(void));
+
 int main(int argc, char **argv, char **env)
 {
+    DEBUG_CALL(ncurses_init);
+    DEBUG_EXPR(return 0);
     DEBUG("Received %d arg(s)", argc);
     if (argc > 1 && !strncmp(argv[1], "-h", 2)) {
         printf("%s", USAGE);
