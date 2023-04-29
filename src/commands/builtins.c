@@ -10,7 +10,6 @@
 
 #include "epitech.h"
 #include "printf_expansion.h"
-
 #include "shell/builtins.h"
 #include "shell/shell.h"
 #include "utils/debug_mode.h"

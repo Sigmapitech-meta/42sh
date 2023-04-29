@@ -45,6 +45,7 @@ SRC += debug_builtins.c
 SRC += command_runner.c
 SRC += change_directory.c
 SRC += env_manipulation.c
+SRC += location_builtins.c
 
 VPATH += src/utils
 SRC += get_line.c
