@@ -61,9 +61,7 @@ void command_run(context_t *ctx)
     command_t *cmd = ctx->cmd;
     AUTOFREE char *cmd_path = command_get_full_path(cmd->argv);
 
-    if (!cmd_path)
-        exit(W_SENTINEL);
-    if (access(cmd_path, F_OK)) {
+    if (!cmd_path || access(cmd_path, F_OK)) {
         eprintf("%s: Command not found.\n", cmd->argv[0]);
         exit(W_SENTINEL);
     }

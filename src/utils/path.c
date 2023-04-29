@@ -5,13 +5,14 @@
 ** path.c
 */
 
+#include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include <unistd.h>
 
-#include "shell/shell.h"
 #include "utils/debug_mode.h"
 #include "utils/autofree.h"
+#include "epitech.h"
 
 char *path_concat(char *left, char *right)
 {
@@ -29,23 +30,37 @@ char *path_concat(char *left, char *right)
     return out;
 }
 
-char *path_find_cmd(char *cmd)
+static char *path_find_access(char *path, char *cmd)
 {
-    char *checkpoint;
-    char *path = getenv("PATH");
-    AUTOFREE char *cur_dir = NULL;
     AUTOFREE char *path_copy = strdup(path);
-    char *search_path = strtok_r(path_copy + 5, ":", &checkpoint);
-    char *cmd_path = path_concat(search_path, cmd);
+    char *search_path;
+    char *checkpoint;
+    char *cmd_path;
 
-    while (access(cmd_path, F_OK)) {
+    if (!path_copy)
+        return NULL;
+    search_path = strtok_r(path_copy + 5, ":", &checkpoint);
+    cmd_path = path_concat(search_path, cmd);
+    while (cmd_path && access(cmd_path, F_OK)) {
         search_path = strtok_r(NULL, ":", &checkpoint);
         if (!search_path)
             break;
         free(cmd_path);
         cmd_path = path_concat(search_path, cmd);
     }
-    if (!search_path || !cmd_path) {
+    return cmd_path;
+}
+
+char *path_find_cmd(char *cmd)
+{
+    AUTOFREE char *cur_dir = NULL;
+    char *path = getenv("PATH");
+    char *cmd_path;
+
+    if (!path)
+        return NULL;
+    cmd_path = path_find_access(path, cmd);
+    if (!cmd_path) {
         cur_dir = getcwd(NULL, 0);
         cmd_path = path_concat(cur_dir, cmd);
         DEBUG("Defaulting path to %s", cmd_path);
