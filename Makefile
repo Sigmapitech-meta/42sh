@@ -33,26 +33,18 @@ VPATH :=
 
 # ↓ Sources
 VPATH += src
-SRC += builtins.c
-SRC += command.c
 SRC += environment.c
 SRC += eprintf.c
 SRC += main.c
 SRC += prompt.c
 SRC += shell.c
 
-VPATH += src/builtins
-SRC += builtin_cd.c
-SRC += builtin_env.c
-SRC += builtin_exit.c
-SRC += builtin_setenv.c
-SRC += builtin_unsetenv.c
-
-VPATH += src/list
-SRC += list_append.c
-SRC += list_management.c
-SRC += list_get.c
-SRC += list_remove.c
+VPATH += src/commands
+SRC += builtins.c
+SRC += debug_builtins.c
+SRC += command_runner.c
+SRC += change_directory.c
+SRC += env_manipulation.c
 
 VPATH += src/utils
 SRC += get_line.c
