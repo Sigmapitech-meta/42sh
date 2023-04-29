@@ -13,6 +13,9 @@ angry
 # Lib
 *.a
 
+# Makefile overides
+override.mk
+
 # Logs
 *.log
 

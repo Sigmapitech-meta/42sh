@@ -188,3 +188,6 @@ undefine %.c
 
 %.c:
 	$(call SENTINEL, $@)
+
+# ↓ User override
+-include override.mk
