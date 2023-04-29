@@ -26,6 +26,7 @@ void builtin_cd(context_t *ctx);
 void builtin_exit(context_t *ctx);
 void builtin_setenv(context_t *ctx);
 void builtin_unsetenv(context_t *ctx);
+void builtin_which(context_t *ctx);
 
 DEBUG_EXPR(void builtin_getenv(context_t *ctx));
 
@@ -37,6 +38,7 @@ static const builtin_t BUILTINS[] = {
     {"exit", &builtin_exit},
     {"setenv", &builtin_setenv},
     {"unsetenv", &builtin_unsetenv},
+    {"which", &builtin_which},
     DEBUG_EXPR(BUILTIN_ENV_VAL)
 };
 

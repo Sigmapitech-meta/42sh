@@ -12,7 +12,6 @@
 
 #include "utils/debug_mode.h"
 #include "utils/autofree.h"
-#include "epitech.h"
 
 char *path_concat(char *left, char *right)
 {
@@ -30,7 +29,7 @@ char *path_concat(char *left, char *right)
     return out;
 }
 
-static char *path_find_access(char *path, char *cmd)
+char *path_find_access(char *path, char *cmd)
 {
     AUTOFREE char *path_copy = strdup(path);
     char *search_path;
@@ -48,7 +47,10 @@ static char *path_find_access(char *path, char *cmd)
         free(cmd_path);
         cmd_path = path_concat(search_path, cmd);
     }
-    return cmd_path;
+    if (!access(cmd_path, F_OK))
+        return cmd_path;
+    free(cmd_path);
+    return NULL;
 }
 
 char *path_find_cmd(char *cmd)
