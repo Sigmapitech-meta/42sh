@@ -21,7 +21,7 @@ void builtin_exit(context_t *ctx)
     command_t *cmd = ctx->cmd;
 
     if (cmd->argc > 2) {
-        eprintf("exit: Expression Syntax.");
+        eprintf("exit: Expression Syntax.\n");
         return;
     }
     if (cmd->argc == 1) {
@@ -30,7 +30,7 @@ void builtin_exit(context_t *ctx)
     }
     status = atoi(cmd->argv[1]);
     if (!status && cmd->argv[1][0] != '0') {
-        eprintf("exit: Expression Syntax.");
+        eprintf("exit: Expression Syntax.\n");
         return;
     }
     ctx->status = status;
