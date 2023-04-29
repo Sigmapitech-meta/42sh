@@ -46,7 +46,7 @@ typedef struct context_s {
     char **original_env;
 } context_t;
 
-bool_t command_run_subprocess(context_t *ctx);
+int command_run_subprocess(context_t *ctx);
 int shell_run_from_env(char **env);
 
 void prompt_display(void);

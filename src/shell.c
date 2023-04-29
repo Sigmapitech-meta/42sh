@@ -37,10 +37,13 @@ bool_t shell_read_line(context_t *ctx)
 
 void shell_evaluate_expression(context_t *ctx)
 {
+    int status;
+
     if (!builtins_check(ctx)) {
         DEBUG("Running [%s] as command", ctx->user_input);
-        if (command_run_subprocess(ctx) && !ctx->ran_from_tty)
-            exit(1);
+        status = command_run_subprocess(ctx);
+        if (status && !ctx->ran_from_tty)
+            exit(status == 65280 ? 1 : (status == 11 ? 139 : status));
     }
 }
 

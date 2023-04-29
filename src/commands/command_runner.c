@@ -68,7 +68,7 @@ void command_run(context_t *ctx)
     command_run_internal(ctx, cmd_path, environ);
 }
 
-bool_t command_run_subprocess(context_t *ctx)
+int command_run_subprocess(context_t *ctx)
 {
     int status;
     pid_t pid = fork();
@@ -82,5 +82,5 @@ bool_t command_run_subprocess(context_t *ctx)
     DEBUG("%d | WAIT STOP: %d", pid, status);
     if (status)
         status_show(status);
-    return status != 0;
+    return status;
 }
