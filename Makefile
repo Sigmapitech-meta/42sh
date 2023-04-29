@@ -161,7 +161,7 @@ fclean:
 			"no build dir to remove."))
 	@ $(RM) -r $(BUILD_DIR)
 	$(eval REMOVED =                                           \
-		$(shell $(RM) -v $(NAME) $(NAME_DEBUG)                 \
+		$(shell $(RM) -v $(NAME) $(NAME_DEBUG) $(NAME_ANGRY)   \
 			| grep "removed" | cut -d ' ' -f 2))
 	$(call LOG,                                                \
 		$(if $(REMOVED),"removed:g" $(REMOVED), "no binary to remove."))
