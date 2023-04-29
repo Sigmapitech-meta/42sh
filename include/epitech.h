@@ -15,10 +15,12 @@
 
 typedef _Bool bool_t;
 
-enum {
-    TRUE = 1,
-    FALSE = 0
-};
+    #ifndef __NCURSES_H
+        enum {
+            TRUE = 1,
+            FALSE = 0
+        };
+    #endif
 
 enum {
     EXIT_OK = 0,

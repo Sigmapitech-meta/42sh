@@ -18,6 +18,8 @@ CFLAGS := -W -Wall -Wextra
 CFLAGS += -U_FORTIFY_SOURCE
 CFLAGS += -iquote ./include
 
+LDLIBS += -lcurses
+
 ifeq ($(FORCE_DEBUG),1)
     CFLAGS += -D DEBUG_MODE
 endif
@@ -47,6 +49,9 @@ SRC += builtin_env.c
 SRC += builtin_exit.c
 SRC += builtin_setenv.c
 SRC += builtin_unsetenv.c
+
+VPATH += src/graphics
+SRC += ncurses_init.c
 
 VPATH += src/list
 SRC += list_append.c
@@ -121,7 +126,7 @@ all: $(NAME)
 .PHONY: all
 
 $(NAME): $(OBJ)
-	$Q $(CC) $(CFLAGS) $(LIBFLAGS) $(LDLIBS) -o $@ $^
+	$Q $(CC) $(CFLAGS) $(LDFLAGS) $(LDLIBS) -o $@ $^
 	$(call LOG,":g$@")
 
 $(BUILD_DIR)/release/%.o: HEADER += "release"
@@ -133,7 +138,7 @@ $(BUILD_DIR)/release/%.o: %.c
 $(NAME_DEBUG): CFLAGS += -g3 -D DEBUG_MODE
 $(NAME_DEBUG): HEADER += "debug"
 $(NAME_DEBUG): $(DEBUG_OBJ)
-	$Q $(CC) $(CFLAGS) $(LIBFLAGS) $(LDLIBS) -o $@ $^
+	$Q $(CC) $(CFLAGS) $(LDFLAGS) $(LDLIBS) -o $@ $^
 	$(call LOG,":g$@")
 
 $(BUILD_DIR)/debug/%.o: %.c
@@ -142,7 +147,7 @@ $(BUILD_DIR)/debug/%.o: %.c
 	$(call LOG, ":c" $(notdir $@))
 
 $(NAME_ANGRY): CFLAGS += -g3 -D DEBUG_MODE -fsanitize=address,leak,undefined
-$(NAME_ANGRY): LDFLAGS += -lasan
+$(NAME_ANGRY): LDLIBS += -lasan
 $(NAME_ANGRY): HEADER += "angry"
 $(NAME_ANGRY): $(ANGRY_OBJ)
 	$Q $(CC) -o $@ $^ $(CFLAGS) $(LDFLAGS) $(LDLIBS)
