@@ -2,7 +2,7 @@
 ** EPITECH PROJECT, 2023
 ** 42sh
 ** File description:
-** builtin_setenv.c
+** builtin_unsetenv.c
 */
 
 #include <string.h>
@@ -10,7 +10,6 @@
 
 #include "list.h"
 
-#include "shell/builtins.h"
 #include "shell/shell.h"
 
 #include "printf_expansion.h"
@@ -65,4 +64,17 @@ void builtin_setenv(context_t *ctx)
     }
     env_create_value(ctx->env, cmd);
     return;
+}
+
+void builtin_unsetenv(context_t *ctx)
+{
+    command_t *cmd = ctx->cmd;
+
+    if (cmd->argc == 1) {
+        eprintf("unsetenv: Too few arguments.\n");
+        return;
+    }
+    for (int i = 1; i < cmd->argc; i++)
+        if (unsetenv(cmd->argv[i]) == W_SENTINEL)
+            eprintf("unsetenv: %s", strerror(errno));
 }
