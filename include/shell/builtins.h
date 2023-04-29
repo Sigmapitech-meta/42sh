@@ -30,8 +30,10 @@ void builtin_which(context_t *ctx);
 void builtin_where(context_t *ctx);
 
 DEBUG_EXPR(void builtin_getenv(context_t *ctx));
+DEBUG_EXPR(void builtin_prev_dir(context_t *ctx));
 
-    #define BUILTIN_ENV_VAL (builtin_t){"getenv", &builtin_getenv}
+    #define _BUILTIN_STRUCT(name, f) {name, f},
+    #define BUILTIN_DEBUG(name, f) DEBUG_EXPR(_BUILTIN_STRUCT(name, f))
 
 USED
 static const builtin_t BUILTINS[] = {
@@ -41,7 +43,8 @@ static const builtin_t BUILTINS[] = {
     {"unsetenv", &builtin_unsetenv},
     {"which", &builtin_which},
     {"where", &builtin_where},
-    DEBUG_EXPR(BUILTIN_ENV_VAL)
+    BUILTIN_DEBUG("getenv", &builtin_getenv)
+    BUILTIN_DEBUG("prevdir", &builtin_prev_dir)
 };
 
 static const int BUILTIN_COUNT = CONST_ARR_SIZE(BUILTINS);

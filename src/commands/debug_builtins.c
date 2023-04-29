@@ -30,3 +30,9 @@ void builtin_getenv(context_t *ctx)
             printf("%s\n", env_val);
     }
 }
+
+DEBUG_USED
+void builtin_prev_dir(context_t *ctx)
+{
+    printf("-> %s\n", ctx->prev_dir);
+}
