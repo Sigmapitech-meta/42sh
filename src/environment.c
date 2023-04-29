@@ -5,48 +5,65 @@
 ** environment.c
 */
 
-#include <stddef.h>
+#include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 
-#include "list.h"
-#include "utils/sentinel.h"
+#include "epitech.h"
+#include "shell/shell.h"
+#include "utils/debug_mode.h"
+#include "utils/autofree.h"
 
-list_t *env_parse(char **env)
+char *env_get_setter(char *key, char *value)
 {
-    list_t *env_lst = list_create();
+    int size = strlen(key) + 2;
+    char *setter;
+    int written;
 
-    if (!env_lst)
+    if (value)
+        size += strlen(value);
+    setter = malloc(size * sizeof (char));
+    if (!setter)
         return NULL;
-    for (int i = 0; env[i]; i++)
-        if (!LIST_APPEND_CHECK(env_lst, strdup(env[i])))
-            list_destroy(env_lst);
-    return env_lst;
+    written = snprintf(setter, size, "%s=", key);
+    if (value)
+        written += snprintf(setter + written, size - written, "%s", value);
+    if (++written != size) {
+        free(setter);
+        return NULL;
+    }
+    return setter;
 }
 
-char **env_rebuild(list_t *env)
+void env_free(char **original_env)
 {
-    char **out = malloc((env->size + 1) * sizeof (char *));
-    int i = 0;
+    bool_t is_present;
 
-    if (!out)
-        return NULL;
-    LIST_FOREACH(env, node) {
-        out[i] = list_get(env, i);
-        i++;
+    for (int i = 0; environ[i]; i++) {
+        is_present = FALSE;
+        for (int j = 0; original_env[j] && !is_present; j++)
+            is_present = !strcmp(environ[i], original_env[j]);
+        if (!is_present) {
+            DEBUG("Freeing [%s]", environ[i]);
+            free(environ[i]);
+        }
     }
-    out[i] = NULL;
-    return out;
 }
 
-int env_find(list_t *env, char *name, int n)
+void env_free_key(char *key)
 {
+    char *transaction_ptr;
+    AUTOFREE char *line_start = env_get_setter(key, NULL);
+    int size;
     int i = 0;
 
-    LIST_FOREACH(env, node) {
-        if (!strncmp(node->value, name, n))
-            return i;
-        i++;
-    }
-    return W_SENTINEL;
+    if (!line_start)
+        return;
+    size = strlen(line_start);
+    for (; strncmp(environ[i], line_start, size); i++)
+        ;
+    transaction_ptr = environ[i];
+    DEBUG("Freeing [%s]", transaction_ptr);
+    unsetenv(key);
+    free(transaction_ptr);
 }
