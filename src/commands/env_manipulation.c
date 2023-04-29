@@ -7,63 +7,41 @@
 
 #include <string.h>
 #include <stdlib.h>
-
-#include "list.h"
+#include <errno.h>
 
 #include "shell/shell.h"
 
 #include "printf_expansion.h"
 #include "utils/sentinel.h"
 
-static void env_set_value(list_t *env, command_t *cmd, char *new_val)
+static
+void command_run_env(context_t *ctx)
 {
-    int index = env_find(env, cmd->argv[1], strlen(cmd->argv[1]));
-    list_node_t *node;
+    command_t *cmd = ctx->cmd;
 
-    if (index == W_SENTINEL) {
-        list_append(env, new_val);
-        return;
-    }
-    node = list_get_node(env, index);
-    if (!node)
-        return;
-    if (node->value)
-        free(node->value);
-    node->value = new_val;
-}
-
-static void env_create_value(list_t *env, command_t *cmd)
-{
-    int i = 0;
-    int kv_size = strlen(cmd->argv[1]) + strlen(cmd->argv[2]) + 1;
-    char *new_val = malloc((kv_size + 1) * sizeof (char));
-
-    if (!new_val)
-        return;
-    for (; cmd->argv[1][i]; i++)
-        new_val[i] = cmd->argv[1][i];
-    new_val[i++] = '=';
-    if (cmd->argv[2])
-        for (int j = 0; cmd->argv[2][j]; j++)
-            new_val[i + j] = cmd->argv[2][j];
-    new_val[kv_size] = '\0';
-    env_set_value(env, cmd, new_val);
+    cmd->argv[0] = "env";
+    cmd->argv[1] = NULL;
+    command_run_subprocess(ctx);
 }
 
 void builtin_setenv(context_t *ctx)
 {
     command_t *cmd = ctx->cmd;
+    char *env_setter;
 
-    if (cmd->argc == 1) {
-        builtin_env(ctx);
-        return;
-    }
+    if (cmd->argc == 1)
+        return command_run_env(ctx);
     if (cmd->argc > 3) {
         eprintf("setenv: Too many arguments.\n");
         return;
     }
-    env_create_value(ctx->env, cmd);
-    return;
+    if (getenv(cmd->argv[1]))
+        env_free_key(cmd->argv[1]);
+    env_setter = env_get_setter(cmd->argv[1], cmd->argv[2]);
+    if (!env_setter)
+        return;
+    if (putenv(env_setter) == W_SENTINEL)
+        printf("setenv: %s", strerror(errno));
 }
 
 void builtin_unsetenv(context_t *ctx)

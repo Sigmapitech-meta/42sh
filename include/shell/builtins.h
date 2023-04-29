@@ -24,7 +24,6 @@ typedef struct {
 bool_t builtins_check(context_t *ctx);
 void builtin_cd(context_t *ctx);
 void builtin_exit(context_t *ctx);
-void builtin_env(context_t *ctx);
 void builtin_setenv(context_t *ctx);
 void builtin_unsetenv(context_t *ctx);
 
@@ -35,7 +34,6 @@ DEBUG_EXPR(void builtin_getenv(context_t *ctx));
 USED
 static const builtin_t BUILTINS[] = {
     {"cd", &builtin_cd},
-    {"env", &builtin_env},
     {"exit", &builtin_exit},
     {"setenv", &builtin_setenv},
     {"unsetenv", &builtin_unsetenv},

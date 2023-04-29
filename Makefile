@@ -46,12 +46,6 @@ SRC += command_runner.c
 SRC += change_directory.c
 SRC += env_manipulation.c
 
-VPATH += src/list
-SRC += list_append.c
-SRC += list_management.c
-SRC += list_get.c
-SRC += list_remove.c
-
 VPATH += src/utils
 SRC += get_line.c
 SRC += parameters.c
