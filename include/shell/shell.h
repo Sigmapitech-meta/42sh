@@ -13,6 +13,8 @@
     #define ENV_FIND_FIXED(env, name) env_find(env, name, sizeof(name) - 1)
     #define ENV_FIND_VAR(env, name) (ENV_FIND_FIXED(env, name "="))
 
+extern char **environ;
+
 static const char USAGE[] = (
     "Minishell 2 - Usage: ./mysh [-h]\n"
     "\nAll commands in the path are available.\n"
@@ -34,23 +36,23 @@ typedef struct command_s {
 } command_t;
 
 typedef struct context_s {
+    command_t *cmd;
     unsigned char status;
     bool_t is_running;
     bool_t ran_from_tty;
-    list_t *env;
     char *user_input;
     char *prev_dir;
     size_t input_size;
-    command_t *cmd;
+    char **original_env;
 } context_t;
 
 bool_t command_run_subprocess(context_t *ctx);
 int shell_run_from_env(char **env);
 
-list_t *env_parse(char **env);
-char **env_rebuild(list_t *env);
-int env_find(list_t *env, char *name, int n);
+void prompt_display(void);
 
-void prompt_display(context_t *ctx);
+char *env_get_setter(char *key, char *value);
+void env_free_key(char *key);
+void env_free(char **original_env);
 
 #endif /* !SHELL_H */
