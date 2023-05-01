@@ -41,6 +41,13 @@ SRC += main.c
 SRC += prompt.c
 SRC += shell.c
 
+VPATH += src/auto_completion
+SRC += my_fill_list.c
+SRC += my_get_path.c
+SRC += my_get_alias.c
+SRC += my_print_recommendations.c
+SRC += my_str_split.c
+
 VPATH += src/builtins
 SRC += builtin_cd.c
 SRC += builtin_env.c

@@ -6,6 +6,7 @@
 */
 
 #include <fcntl.h>
+#include <stddef.h>
 
 #include "shell/auto_completion.h"
 #include "list.h"
@@ -19,8 +20,7 @@ list_t *my_get_bin_list(char *env)
     if (!bins)
         return NULL;
     for (int i = 0; path[i]; i ++)
-        if (!access(path[i], X_OK))
-            list_append(bins, path[i]);
+        list_append(bins, path[i]);
     for (int i = 0; alias[i]; i ++)
         list_append(bins, alias[i]);
     return bins;

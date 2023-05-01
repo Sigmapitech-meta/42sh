@@ -7,6 +7,7 @@
 
 #include <stdlib.h>
 #include <string.h>
+#include <stdio.h>
 
 #include "epitech.h"
 #include "shell/auto_completion.h"
@@ -16,7 +17,7 @@
 static
 bool_t is_alias(char *str)
 {
-    return strncmp(str, "alias", 5);
+    return strcmp(str, "alias");
 }
 
 static int count_alias(char **file_content)
@@ -39,10 +40,9 @@ static char **parse_alias(char **file)
     if (!alias)
         return NULL;
     for (int i = 0; file[i]; i ++)
-        if (is_alias(file[i])) {
+        if (is_alias(file[i]) && strcmp(file[i], "") != 0) {
             one_alias = my_str_split(file[i], " =");
-            alias[j++] = my_strdup(one_alias[1]);
-            free_array(one_alias);
+            alias[j++] = strdup(one_alias[1]);
         }
     alias[line_nbr] = NULL;
     return alias;
@@ -55,7 +55,7 @@ char **my_get_alias(void)
 
     if (!file_content)
         return NULL;
-    alias = my_str_split(str, "\n");
+    alias = my_str_split(file_content, "\n");
     alias = parse_alias(alias);
     return alias;
 }

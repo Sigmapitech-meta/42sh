@@ -10,11 +10,12 @@
 #include "epitech.h"
 
 #include "shell/shell.h"
+#include "shell/auto_completion.h"
 #include "utils/debug_mode.h"
 #include "printf_expansion.h"
 
 int main(int argc, char **argv, char **env)
-{
+{    
     DEBUG("Received %d arg(s)", argc);
     if (argc > 1 && !strncmp(argv[1], "-h", 2)) {
         printf("%s", USAGE);

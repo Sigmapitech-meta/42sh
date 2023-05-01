@@ -13,6 +13,7 @@ typedef struct list_s list_t;
 list_t *my_get_bin_list(char *env);
 int my_print_recommendations(list_t *bins, char *input);
 char **my_get_alias(void);
+char **my_get_path(char *paths);
 void free_array(char **array);
-
-#endif
+char **my_str_split(char *str, char *seps);
+#endif /* AUTO_COMPLETION_H */

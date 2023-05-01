@@ -6,6 +6,7 @@
 */
 
 #include <stdio.h>
+#include <string.h>
 
 #include "epitech.h"
 #include "list.h"
@@ -13,7 +14,7 @@
 
 static bool_t start_the_same_way(char *bin, char *input)
 {
-    if (my_strlen(input) > my_strlen(bin))
+    if (strlen(input) > strlen(bin))
         return FALSE;
     for (int i = 0; input[i]; i ++)
         if (input[i] != bin[i])
