@@ -15,8 +15,8 @@
 
 char *path_concat(char *left, char *right)
 {
-    int written;
-    int new_size = strlen(left) + 1 + strlen(right) + 1;
+    size_t written;
+    size_t new_size = strlen(left) + 1 + strlen(right) + 1;
     char *out = malloc(new_size * sizeof (char));
 
     if (!out)
