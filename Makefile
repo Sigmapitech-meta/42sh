@@ -26,6 +26,7 @@ BUILD_DIR := .build
 
 NAME_DEBUG := debug
 NAME_ANGRY := angry
+TESTS := run_tests
 
 # ↓ Clear all possible junk
 SRC :=
@@ -53,6 +54,9 @@ SRC += parameters.c
 SRC += path.c
 SRC += status.c
 
+VPATH += tests
+TSRC := test_sentinel.c
+
 vpath %.c $(VPATH)
 
 # ↓ `touch .fast` to force multi-threading
@@ -73,6 +77,9 @@ endif
 OBJ := $(SRC:%.c=$(BUILD_DIR)/release/%.o)
 DEBUG_OBJ := $(SRC:%.c=$(BUILD_DIR)/debug/%.o)
 ANGRY_OBJ := $(SRC:%.c=$(BUILD_DIR)/angry/%.o)
+
+TEST_OBJ := $(TSRC:%.c=$(BUILD_DIR)/tests/%.o)
+TEST_OBJ += $(filter-out %main.o, $(SRC:%.c=$(BUILD_DIR)/tests/%.o))
 
 # ↓ Utils
 ifneq ($(shell tput colors),0)
@@ -174,6 +181,31 @@ re: fclean
 	+ $Q $(call RECURSE, both)
 
 .PHONY: re both
+
+$(BUILD_DIR)/tests/%.o: %.c
+	$Q mkdir -p $(dir $@)
+	$Q $(CC) $(CFLAGS) -c $< -o $@
+	$(call LOG, ":c" $(notdir $@))
+
+$(TESTS): CFLAGS += -g3 --coverage
+$(TESTS): CFLAGS += -iquote tests/include
+$(TESTS): LDLIBS += -lcriterion
+$(TESTS): LDFLAGS += -fprofile-arcs -ftest-coverage
+$(TESTS): $(TEST_OBJ)
+	$Q $(CC) -o $@ $^ $(CFLAGS) $(LDLIBS) $(LDFLAGS)
+	$(call LOG,":g$@")
+
+tests_run: $(TESTS)
+	@ ./$(TESTS) -OP:F --full-stats
+
+.PHONY: tests_run
+
+cov: tests_run
+	$(call CHECK_CMD, gcovr)
+	$Q $(call CHECK_CMD, gcovr)
+	$Q gcovr . --exclude tests
+
+.PHONY: cov
 
 # ↓ Utils
 RECURSE = $(MAKE) $(1) --no-print-directory START_TIME=$(START_TIME)
