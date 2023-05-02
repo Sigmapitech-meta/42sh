@@ -28,15 +28,17 @@ void builtin_setenv(context_t *ctx);
 void builtin_unsetenv(context_t *ctx);
 void builtin_which(context_t *ctx);
 void builtin_where(context_t *ctx);
+void builtin_echo(context_t *ctx);
 
 DEBUG_EXPR(void builtin_getenv(context_t *ctx));
 DEBUG_EXPR(void builtin_prev_dir(context_t *ctx));
 
-    #define _BUILTIN_STRUCT(name, f) {name, f},
-    #define BUILTIN_DEBUG(name, f) DEBUG_EXPR(_BUILTIN_STRUCT(name, f))
+    #define BUILTIN_STRUCT(name, f) {name, f},
+    #define BUILTIN_DEBUG(name, f) DEBUG_EXPR(BUILTIN_STRUCT(name, f))
 
 USED
 static const builtin_t BUILTINS[] = {
+    {"echo", &builtin_echo},
     {"cd", &builtin_cd},
     {"exit", &builtin_exit},
     {"setenv", &builtin_setenv},

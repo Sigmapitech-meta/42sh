@@ -36,6 +36,11 @@ void builtin_exit(context_t *ctx)
     ctx->is_running = FALSE;
 }
 
+void builtin_echo(context_t *ctx)
+{
+    command_run_subprocess(ctx);
+}
+
 bool_t builtins_check(context_t *ctx)
 {
     char *builtin_name;
