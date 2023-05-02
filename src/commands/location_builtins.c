@@ -18,11 +18,8 @@
 static
 bool_t is_builtin(char *cmd_name)
 {
-    char *builtin_name;
-
     for (int i = 0; i < BUILTIN_COUNT; i++) {
-        builtin_name = BUILTINS[i].name;
-        if (!strcmp(cmd_name, builtin_name))
+        if (!strcmp(cmd_name, BUILTINS[i].name))
             return TRUE;
     }
     return FALSE;
@@ -40,22 +37,23 @@ static void check_access(char *path, char *cmd_name)
 
 void builtin_which(context_t *ctx)
 {
-    command_t *cmd = ctx->cmd;
     AUTOFREE char *cmd_path = NULL;
     char *path = getenv("PATH");
 
-    if (cmd->argc < 2) {
+    if (ctx->cmd->argc < 2) {
         eprintf("which: Too few arguments.");
         return;
     }
-    for (int i = 1; i < cmd->argc; i++) {
-        if (is_builtin(cmd->argv[i]))
-            printf("%s: shell built-in command.\n", cmd->argv[i]);
+    for (int i = 1; i < ctx->cmd->argc; i++) {
+        if (is_builtin(ctx->cmd->argv[i])) {
+            printf("%s: shell built-in command.\n", ctx->cmd->argv[i]);
+            return;
+        }
         if (!path)
             return;
-        cmd_path = path_find_access(path, cmd->argv[i]);
+        cmd_path = path_find_access(path, ctx->cmd->argv[i]);
         if (!cmd_path)
-            eprintf("%s: Command not found.\n", cmd->argv[i]);
+            eprintf("%s: Command not found.\n", ctx->cmd->argv[i]);
         else
             printf("%s\n", cmd_path);
     }
