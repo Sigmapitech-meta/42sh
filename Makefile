@@ -154,23 +154,23 @@ $(BUILD_DIR)/angry/%.o: %.c
 	$(call LOG, ":c" $(notdir $@))
 
 clean:
-	$(eval REMOVED =                                           \
-		$(shell                                                \
-			$(RM) -v $(OBJ) $(DEBUG_OBJ)                       \
+	$(eval REMOVED =                                               \
+		$(shell                                                    \
+			$(RM) -v $(OBJ) $(DEBUG_OBJ) $(ANGRY_OBJ) $(TEST_OBJ)  \
 			| grep "removed" | cut -d ' ' -f 2))
-	$(call LOG,                                                \
+	$(call LOG,                                                    \
 		$(if $(REMOVED), "removed:c" $(REMOVED), "no file removed."))
 
 fclean:
-	$(call LOG,                                                \
-		$(if $(shell find . -type d -name $(BUILD_DIR)),       \
-			":r-:c $(BUILD_DIR)~",                             \
+	$(call LOG,                                                       \
+		$(if $(shell find . -type d -name $(BUILD_DIR)),              \
+			":r-:c $(BUILD_DIR)~",                                    \
 			"no build dir to remove."))
 	@ $(RM) -r $(BUILD_DIR)
-	$(eval REMOVED =                                           \
-		$(shell $(RM) -v $(NAME) $(NAME_DEBUG) $(NAME_ANGRY)   \
+	$(eval REMOVED =                                                  \
+		$(shell $(RM) -v $(NAME) $(NAME_DEBUG) $(NAME_ANGRY) $(TESTS) \
 			| grep "removed" | cut -d ' ' -f 2))
-	$(call LOG,                                                \
+	$(call LOG,                                                       \
 		$(if $(REMOVED),"removed:g" $(REMOVED), "no binary to remove."))
 
 .PHONY: clean fclean
