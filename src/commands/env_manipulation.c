@@ -5,14 +5,16 @@
 ** builtin_unsetenv.c
 */
 
-#include <string.h>
-#include <stdlib.h>
 #include <errno.h>
+#include <stdlib.h>
+#include <string.h>
+#include <ctype.h>
 
 #include "shell/shell.h"
 
 #include "printf_expansion.h"
 #include "utils/sentinel.h"
+#include "epitech.h"
 
 static
 void command_run_env(context_t *ctx)
@@ -22,6 +24,23 @@ void command_run_env(context_t *ctx)
     cmd->argv[0] = "env";
     cmd->argv[1] = NULL;
     command_run_subprocess(ctx);
+}
+
+static
+bool_t is_valid_env_key_case(char *name)
+{
+    char *ptr = name;
+
+    if (!isalpha(*ptr)) {
+        eprintf("setenv: Variable name must begin with a letter.\n");
+        return FALSE;
+    }
+    for (; *ptr && isalnum(*ptr); ptr++);
+    if (*ptr)
+        eprintf(
+            "setenv: Variable name must contain alphanumeric characters.\n"
+        );
+    return !*ptr;
 }
 
 void builtin_setenv(context_t *ctx)
@@ -35,6 +54,8 @@ void builtin_setenv(context_t *ctx)
         eprintf("setenv: Too many arguments.\n");
         return;
     }
+    if (!is_valid_env_key_case(cmd->argv[1]))
+        return;
     if (getenv(cmd->argv[1]))
         env_free_key(cmd->argv[1]);
     env_setter = env_get_setter(cmd->argv[1], cmd->argv[2]);
