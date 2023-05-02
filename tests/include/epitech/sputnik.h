@@ -25,6 +25,7 @@
     #define CR_ASSERT_NEQ(...) cr_assert_neq(__VA_ARGS__)
 
     #define CR_ASSERT_STDOUT_EQ_STR(...) cr_assert_stdout_eq_str(__VA_ARGS__)
+    #define CR_ASSERT_STDERR_EQ_STR(...) cr_assert_stderr_eq_str(__VA_ARGS__)
 
 
 USED void redirect_all_std(void);

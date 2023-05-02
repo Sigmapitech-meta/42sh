@@ -61,6 +61,7 @@ TSRC += std_redirect.c
 
 VPATH += tests/e2e
 TSRC += test_setenv.c
+TSRC += test_command_not_found.c
 
 vpath %.c $(VPATH)
 
