@@ -21,4 +21,6 @@ void param_fill(char **params, char *string);
 
 void status_show(int status);
 
+void putenv_safe(char *key, char *value, char **original_env);
+
 #endif /* !UTILS_H_ */

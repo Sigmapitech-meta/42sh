@@ -16,12 +16,12 @@
 
 char *env_get_setter(char *key, char *value)
 {
-    int size = strlen(key) + 2;
+    int size = (int)strlen(key) + 2;
     char *setter;
     int written;
 
     if (value)
-        size += strlen(value);
+        size += (int)strlen(value);
     setter = malloc(size * sizeof (char));
     if (!setter)
         return NULL;
@@ -50,11 +50,12 @@ void env_free(char **original_env)
     }
 }
 
-void env_free_key(char *key)
+USED
+void env_free_key(char *key, char **original_env)
 {
     char *transaction_ptr;
     AUTOFREE char *line_start = env_get_setter(key, NULL);
-    int size;
+    size_t size;
     int i = 0;
 
     if (!line_start)
@@ -62,8 +63,10 @@ void env_free_key(char *key)
     size = strlen(line_start);
     for (; strncmp(environ[i], line_start, size); i++)
         ;
-    transaction_ptr = environ[i];
-    DEBUG("Freeing [%s]", transaction_ptr);
-    unsetenv(key);
-    free(transaction_ptr);
+    if (environ[i] != original_env[i]) {
+        transaction_ptr = environ[i];
+        DEBUG("Freeing [%s]", transaction_ptr);
+        unsetenv(key);
+        free(transaction_ptr);
+    }
 }

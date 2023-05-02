@@ -16,6 +16,19 @@
 #include "utils/sentinel.h"
 #include "epitech.h"
 
+void putenv_safe(char *key, char *value, char **original_env)
+{
+    char *env_setter;
+
+    if (getenv(key))
+        env_free_key(key, original_env);
+    env_setter = env_get_setter(key, value);
+    if (!env_setter)
+        return;
+    if (putenv(env_setter) == W_SENTINEL)
+        printf("setenv: %s", strerror(errno));
+}
+
 static
 void command_run_env(context_t *ctx)
 {
@@ -46,7 +59,6 @@ bool_t is_valid_env_key_case(char *name)
 void builtin_setenv(context_t *ctx)
 {
     command_t *cmd = ctx->cmd;
-    char *env_setter;
 
     if (cmd->argc == 1)
         return command_run_env(ctx);
@@ -56,13 +68,7 @@ void builtin_setenv(context_t *ctx)
     }
     if (!is_valid_env_key_case(cmd->argv[1]))
         return;
-    if (getenv(cmd->argv[1]))
-        env_free_key(cmd->argv[1]);
-    env_setter = env_get_setter(cmd->argv[1], cmd->argv[2]);
-    if (!env_setter)
-        return;
-    if (putenv(env_setter) == W_SENTINEL)
-        printf("setenv: %s", strerror(errno));
+    putenv_safe(cmd->argv[1], cmd->argv[2], ctx->original_env);
 }
 
 void builtin_unsetenv(context_t *ctx)

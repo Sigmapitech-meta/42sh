@@ -52,7 +52,7 @@ int shell_run_from_env(char **env);
 void prompt_display(void);
 
 char *env_get_setter(char *key, char *value);
-void env_free_key(char *key);
+void env_free_key(char *key, char **original_env);
 void env_free(char **original_env);
 
 #endif /* !SHELL_H */
