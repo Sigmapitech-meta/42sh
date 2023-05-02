@@ -2,17 +2,20 @@
 ** EPITECH PROJECT, 2023
 ** 42sh
 ** File description:
-** epitech_criterion.h
+** sputnik.h
 */
 
-#ifndef EPITECH_CRITERION_H_
-    #define EPITECH_CRITERION_H_
+#ifndef SPUTNIK_H_
+	#define SPUTNIK_H_
 
     #include <criterion/criterion.h>
+    #include <criterion/redirect.h>
 
-    #define $ /* Fix the norm! */
+    #include "norm.h"
+    #include "utils/attributes.h"
 
     #define TEST(...) Test(__VA_ARGS__)
+    #define TEST_STD(...) Test(__VA_ARGS__, .init EQ redirect_all_std)
 
     #define CR_ASSERT(...) cr_assert(__VA_ARGS__)
 
@@ -23,4 +26,7 @@
 
     #define CR_ASSERT_STDOUT_EQ_STR(...) cr_assert_stdout_eq_str(__VA_ARGS__)
 
-#endif /* !EPITECH_CRITERION_H_ */
+
+USED void redirect_all_std(void);
+
+#endif /* !SPUTNIK_H_ */

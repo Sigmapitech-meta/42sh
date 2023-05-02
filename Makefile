@@ -56,6 +56,11 @@ SRC += status.c
 
 VPATH += tests
 TSRC := test_sentinel.c
+TSRC += run_shell.c
+TSRC += std_redirect.c
+
+VPATH += tests/e2e
+TSRC += test_setenv.c
 
 vpath %.c $(VPATH)
 
