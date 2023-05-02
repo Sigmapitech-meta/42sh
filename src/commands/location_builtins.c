@@ -22,7 +22,7 @@ bool_t is_builtin(char *cmd_name)
 
     for (int i = 0; i < BUILTIN_COUNT; i++) {
         builtin_name = BUILTINS[i].name;
-        if (!strncmp(cmd_name, builtin_name, strlen(builtin_name)))
+        if (!strcmp(cmd_name, builtin_name))
             return TRUE;
     }
     return FALSE;

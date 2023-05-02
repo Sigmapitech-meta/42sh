@@ -43,7 +43,7 @@ bool_t builtins_check(context_t *ctx)
 
     for (int i = 0; i < BUILTIN_COUNT; i++) {
         builtin_name = BUILTINS[i].name;
-        if (!strncmp(cmd->argv[0], builtin_name, strlen(builtin_name))) {
+        if (!strcmp(cmd->argv[0], builtin_name)) {
             DEBUG("Executing [%s] built-in", BUILTINS[i].name);
             BUILTINS[i].handler(ctx);
             return TRUE;
