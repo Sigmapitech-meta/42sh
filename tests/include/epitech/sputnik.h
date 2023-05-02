@@ -6,7 +6,7 @@
 */
 
 #ifndef SPUTNIK_H_
-	#define SPUTNIK_H_
+    #define SPUTNIK_H_
 
     #include <criterion/criterion.h>
     #include <criterion/redirect.h>
