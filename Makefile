@@ -190,4 +190,7 @@ undefine %.c
 	$(call SENTINEL, $@)
 
 # ↓ User override
+
+ifneq ($(shell find . -name override.mk),)
 -include override.mk
+endif
