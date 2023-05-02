@@ -20,4 +20,4 @@ override.mk
 *.log
 
 # Tests
-unittests
+run_tests
