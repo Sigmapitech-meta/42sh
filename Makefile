@@ -63,6 +63,12 @@ VPATH += tests/e2e
 TSRC += test_setenv.c
 TSRC += test_command_not_found.c
 
+VPATH += tests/mocks
+TSRC += mock_getline.c
+
+VPATH += tests/integration
+TSRC += test_get_line.c
+
 vpath %.c $(VPATH)
 
 # ↓ `touch .fast` to force multi-threading
@@ -196,6 +202,7 @@ $(BUILD_DIR)/tests/%.o: %.c
 $(TESTS): CFLAGS += -g3 --coverage
 $(TESTS): CFLAGS += -iquote tests/include
 $(TESTS): LDLIBS += -lcriterion
+$(TESTS): LDLIBS += -Wl,--wrap=getline
 $(TESTS): LDFLAGS += -fprofile-arcs -ftest-coverage
 $(TESTS): $(TEST_OBJ)
 	$Q $(CC) -o $@ $^ $(CFLAGS) $(LDLIBS) $(LDFLAGS)
