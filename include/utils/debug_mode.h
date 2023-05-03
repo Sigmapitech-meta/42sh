@@ -8,18 +8,19 @@
 #ifndef WOLOLO_DEBUG_MODE_H
     #define WOLOLO_DEBUG_MODE_H
 
+    #include "utils/colors.h"
+
     #define NOTHING /* Nothing */
 
     #ifdef DEBUG_MODE
         #include <stdio.h>
 
-        #define BLUE "\e[34m"
-        #define RESET "\e[0m"
+        #define HEAD_FMT "[" CYAN "%s" RESET ":" GREEN "%d" RESET "] "
+        #define COLORED(s) (HEAD_FMT BLUE "?" RESET " " s "\n")
 
-        #define COLORED(s) (BLUE "?" RESET " " s "\n")
-
-        #define DEBUG(fmt, ...) (printf(COLORED(fmt), __VA_ARGS__))
-        #define DEBUG_MSG(string) (printf(COLORED(string)))
+        #define HEAD CYAN __FILE_NAME__, __LINE__
+        #define DEBUG(fmt, ...) (printf(COLORED(fmt), HEAD, __VA_ARGS__))
+        #define DEBUG_MSG(string) (printf(COLORED(string), HEAD))
 
         #define DEBUG_CALL(func, ...) func(__VA_ARGS__)
 
