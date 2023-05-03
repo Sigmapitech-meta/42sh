@@ -10,30 +10,33 @@
 #include <sys/stat.h>
 #include <unistd.h>
 
+#include "base.h"
 #include "utils/sentinel.h"
 
-long file_get_size(char const *filepath)
+size_t file_get_size(char const *filepath)
 {
-    struct stat buffer;
-    int state = stat(filepath, &buffer);
+    stat_t buffer;
 
-    return (state == W_SENTINEL) ? W_SENTINEL : buffer.st_size;
+    return W_SENTINEL_OR(
+        stat(filepath, &buffer),
+        buffer.st_size
+    );
 }
 
-char *file_read_fd(int fd, long filesize)
+char *file_read_fd(int fd, size_t filesize)
 {
     long state;
-    char *content = malloc(sizeof(char) * (filesize + 1));
+    char *content = malloc((filesize + 1) * sizeof(char));
 
     if (!content)
         return NULL;
     state = read(fd, content, filesize);
-    if (state != W_SENTINEL) {
-        content[state] = '\0';
-        return content;
+    if (state == W_SENTINEL_OF(long)) {
+        free(content);
+        return NULL;
     }
-    free(content);
-    return NULL;
+    content[state] = '\0';
+    return content;
 }
 
 char *file_read(char *filepath)
@@ -41,9 +44,9 @@ char *file_read(char *filepath)
     int fd = open(filepath, O_RDONLY);
     char *content = NULL;
 
-    if (fd != W_SENTINEL) {
-        content = file_read_fd(fd, file_get_size(filepath));
-        close(fd);
-    }
+    if (fd == W_SENTINEL)
+        return NULL;
+    content = file_read_fd(fd, file_get_size(filepath));
+    close(fd);
     return content;
 }
