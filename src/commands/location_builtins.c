@@ -6,10 +6,12 @@
 */
 
 #include <stdlib.h>
+#include <stdio.h>
 #include <string.h>
+#include <unistd.h>
 
+#include "base.h"
 #include "epitech.h"
-#include "printf_expansion.h"
 #include "shell/builtins.h"
 #include "shell/shell.h"
 #include "shell/utils.h"

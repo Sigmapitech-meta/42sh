@@ -11,12 +11,12 @@
 #include <sys/wait.h>
 #include <unistd.h>
 
+#include "base.h"
 #include "shell/shell.h"
 #include "shell/utils.h"
 
 #include "utils/debug_mode.h"
 #include "utils/sentinel.h"
-#include "printf_expansion.h"
 #include "utils/autofree.h"
 
 char *command_handle_home(char *target_path)

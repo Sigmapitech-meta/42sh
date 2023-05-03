@@ -12,9 +12,9 @@
 #include <string.h>
 #include <unistd.h>
 
-#include "shell/shell.h"
+#include "base.h"
 
-#include "printf_expansion.h"
+#include "shell/shell.h"
 #include "utils/debug_mode.h"
 #include "utils/sentinel.h"
 #include "utils/autofree.h"

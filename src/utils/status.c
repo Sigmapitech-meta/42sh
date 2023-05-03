@@ -5,13 +5,12 @@
 ** status.c
 */
 
-#include <stdio.h>
 #include <string.h>
 #include <sys/wait.h>
 
+#include "base.h"
 #include "epitech.h"
 #include "shell/utils.h"
-#include "printf_expansion.h"
 
 void status_show(int status)
 {

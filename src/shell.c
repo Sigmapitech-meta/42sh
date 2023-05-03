@@ -11,6 +11,7 @@
 #include <unistd.h>
 #include <errno.h>
 
+#include "base.h"
 #include "epitech.h"
 
 #include "shell/builtins.h"

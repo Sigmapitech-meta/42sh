@@ -11,4 +11,6 @@
     #define W_SENTINEL (-1)
     #define W_SENTINEL_OF(type) (type)(W_SENTINEL)
 
+    #define W_SENTINEL_OR(c, e) ((c == W_SENTINEL) ? W_SENTINEL : (e))
+
 #endif

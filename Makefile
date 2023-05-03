@@ -39,10 +39,14 @@ TSRC :=
 # ↓ Sources
 VPATH += src
 SRC += environment.c
-SRC += eprintf.c
 SRC += main.c
 SRC += prompt.c
 SRC += shell.c
+
+VPATH += src/base
+SRC += str_split.c
+SRC += eprintf.c
+SRC += file_reader.c
 
 VPATH += src/commands
 SRC += builtins.c
@@ -84,7 +88,6 @@ BSRC += tests/run_shell.c
 
 VPATH += batch
 BSRC += batch_main.c
-BSRC += file_reader.c
 
 vpath %.c $(VPATH)
 

@@ -12,12 +12,6 @@
     #include <stdio.h>
     #include <unistd.h>
 
-int eprintf(const char *fmt, ...);
 
-/* vprintf-like within the standard error */
-static inline int evprintf(const char *fmt, va_list args)
-{
-    return vdprintf(STDERR_FILENO, fmt, args);
-}
 
 #endif /* !PRINTF_EXPANSION_H_ */

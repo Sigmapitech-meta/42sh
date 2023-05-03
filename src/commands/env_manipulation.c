@@ -7,14 +7,15 @@
 
 #include <errno.h>
 #include <stdlib.h>
+#include <stdio.h>
 #include <string.h>
 #include <ctype.h>
 
-#include "shell/shell.h"
-
-#include "printf_expansion.h"
-#include "utils/sentinel.h"
+#include "base.h"
 #include "epitech.h"
+
+#include "shell/shell.h"
+#include "utils/sentinel.h"
 
 void putenv_safe(char *key, char *value, char **original_env)
 {

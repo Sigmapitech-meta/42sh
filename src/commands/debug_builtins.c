@@ -7,9 +7,9 @@
 
 #include <stdlib.h>
 
+#include "base.h"
 #include "shell/shell.h"
 #include "utils/debug_mode.h"
-#include "printf_expansion.h"
 
 DEBUG_USED
 void builtin_getenv(context_t *ctx)
