@@ -26,6 +26,7 @@ BUILD_DIR := .build
 
 NAME_DEBUG := debug
 NAME_ANGRY := angry
+TESTS := run_tests
 
 # ↓ Clear all possible junk
 SRC :=
@@ -53,6 +54,25 @@ SRC += parameters.c
 SRC += path.c
 SRC += status.c
 
+VPATH += tests
+TSRC := test_sentinel.c
+TSRC += run_shell.c
+TSRC += std_redirect.c
+
+VPATH += tests/e2e
+TSRC += test_setenv.c
+TSRC += test_command_not_found.c
+
+VPATH += tests/mocks
+TSRC += mock_getline.c
+
+VPATH += tests/integration
+TSRC += test_autofree.c
+
+VPATH += tests/integration/get_line
+TSRC += test_get_line_fixed_data.c
+TSRC += test_get_line_broken.c
+
 vpath %.c $(VPATH)
 
 # ↓ `touch .fast` to force multi-threading
@@ -73,6 +93,9 @@ endif
 OBJ := $(SRC:%.c=$(BUILD_DIR)/release/%.o)
 DEBUG_OBJ := $(SRC:%.c=$(BUILD_DIR)/debug/%.o)
 ANGRY_OBJ := $(SRC:%.c=$(BUILD_DIR)/angry/%.o)
+
+TEST_OBJ := $(TSRC:%.c=$(BUILD_DIR)/tests/%.o)
+TEST_OBJ += $(filter-out %main.o, $(SRC:%.c=$(BUILD_DIR)/tests/%.o))
 
 # ↓ Utils
 ifneq ($(shell tput colors),0)
@@ -147,23 +170,23 @@ $(BUILD_DIR)/angry/%.o: %.c
 	$(call LOG, ":c" $(notdir $@))
 
 clean:
-	$(eval REMOVED =                                           \
-		$(shell                                                \
-			$(RM) -v $(OBJ) $(DEBUG_OBJ)                       \
+	$(eval REMOVED =                                               \
+		$(shell                                                    \
+			$(RM) -v $(OBJ) $(DEBUG_OBJ) $(ANGRY_OBJ) $(TEST_OBJ)  \
 			| grep "removed" | cut -d ' ' -f 2))
-	$(call LOG,                                                \
+	$(call LOG,                                                    \
 		$(if $(REMOVED), "removed:c" $(REMOVED), "no file removed."))
 
 fclean:
-	$(call LOG,                                                \
-		$(if $(shell find . -type d -name $(BUILD_DIR)),       \
-			":r-:c $(BUILD_DIR)~",                             \
+	$(call LOG,                                                       \
+		$(if $(shell find . -type d -name $(BUILD_DIR)),              \
+			":r-:c $(BUILD_DIR)~",                                    \
 			"no build dir to remove."))
 	@ $(RM) -r $(BUILD_DIR)
-	$(eval REMOVED =                                           \
-		$(shell $(RM) -v $(NAME) $(NAME_DEBUG) $(NAME_ANGRY)   \
+	$(eval REMOVED =                                                  \
+		$(shell $(RM) -v $(NAME) $(NAME_DEBUG) $(NAME_ANGRY) $(TESTS) \
 			| grep "removed" | cut -d ' ' -f 2))
-	$(call LOG,                                                \
+	$(call LOG,                                                       \
 		$(if $(REMOVED),"removed:g" $(REMOVED), "no binary to remove."))
 
 .PHONY: clean fclean
@@ -174,6 +197,32 @@ re: fclean
 	+ $Q $(call RECURSE, both)
 
 .PHONY: re both
+
+$(BUILD_DIR)/tests/%.o: %.c
+	$Q mkdir -p $(dir $@)
+	$Q $(CC) $(CFLAGS) -c $< -o $@
+	$(call LOG, ":c" $(notdir $@))
+
+$(TESTS): CFLAGS += -g3 --coverage
+$(TESTS): CFLAGS += -iquote tests/include
+$(TESTS): LDLIBS += -lcriterion
+$(TESTS): LDLIBS += -Wl,--wrap=getline
+$(TESTS): LDFLAGS += -fprofile-arcs -ftest-coverage
+$(TESTS): $(TEST_OBJ)
+	$Q $(CC) -o $@ $^ $(CFLAGS) $(LDLIBS) $(LDFLAGS)
+	$(call LOG,":g$@")
+
+tests_run: $(TESTS)
+	@ ./$(TESTS) -OP:F --full-stats
+
+.PHONY: tests_run
+
+cov: tests_run
+	$(call CHECK_CMD, gcovr)
+	$Q $(call CHECK_CMD, gcovr)
+	$Q gcovr . --exclude tests
+
+.PHONY: cov
 
 # ↓ Utils
 RECURSE = $(MAKE) $(1) --no-print-directory START_TIME=$(START_TIME)

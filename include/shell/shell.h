@@ -27,7 +27,6 @@ static const char USAGE[] = (
 );
 
 typedef _Bool bool_t;
-typedef struct list_s list_t;
 typedef unsigned long size_t;
 
 typedef struct command_s {
@@ -47,7 +46,12 @@ typedef struct context_s {
 } context_t;
 
 int command_run_subprocess(context_t *ctx);
+
 int shell_run_from_env(char **env);
+void shell_run_from_ctx(context_t *ctx);
+
+bool_t shell_read_line(context_t *ctx);
+void shell_evaluate(context_t *ctx);
 
 void prompt_display(void);
 

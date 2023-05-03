@@ -20,8 +20,10 @@
 ALWAYS_INLINE USED
 static inline void free_stack(void *ptr)
 {
-    if (ptr)
-        free(*(void **) ptr);
+    void *real_ptr = *(void **)ptr;
+
+    if (real_ptr)
+        free(real_ptr);
 }
 
 #endif /* !AUTOFREE_H_ */
