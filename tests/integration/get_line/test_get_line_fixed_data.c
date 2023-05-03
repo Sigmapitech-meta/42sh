@@ -7,7 +7,7 @@
 
 #include "base.h"
 #include "epitech/sputnik.h"
-#include "mocks/mock_getline.h"
+#include "mocks/getline.h"
 
 #include "utils/autofree.h"
 #include "utils/sentinel.h"

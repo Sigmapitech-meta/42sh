@@ -6,7 +6,7 @@
 */
 
 #include "epitech/sputnik.h"
-#include "mocks/mock_getline.h"
+#include "mocks/getline.h"
 #include "utils/autofree.h"
 
 static void is_ptr_null(char *ptr)
