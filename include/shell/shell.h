@@ -46,8 +46,11 @@ typedef struct context_s {
 } context_t;
 
 int command_run_subprocess(context_t *ctx);
+
 int shell_run_from_env(char **env);
 void shell_run_from_ctx(context_t *ctx);
+
+bool_t shell_read_line(context_t *ctx);
 void shell_evaluate(context_t *ctx);
 
 void prompt_display(void);

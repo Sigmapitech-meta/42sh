@@ -8,6 +8,7 @@
 #include <unistd.h>
 #include <bits/types/FILE.h>
 #include <string.h>
+#include <errno.h>
 
 #include "mocks/mock_getline.h"
 #include "utils/sentinel.h"
@@ -25,14 +26,15 @@ ssize_t wrap_getline(char **line, size_t *read, file_t *stream)
     char *read_line;
 
     if (GETLINE_DATA->mode == BROKEN) {
+        errno = ENOMEM;
         *line = NULL;
         return W_SENTINEL;
     }
     if (GETLINE_DATA->mode == TABLE) {
         read_line = GETLINE_DATA->table[index++];
-        if (!read_line) {
+        if (read_line) {
             *line = read_line;
-            return (ssize_t) strlen(*line);
+            return (ssize_t)strlen(read_line);
         } else {
             *line = NULL;
             return W_SENTINEL;

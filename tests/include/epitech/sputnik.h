@@ -18,6 +18,7 @@
     #define TEST_STD(...) Test(__VA_ARGS__, .init EQ redirect_all_std)
 
     #define CR_ASSERT(...) cr_assert(__VA_ARGS__)
+    #define CR_ASSERT_NOT(...) cr_assert_not(__VA_ARGS__)
 
     #define CR_ASSERT_EQ(...) cr_assert_eq(__VA_ARGS__)
     #define CR_ASSERT_STR_EQ(...) cr_assert_str_eq(__VA_ARGS__)
