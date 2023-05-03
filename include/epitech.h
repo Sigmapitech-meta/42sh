@@ -10,8 +10,8 @@
 
     #define EXIT_MSG(msg, w, v) (w(msg) ? v : v)
 
-    #define EXIT_KO_MSG(msg) EXIT_MSG(msg, W_ERROR_C, EXIT_KO)
-    #define EXIT_OK_MSG(msg) EXIT_MSG(msg, W_OUTPUT_C, EXIT_OK)
+    #define EXIT_KO_MSG(msg) EXIT_MSG(msg, eprintf, EXIT_KO)
+    #define EXIT_OK_MSG(msg) EXIT_MSG(msg, printf, EXIT_OK)
 
 typedef _Bool bool_t;
 
