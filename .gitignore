@@ -3,6 +3,9 @@
 debug
 angry
 
+# Batch
+batch_runner
+
 # Build
 ?build
 .fast
