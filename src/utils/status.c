@@ -15,16 +15,16 @@
 void status_show(int status)
 {
     if (status == EXIT_KO) {
-        eprintf("Error Handling\n");
+        EPRINTF("Error Handling\n");
         return;
     }
     if (!WIFEXITED(status) && WIFSIGNALED(status)) {
         if (WTERMSIG(status) != FLOATING_EXCEPTION)
-            eprintf("%s", strsignal(WTERMSIG(status)));
+            EPRINTF("%s", strsignal(WTERMSIG(status)));
         else
-            eprintf("Floating exception");
+            EPRINTF("Floating exception");
         if (WCOREDUMP(status))
-            eprintf(" (core dumped)");
-        eprintf("\n");
+            EPRINTF(" (core dumped)");
+        EPRINTF("\n");
     }
 }

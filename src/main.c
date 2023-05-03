@@ -21,7 +21,7 @@ int main(int argc, char **argv, char **env)
         return EXIT_OK;
     }
     if (argc >= MAX_ARG_COUNT) {
-        eprintf("Too many arguments\n");
+        EPRINTF("Too many arguments\n");
         return EXIT_OK;
     }
     DEBUG_MSG("Starting minishell");

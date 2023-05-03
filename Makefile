@@ -45,7 +45,6 @@ SRC += shell.c
 
 VPATH += src/base
 SRC += str_split.c
-SRC += eprintf.c
 SRC += file_reader.c
 
 VPATH += src/commands

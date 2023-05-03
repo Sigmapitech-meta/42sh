@@ -25,7 +25,7 @@ char *command_handle_home(char *target_path)
     char *dir = getenv("HOME");
 
     if (!dir) {
-        eprintf("No $home variable set\n");
+        EPRINTF("No $home variable set\n");
         return NULL;
     }
     dir = strdup(dir);
@@ -64,16 +64,16 @@ static void command_run_internal(context_t *ctx, char *cmd_path, char **env)
     char *binary_name = cmd->argv[0];
 
     if (last_arg[0] == '|' && !last_arg[1]) {
-        eprintf("Invalid null command.\n");
+        EPRINTF("Invalid null command.\n");
         return;
     }
     DEBUG("running [%s]", cmd_path);
     execve(cmd_path, cmd->argv, env);
     DEBUG_MSG("STOP");
-    eprintf("%s: %s.", binary_name, strerror(errno));
+    EPRINTF("%s: %s.", binary_name, strerror(errno));
     if (errno == ENOEXEC)
-        eprintf(" Wrong Architecture.", binary_name, strerror(errno));
-    eprintf("\n");
+        EPRINTF(" Wrong Architecture.");
+    EPRINTF("\n");
     exit(W_SENTINEL);
 }
 
@@ -83,7 +83,7 @@ void command_run(context_t *ctx)
     AUTOFREE char *cmd_path = command_get_full_path(cmd->argv);
 
     if (!cmd_path || access(cmd_path, F_OK)) {
-        eprintf("%s: Command not found.\n", cmd->argv[0]);
+        EPRINTF("%s: Command not found.\n", cmd->argv[0]);
         exit(W_SENTINEL);
     }
     command_run_internal(ctx, cmd_path, environ);
