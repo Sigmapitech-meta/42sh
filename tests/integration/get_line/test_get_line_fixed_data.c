@@ -5,10 +5,10 @@
 ** test_getline.c
 */
 
+#include "base.h"
 #include "epitech/sputnik.h"
 #include "mocks/mock_getline.h"
 
-#include "shell/utils.h"
 #include "utils/autofree.h"
 #include "utils/sentinel.h"
 

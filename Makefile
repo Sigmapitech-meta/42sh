@@ -37,7 +37,6 @@ SRC += prompt.c
 SRC += shell.c
 
 VPATH += src/base
-SRC += get_line.c
 SRC += str_split.c
 SRC += file_reader.c
 
