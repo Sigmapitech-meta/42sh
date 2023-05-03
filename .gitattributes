@@ -1,6 +1,8 @@
 * text=lf
 * eol=lf
 
+*.batch language=tcsh
+
 *.png binary
 *.jpg binary
 *.pdf binary
