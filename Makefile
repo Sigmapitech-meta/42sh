@@ -66,6 +66,9 @@ TSRC += test_command_not_found.c
 
 VPATH += tests/mocks
 TSRC += mock_getline.c
+TSRC += mock_malloc.c
+TSRC += mock_read.c
+TSRC += mock_stat.c
 
 VPATH += tests/integration
 TSRC += test_autofree.c
@@ -222,7 +225,7 @@ $(BUILD_DIR)/tests/%.o: %.c
 $(TESTS): CFLAGS += -g3 --coverage
 $(TESTS): CFLAGS += -iquote tests/include
 $(TESTS): LDLIBS += -lcriterion
-$(TESTS): LDLIBS += -Wl,--wrap=getline
+$(TESTS): LDLIBS += -Wl,--wrap=getline,--wrap=stat,--wrap=read,--wrap=malloc
 $(TESTS): LDFLAGS += -fprofile-arcs -ftest-coverage
 $(TESTS): $(TEST_OBJ)
 	$Q $(CC) -o $@ $^ $(CFLAGS) $(LDLIBS) $(LDFLAGS)
