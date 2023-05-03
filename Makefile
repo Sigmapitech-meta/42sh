@@ -24,13 +24,17 @@ endif
 
 BUILD_DIR := .build
 
+NAME_BATCH := batch_runner
 NAME_DEBUG := debug
 NAME_ANGRY := angry
 TESTS := run_tests
 
 # ↓ Clear all possible junk
-SRC :=
 VPATH :=
+
+SRC :=
+BSRC :=
+TSRC :=
 
 # ↓ Sources
 VPATH += src
@@ -73,6 +77,15 @@ VPATH += tests/integration/get_line
 TSRC += test_get_line_fixed_data.c
 TSRC += test_get_line_broken.c
 
+# ↓ Batch runner sources
+
+BSRC += $(filter-out %main.c, $(SRC))
+BSRC += tests/run_shell.c
+
+VPATH += batch
+BSRC += batch_main.c
+BSRC += file_reader.c
+
 vpath %.c $(VPATH)
 
 # ↓ `touch .fast` to force multi-threading
@@ -96,6 +109,8 @@ ANGRY_OBJ := $(SRC:%.c=$(BUILD_DIR)/angry/%.o)
 
 TEST_OBJ := $(TSRC:%.c=$(BUILD_DIR)/tests/%.o)
 TEST_OBJ += $(filter-out %main.o, $(SRC:%.c=$(BUILD_DIR)/tests/%.o))
+
+BATCH_OBJ := $(BSRC:%.c=$(BUILD_DIR)/batch/%.o)
 
 # ↓ Utils
 ifneq ($(shell tput colors),0)
@@ -223,6 +238,22 @@ cov: tests_run
 	$Q gcovr . --exclude tests
 
 .PHONY: cov
+
+batch: $(NAME_BATCH)
+
+.PHONY: batch
+
+$(BUILD_DIR)/batch/%.o: HEADER += "batch"
+$(BUILD_DIR)/batch/%.o: %.c
+	@ mkdir -p $(dir $@)
+	$Q $(CC) $(CFLAGS) -c $< -o $@
+	$(call LOG, ":c" $(notdir $@))
+
+$(NAME_BATCH): CFLAGS += -iquote tests/include
+$(NAME_BATCH): CFLAGS += -D DEBUG_MODE
+$(NAME_BATCH): $(BATCH_OBJ)
+	$Q $(CC) -o $@ $^ $(CFLAGS) $(LDLIBS) $(LDFLAGS)
+	$(call LOG,":g$@")
 
 # ↓ Utils
 RECURSE = $(MAKE) $(1) --no-print-directory START_TIME=$(START_TIME)
