@@ -24,7 +24,7 @@
 bool_t shell_read_line(context_t *ctx)
 {
     ctx->input_size = get_line(&ctx->user_input);
-    DEBUG("[%zu] characters entered", ctx->input_size);
+    DEBUG("[%d] characters entered", ctx->input_size);
     if (ctx->input_size == W_SENTINEL_OF(size_t)) {
         if (errno == ENOMEM) {
             ctx->is_running = FALSE;

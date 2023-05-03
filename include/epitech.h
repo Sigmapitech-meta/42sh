@@ -8,7 +8,7 @@
 #ifndef EPITECH_H
     #define EPITECH_H
 
-#include "utils/sentinel.h"
+    #include "utils/sentinel.h"
 
     #define EXIT_MSG(ret, written) W_SENTINEL_OR(written, ret)
 

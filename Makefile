@@ -29,13 +29,6 @@ NAME_DEBUG := debug
 NAME_ANGRY := angry
 TESTS := run_tests
 
-# ↓ Clear all possible junk
-VPATH :=
-
-SRC :=
-BSRC :=
-TSRC :=
-
 # ↓ Sources
 VPATH += src
 SRC += environment.c
@@ -44,6 +37,7 @@ SRC += prompt.c
 SRC += shell.c
 
 VPATH += src/base
+SRC += get_line.c
 SRC += str_split.c
 SRC += file_reader.c
 
@@ -56,7 +50,6 @@ SRC += env_manipulation.c
 SRC += location_builtins.c
 
 VPATH += src/utils
-SRC += get_line.c
 SRC += parameters.c
 SRC += path.c
 SRC += status.c
@@ -80,8 +73,12 @@ VPATH += tests/integration/get_line
 TSRC += test_get_line_fixed_data.c
 TSRC += test_get_line_broken.c
 
-# ↓ Batch runner sources
+# ↓ Debug only sources
 
+DSRC := $(SRC)
+DSRC += debug_colorize.c
+
+# ↓ Batch runner sources
 BSRC += $(filter-out %main.c, $(SRC))
 BSRC += tests/run_shell.c
 
@@ -106,8 +103,9 @@ endif
 
 # ↓ Generators
 OBJ := $(SRC:%.c=$(BUILD_DIR)/release/%.o)
-DEBUG_OBJ := $(SRC:%.c=$(BUILD_DIR)/debug/%.o)
 ANGRY_OBJ := $(SRC:%.c=$(BUILD_DIR)/angry/%.o)
+
+DEBUG_OBJ := $(DSRC:%.c=$(BUILD_DIR)/debug/%.o)
 
 TEST_OBJ := $(TSRC:%.c=$(BUILD_DIR)/tests/%.o)
 TEST_OBJ += $(filter-out %main.o, $(SRC:%.c=$(BUILD_DIR)/tests/%.o))
@@ -174,7 +172,7 @@ $(BUILD_DIR)/debug/%.o: %.c
 	$Q $(CC) $(CFLAGS) -c $< -o $@
 	$(call LOG, ":c" $(notdir $@))
 
-$(NAME_ANGRY): CFLAGS += -g3 -D DEBUG_MODE -fsanitize=address,leak,undefined
+$(NAME_ANGRY): CFLAGS += -g3 -fsanitize=address,leak,undefined
 $(NAME_ANGRY): LDFLAGS += -lasan
 $(NAME_ANGRY): HEADER += "angry"
 $(NAME_ANGRY): $(ANGRY_OBJ)
