@@ -66,6 +66,9 @@ TSRC += test_command_not_found.c
 VPATH += tests/mocks
 TSRC += mock_getline.c
 
+VPATH += tests/integration
+TSRC += test_autofree.c
+
 VPATH += tests/integration/get_line
 TSRC += test_get_line_fixed_data.c
 TSRC += test_get_line_broken.c

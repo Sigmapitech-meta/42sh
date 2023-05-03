@@ -22,7 +22,6 @@ $ {
     CR_ASSERT_STDOUT_EQ_STR("");
 }
 
-
 TEST(get_line, getline_broken_command)
 $ {
     context_t ctx = {
