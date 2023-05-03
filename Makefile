@@ -72,6 +72,7 @@ TSRC += mock_stat.c
 
 VPATH += tests/integration
 TSRC += test_autofree.c
+TSRC += test_file_read.c
 
 VPATH += tests/integration/get_line
 TSRC += test_get_line_fixed_data.c
