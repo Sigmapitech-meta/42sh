@@ -16,6 +16,7 @@
 #include "epitech.h"
 #include "utils/sentinel.h"
 #include "store_env.h"
+#include "epitech/norm.h"
 
 void **store(void)
 {
@@ -30,16 +31,17 @@ void store_env(int argc UNUSED, char **argv UNUSED, char **env)
     ENV_STORE(&store) = env;
 }
 
-/**
- * @warning
- * cmd_len variable should not be moved within ctx.user_input
- * as gcc will optimize the structure initialization
- * by doing it in multi-threading causing user_input to be
- * 0 at allocation time created a corrupted top size.
- **/
+IGNORE(
+    /** @warning
+     * cmd_len variable should not be moved within `ctx.user_input`
+     * as gcc will optimize the structure initialization
+     * by doing it in multi-threading causing user_input to be
+     * 0 at allocation time created a corrupted top size.
+    **/
+)
 
 int run_shell_command(char *command)
-{
+$ {
     size_t cmd_len = strlen(command) + 1;
     command_t cmd = { 0 };
     context_t ctx = {

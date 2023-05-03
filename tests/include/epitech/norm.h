@@ -14,4 +14,6 @@
     /* Fix the norm! Round 2! */
     #define EQ =
 
+    #define IGNORE(...) /* Round 3! */
+
 #endif /* !NORM_H_ */
