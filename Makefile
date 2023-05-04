@@ -27,9 +27,13 @@ BUILD_DIR := .build
 NAME_BATCH := batch_runner
 NAME_DEBUG := debug
 NAME_ANGRY := angry
+NAME_AFL := $(NAME)_afl
+
 TESTS := run_tests
 
-BINS := $(NAME_BATCH) $(NAME_DEBUG) $(NAME_ANGRY) $(TESTS)
+BINS := $(NAME_BATCH) $(NAME_DEBUG)
+BINS += $(NAME_ANGRY) $(NAME_AFL)
+BINS += $(TESTS)
 
 # ↓ Sources
 VPATH += src
@@ -116,6 +120,11 @@ TEST_OBJ := $(TSRC:%.c=$(BUILD_DIR)/tests/%.o)
 TEST_OBJ += $(filter-out %main.o, $(SRC:%.c=$(BUILD_DIR)/tests/%.o))
 
 BATCH_OBJ := $(BSRC:%.c=$(BUILD_DIR)/batch/%.o)
+AFL_OBJ := $(BSRC:%.c=$(BUILD_DIR)/afl/%.o)
+
+OBJS := $(OBJ) $(AFL_OBJ)
+OBJS += $(DEBUG_OBJ) $(ANGRY_OBJ)
+OBJS += $(TEST_OBJ)
 
 # ↓ Utils
 ifneq ($(shell tput colors),0)
@@ -186,6 +195,23 @@ $(NAME_ANGRY): $(ANGRY_OBJ)
 	$(call LOG,":g$@")
 
 $(BUILD_DIR)/angry/%.o: %.c
+	@ mkdir -p $(dir $@)
+	$Q $(CC) $(CFLAGS) -c $< -o $@
+	$(call LOG, ":c" $(notdir $@))
+
+afl: $(NAME_AFL)
+
+.PHONY: afl
+
+$(NAME_AFL): CC := afl-gcc
+$(NAME_AFL): HEADER += "AFL"
+$(NAME_AFL): CFLAGS += -iquote tests/include
+$(NAME_AFL): CFLAGS += -D DEBUG_MODE
+$(NAME_AFL): $(AFL_OBJ)
+	$Q $(CC) $(CFLAGS) $(LIBFLAGS) $(LDLIBS) -o $@ $^
+	$(call LOG,":g$@")
+
+$(BUILD_DIR)/afl/%.o: %.c
 	@ mkdir -p $(dir $@)
 	$Q $(CC) $(CFLAGS) -c $< -o $@
 	$(call LOG, ":c" $(notdir $@))
