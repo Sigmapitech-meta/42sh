@@ -92,20 +92,21 @@ void shell_run_from_ctx(context_t *ctx)
 
 int shell_run_from_env(char **env)
 {
-    context_t ctx = {0};
+    command_t cmd = { 0 };
+    context_t ctx = {
+        .original_env = env,
+        .ran_from_tty = isatty(STDIN_FILENO),
+        .prev_dir = getcwd(NULL, 0),
+        .is_running = TRUE,
+        .cmd = &cmd,
+    };
 
-    ctx.ran_from_tty = isatty(STDIN_FILENO);
+    if (!ctx.prev_dir)
+        return EXIT_FAILURE;
     DEBUG_MSG_IF(ctx.ran_from_tty, "stdin is a tty");
-    ctx.is_running = TRUE;
-    ctx.prev_dir = getcwd(NULL, 0);
     DEBUG("Running in [%s]", ctx.prev_dir);
-    ctx.cmd = malloc(sizeof (command_t));
-    if (!ctx.cmd)
-        return W_SENTINEL;
-    ctx.original_env = env;
     shell_run_from_ctx(&ctx);
     free(ctx.prev_dir);
-    free(ctx.cmd);
     env_free(ctx.original_env);
     return ctx.status;
 }
