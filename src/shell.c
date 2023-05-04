@@ -36,7 +36,7 @@ bool_t shell_read_line(context_t *ctx)
         ctx->is_running = FALSE;
         return FALSE;
     }
-    if (ctx->input_size < 2)
+    if (ctx->input_size < MINIMAL_INPUT_CHECK)
         return FALSE;
     ctx->user_input[ctx->input_size - 1] = '\0';
     return TRUE;
@@ -44,20 +44,18 @@ bool_t shell_read_line(context_t *ctx)
 
 int shell_evaluate_expression(context_t *ctx)
 {
-    int status;
-
-    if (!builtins_check(ctx)) {
-        DEBUG("Running [%s] as command", ctx->user_input);
-        status = command_run_subprocess(ctx);
-        if (status && !ctx->ran_from_tty) {
-            ctx->is_running = FALSE;
-            ctx->status = (
-                (status == 65280) ? EXIT_FAILURE
-                : (status == 11 ? 139 : status)
-            );
-        }
-    }
-    return 0;
+    if (builtins_check(ctx))
+        return EXIT_OK;
+    DEBUG("Running [%s] as command", ctx->user_input);
+    ctx->status = command_run_subprocess(ctx);
+    if (!ctx->status | ctx->ran_from_tty)
+        return EXIT_OK;
+    ctx->is_running = FALSE;
+    if (ctx->status == SENTINEL_DETECT)
+        ctx->status = EXIT_FAILURE;
+    if (ctx->status == SEGFAULT)
+        ctx->status = SEGFAULT_CORE_DUMP;
+    return ctx->status;
 }
 
 void shell_evaluate(context_t *ctx)
