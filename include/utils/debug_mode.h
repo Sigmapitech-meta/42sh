@@ -15,7 +15,7 @@
     #ifdef DEBUG_MODE
         #include <stdio.h>
 
-        #define HEAD_FMT BLUE BOLD "%s" RESET ":" PURPLE BOLD "%d" RESET ": !"
+        #define HEAD_FMT BOLD BLUE "%s" RESET ":" PURPLE BOLD "%d" RESET ": !"
         #define COLORED(s) debug_colorize(HEAD_FMT s "\n")
 
         #define HEAD __FILE_NAME__, __LINE__

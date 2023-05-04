@@ -23,19 +23,17 @@ int write_color(char *str, char flag)
     return snprintf(str, 3, "%%%c", flag);
 }
 
-char *debug_colorize(char *fmt)
+static
+char *debug_colorize_fill(char *colorized, char *fmt, int start)
 {
-    size_t len = strlen(fmt);
-    int start = (strstr(fmt, "!") - fmt);
-    char *colorized;
+    static char *last = NULL;
     size_t w = 0;
 
-    for (int i = 0; fmt[i]; i++)
-        if (i > start && fmt[i] == '%' && fmt[i + 1])
-            len += FLAG_COL_SIZE;
-    colorized = malloc(len * sizeof(char));
-    if (!colorized)
-        return fmt;
+    if (last)
+        free(last);
+    last = colorized;
+    if (!fmt)
+        return NULL;
     for (int i = 0; fmt[i]; i++) {
         if (i == start)
             continue;
@@ -45,4 +43,26 @@ char *debug_colorize(char *fmt)
             colorized[w++] = fmt[i];
     }
     return colorized;
+}
+
+char *debug_colorize(char *fmt)
+{
+    size_t len = strlen(fmt);
+    int start = (strstr(fmt, "!") - fmt);
+    char *colorized;
+
+    for (int i = 0; fmt[i]; i++)
+        if (i > start && fmt[i] == '%' && fmt[i + 1])
+            len += FLAG_COL_SIZE;
+    colorized = calloc((len + 1), sizeof(char));
+    if (!colorized)
+        return fmt;
+    colorized[len] = '\0';
+    return debug_colorize_fill(colorized, fmt, start);
+}
+
+DESTRUCTOR
+void clean_up_me_mess(void)
+{
+    debug_colorize_fill(NULL, NULL, 0);
 }
