@@ -24,13 +24,12 @@ USED int evprintf(const char *fmt, va_list args)
 }
 
 static inline
-size_t get_line(char **line)
+USED size_t get_line(char **line)
 {
     static size_t zero = 0;
 
     return getline(line, &zero, stdin);
 }
-
 
 int str_count(char *string, char *delim);
 char **str_split(char *string, char *delim);
