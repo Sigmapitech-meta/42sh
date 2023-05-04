@@ -84,7 +84,7 @@ DSRC := $(SRC)
 DSRC += debug_colorize.c
 
 # ↓ Batch runner sources
-BSRC += $(filter-out %main.c, $(SRC))
+BSRC += $(filter-out %main.c, $(DSRC))
 BSRC += tests/run_shell.c
 
 VPATH += batch
@@ -108,9 +108,9 @@ endif
 
 # ↓ Generators
 OBJ := $(SRC:%.c=$(BUILD_DIR)/release/%.o)
-ANGRY_OBJ := $(SRC:%.c=$(BUILD_DIR)/angry/%.o)
 
 DEBUG_OBJ := $(DSRC:%.c=$(BUILD_DIR)/debug/%.o)
+ANGRY_OBJ := $(DSRC:%.c=$(BUILD_DIR)/angry/%.o)
 
 TEST_OBJ := $(TSRC:%.c=$(BUILD_DIR)/tests/%.o)
 TEST_OBJ += $(filter-out %main.o, $(SRC:%.c=$(BUILD_DIR)/tests/%.o))
@@ -177,6 +177,7 @@ $(BUILD_DIR)/debug/%.o: %.c
 	$Q $(CC) $(CFLAGS) -c $< -o $@
 	$(call LOG, ":c" $(notdir $@))
 
+$(NAME_ANGRY): CFLAGS += -D DEBUG_MODE
 $(NAME_ANGRY): CFLAGS += -g3 -fsanitize=address,leak,undefined
 $(NAME_ANGRY): LDFLAGS += -lasan
 $(NAME_ANGRY): HEADER += "angry"
