@@ -6,10 +6,12 @@
 */
 
 #include <stdlib.h>
+#include <stdio.h>
 #include <string.h>
+#include <unistd.h>
 
+#include "base.h"
 #include "epitech.h"
-#include "printf_expansion.h"
 #include "shell/builtins.h"
 #include "shell/shell.h"
 #include "shell/utils.h"
@@ -41,7 +43,7 @@ void builtin_which(context_t *ctx)
     char *path = getenv("PATH");
 
     if (ctx->cmd->argc < 2) {
-        eprintf("which: Too few arguments.");
+        EPRINTF("which: Too few arguments.");
         return;
     }
     for (int i = 1; i < ctx->cmd->argc; i++) {
@@ -53,7 +55,7 @@ void builtin_which(context_t *ctx)
             return;
         cmd_path = path_find_access(path, ctx->cmd->argv[i]);
         if (!cmd_path)
-            eprintf("%s: Command not found.\n", ctx->cmd->argv[i]);
+            printf("%s: Command not found.\n", ctx->cmd->argv[i]);
         else
             printf("%s\n", cmd_path);
     }
@@ -85,7 +87,7 @@ void builtin_where(context_t *ctx)
     command_t *cmd = ctx->cmd;
 
     if (cmd->argc < 2) {
-        eprintf("where: Too few arguments.");
+        EPRINTF("where: Too few arguments.");
         return;
     }
     for (int i = 0; i < cmd->argc; i++) {

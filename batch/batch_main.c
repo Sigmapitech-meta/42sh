@@ -8,32 +8,25 @@
 #include <stdio.h>
 #include <string.h>
 
+#include "base.h"
 #include "batch.h"
 
 #include "epitech.h"
 #include "utils/autofree.h"
 #include "run_shell_command.h"
 
-char *str_trans(char *string, char in, char out)
-{
-    for (int i = 0; string[i]; i++)
-        if (string[i] == in)
-            string[i] = out;
-    return string;
-}
-
 void batch_run(char *filepath)
 {
     AUTOFREE char *content = file_read(filepath);
-    char *skip_first_line;
+    char *start_line;
 
     if (!content)
         return;
-    skip_first_line = strstr(content, "\n");
-    if (!skip_first_line)
+    start_line = strstr(content, "\n");
+    if (!start_line)
         return;
     run_shell_command(
-        str_trans(++skip_first_line, '\n', ';')
+        str_trans(++start_line, '\n', ';')
     );
 }
 

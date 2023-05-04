@@ -10,7 +10,7 @@
 #include <string.h>
 #include <errno.h>
 
-#include "mocks/mock_getline.h"
+#include "mocks/getline.h"
 #include "utils/sentinel.h"
 
 gl_mock_t *getline_mock_ptr(void)

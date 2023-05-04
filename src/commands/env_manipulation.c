@@ -7,14 +7,15 @@
 
 #include <errno.h>
 #include <stdlib.h>
+#include <stdio.h>
 #include <string.h>
 #include <ctype.h>
 
-#include "shell/shell.h"
-
-#include "printf_expansion.h"
-#include "utils/sentinel.h"
+#include "base.h"
 #include "epitech.h"
+
+#include "shell/shell.h"
+#include "utils/sentinel.h"
 
 void putenv_safe(char *key, char *value, char **original_env)
 {
@@ -45,12 +46,12 @@ bool_t is_valid_env_key_case(char *name)
     char *ptr = name;
 
     if (!isalpha(*ptr)) {
-        eprintf("setenv: Variable name must begin with a letter.\n");
+        EPRINTF("setenv: Variable name must begin with a letter.\n");
         return FALSE;
     }
     for (; *ptr && isalnum(*ptr); ptr++);
     if (*ptr)
-        eprintf(
+        EPRINTF(
             "setenv: Variable name must contain alphanumeric characters.\n"
         );
     return !*ptr;
@@ -63,7 +64,7 @@ void builtin_setenv(context_t *ctx)
     if (cmd->argc == 1)
         return command_run_env(ctx);
     if (cmd->argc > 3) {
-        eprintf("setenv: Too many arguments.\n");
+        EPRINTF("setenv: Too many arguments.\n");
         return;
     }
     if (!is_valid_env_key_case(cmd->argv[1]))
@@ -76,10 +77,10 @@ void builtin_unsetenv(context_t *ctx)
     command_t *cmd = ctx->cmd;
 
     if (cmd->argc == 1) {
-        eprintf("unsetenv: Too few arguments.\n");
+        EPRINTF("unsetenv: Too few arguments.\n");
         return;
     }
     for (int i = 1; i < cmd->argc; i++)
         if (unsetenv(cmd->argv[i]) == W_SENTINEL)
-            eprintf("unsetenv: %s", strerror(errno));
+            EPRINTF("unsetenv: %s", strerror(errno));
 }

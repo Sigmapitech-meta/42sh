@@ -11,6 +11,7 @@
 #include <unistd.h>
 #include <errno.h>
 
+#include "base.h"
 #include "epitech.h"
 
 #include "shell/builtins.h"
@@ -23,7 +24,7 @@
 bool_t shell_read_line(context_t *ctx)
 {
     ctx->input_size = get_line(&ctx->user_input);
-    DEBUG("[%zu] characters entered", ctx->input_size);
+    DEBUG("[%d] characters entered", ctx->input_size);
     if (ctx->input_size == W_SENTINEL_OF(size_t)) {
         if (errno == ENOMEM) {
             ctx->is_running = FALSE;
@@ -35,7 +36,7 @@ bool_t shell_read_line(context_t *ctx)
         ctx->is_running = FALSE;
         return FALSE;
     }
-    if (ctx->input_size < 2)
+    if (ctx->input_size < MINIMAL_INPUT_CHECK)
         return FALSE;
     ctx->user_input[ctx->input_size - 1] = '\0';
     return TRUE;
@@ -43,20 +44,18 @@ bool_t shell_read_line(context_t *ctx)
 
 int shell_evaluate_expression(context_t *ctx)
 {
-    int status;
-
-    if (!builtins_check(ctx)) {
-        DEBUG("Running [%s] as command", ctx->user_input);
-        status = command_run_subprocess(ctx);
-        if (status && !ctx->ran_from_tty) {
-            ctx->is_running = FALSE;
-            ctx->status = (
-                (status == 65280) ? EXIT_FAILURE
-                : (status == 11 ? 139 : status)
-            );
-        }
-    }
-    return 0;
+    if (builtins_check(ctx))
+        return EXIT_OK;
+    DEBUG("Running [%s] as command", ctx->user_input);
+    ctx->status = command_run_subprocess(ctx);
+    if (!ctx->status | ctx->ran_from_tty)
+        return EXIT_OK;
+    ctx->is_running = FALSE;
+    if (ctx->status == SENTINEL_DETECT)
+        ctx->status = EXIT_FAILURE;
+    if (ctx->status == SEGFAULT)
+        ctx->status = SEGFAULT_CORE_DUMP;
+    return ctx->status;
 }
 
 void shell_evaluate(context_t *ctx)
@@ -93,20 +92,21 @@ void shell_run_from_ctx(context_t *ctx)
 
 int shell_run_from_env(char **env)
 {
-    context_t ctx = {0};
+    command_t cmd = { 0 };
+    context_t ctx = {
+        .original_env = env,
+        .ran_from_tty = isatty(STDIN_FILENO),
+        .prev_dir = getcwd(NULL, 0),
+        .is_running = TRUE,
+        .cmd = &cmd,
+    };
 
-    ctx.ran_from_tty = isatty(STDIN_FILENO);
+    if (!ctx.prev_dir)
+        return EXIT_FAILURE;
     DEBUG_MSG_IF(ctx.ran_from_tty, "stdin is a tty");
-    ctx.is_running = TRUE;
-    ctx.prev_dir = getcwd(NULL, 0);
     DEBUG("Running in [%s]", ctx.prev_dir);
-    ctx.cmd = malloc(sizeof (command_t));
-    if (!ctx.cmd)
-        return W_SENTINEL;
-    ctx.original_env = env;
     shell_run_from_ctx(&ctx);
     free(ctx.prev_dir);
-    free(ctx.cmd);
     env_free(ctx.original_env);
     return ctx.status;
 }

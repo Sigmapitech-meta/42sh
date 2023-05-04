@@ -8,9 +8,13 @@
 #ifndef UTILS_H_
     #define UTILS_H_
 
-    #define FLOATING_EXCEPTION (8)
-
-size_t get_line(char **line);
+enum {
+    FLOATING_EXCEPTION = 8,
+    SENTINEL_DETECT = 65280,
+    SEGFAULT = 11,
+    _CORE_DUMP = 128,
+    SEGFAULT_CORE_DUMP = SEGFAULT | _CORE_DUMP
+};
 
 char *path_concat(char *left, char *right);
 char *path_find_cmd(char *cmd);

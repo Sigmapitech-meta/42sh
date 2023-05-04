@@ -8,18 +8,19 @@
 #ifndef WOLOLO_DEBUG_MODE_H
     #define WOLOLO_DEBUG_MODE_H
 
+    #include "utils/colors.h"
+
     #define NOTHING /* Nothing */
 
     #ifdef DEBUG_MODE
         #include <stdio.h>
 
-        #define BLUE "\e[34m"
-        #define RESET "\e[0m"
+        #define HEAD_FMT BOLD BLUE "%s" RESET ":" PURPLE BOLD "%d" RESET ": !"
+        #define COLORED(s) debug_colorize(HEAD_FMT s "\n")
 
-        #define COLORED(s) (BLUE "?" RESET " " s "\n")
-
-        #define DEBUG(fmt, ...) (printf(COLORED(fmt), __VA_ARGS__))
-        #define DEBUG_MSG(string) (printf(COLORED(string)))
+        #define HEAD __FILE_NAME__, __LINE__
+        #define DEBUG(fmt, ...) (printf(COLORED(fmt), HEAD, __VA_ARGS__))
+        #define DEBUG_MSG(string) (printf(COLORED(string), HEAD))
 
         #define DEBUG_CALL(func, ...) func(__VA_ARGS__)
 
@@ -39,6 +40,29 @@
 
         #define DEBUG_USED __attribute__((unused))
         #define DEBUG_EXPR(func) /* nop */
+    #endif
+
+
+    #ifdef DEBUG_MODE
+        #include "utils/attributes.h"
+
+        #define ARR_SIZE(arr) (sizeof (arr) / sizeof(arr[0]))
+
+typedef struct {
+    const char flag;
+    const char *color;
+} debug_color_t;
+
+// Todo: Improve using a custom lookahead format instead of guessing from spec.
+//  Maybe & os the lookahead and ~ to reset.
+static const debug_color_t FLAGS_COLORS[] = {
+    {'s', CYAN}, {'d', YELLOW}, {'i', RED},
+};
+
+static const int FLAGS_COL_COUNT = ARR_SIZE(FLAGS_COLORS);
+static const int FLAG_COL_SIZE = (COLORS_STRING_SIZE + RESET_STRING_SIZE);
+
+char *debug_colorize(char *fmt);
     #endif
 
 #endif /* !WOLOLO_DEBUG_MODE_H */

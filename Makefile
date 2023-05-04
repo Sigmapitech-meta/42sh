@@ -29,20 +29,18 @@ NAME_DEBUG := debug
 NAME_ANGRY := angry
 TESTS := run_tests
 
-# ↓ Clear all possible junk
-VPATH :=
-
-SRC :=
-BSRC :=
-TSRC :=
+BINS := $(NAME_BATCH) $(NAME_DEBUG) $(NAME_ANGRY) $(TESTS)
 
 # ↓ Sources
 VPATH += src
 SRC += environment.c
-SRC += eprintf.c
 SRC += main.c
 SRC += prompt.c
 SRC += shell.c
+
+VPATH += src/base
+SRC += str_split.c
+SRC += file_reader.c
 
 VPATH += src/commands
 SRC += builtins.c
@@ -53,7 +51,6 @@ SRC += env_manipulation.c
 SRC += location_builtins.c
 
 VPATH += src/utils
-SRC += get_line.c
 SRC += parameters.c
 SRC += path.c
 SRC += status.c
@@ -69,22 +66,29 @@ TSRC += test_command_not_found.c
 
 VPATH += tests/mocks
 TSRC += mock_getline.c
+TSRC += mock_malloc.c
+TSRC += mock_read.c
+TSRC += mock_stat.c
 
 VPATH += tests/integration
 TSRC += test_autofree.c
+TSRC += test_file_read.c
 
 VPATH += tests/integration/get_line
 TSRC += test_get_line_fixed_data.c
 TSRC += test_get_line_broken.c
 
-# ↓ Batch runner sources
+# ↓ Debug only sources
 
-BSRC += $(filter-out %main.c, $(SRC))
+DSRC := $(SRC)
+DSRC += debug_colorize.c
+
+# ↓ Batch runner sources
+BSRC += $(filter-out %main.c, $(DSRC))
 BSRC += tests/run_shell.c
 
 VPATH += batch
 BSRC += batch_main.c
-BSRC += file_reader.c
 
 vpath %.c $(VPATH)
 
@@ -104,8 +108,9 @@ endif
 
 # ↓ Generators
 OBJ := $(SRC:%.c=$(BUILD_DIR)/release/%.o)
-DEBUG_OBJ := $(SRC:%.c=$(BUILD_DIR)/debug/%.o)
-ANGRY_OBJ := $(SRC:%.c=$(BUILD_DIR)/angry/%.o)
+
+DEBUG_OBJ := $(DSRC:%.c=$(BUILD_DIR)/debug/%.o)
+ANGRY_OBJ := $(DSRC:%.c=$(BUILD_DIR)/angry/%.o)
 
 TEST_OBJ := $(TSRC:%.c=$(BUILD_DIR)/tests/%.o)
 TEST_OBJ += $(filter-out %main.o, $(SRC:%.c=$(BUILD_DIR)/tests/%.o))
@@ -172,7 +177,8 @@ $(BUILD_DIR)/debug/%.o: %.c
 	$Q $(CC) $(CFLAGS) -c $< -o $@
 	$(call LOG, ":c" $(notdir $@))
 
-$(NAME_ANGRY): CFLAGS += -g3 -D DEBUG_MODE -fsanitize=address,leak,undefined
+$(NAME_ANGRY): CFLAGS += -D DEBUG_MODE
+$(NAME_ANGRY): CFLAGS += -g3 -fsanitize=address,leak,undefined
 $(NAME_ANGRY): LDFLAGS += -lasan
 $(NAME_ANGRY): HEADER += "angry"
 $(NAME_ANGRY): $(ANGRY_OBJ)
@@ -193,15 +199,15 @@ clean:
 		$(if $(REMOVED), "removed:c" $(REMOVED), "no file removed."))
 
 fclean:
-	$(call LOG,                                                       \
-		$(if $(shell find . -type d -name $(BUILD_DIR)),              \
-			":r-:c $(BUILD_DIR)~",                                    \
+	$(call LOG,                                                    \
+		$(if $(shell find . -type d -name $(BUILD_DIR)),           \
+			":r-:c $(BUILD_DIR)~",                                 \
 			"no build dir to remove."))
 	@ $(RM) -r $(BUILD_DIR)
-	$(eval REMOVED =                                                  \
-		$(shell $(RM) -v $(NAME) $(NAME_DEBUG) $(NAME_ANGRY) $(TESTS) \
+	$(eval REMOVED =                                               \
+		$(shell $(RM) -v $(BINS)                                   \
 			| grep "removed" | cut -d ' ' -f 2))
-	$(call LOG,                                                       \
+	$(call LOG,                                                    \
 		$(if $(REMOVED),"removed:g" $(REMOVED), "no binary to remove."))
 
 .PHONY: clean fclean
@@ -221,7 +227,7 @@ $(BUILD_DIR)/tests/%.o: %.c
 $(TESTS): CFLAGS += -g3 --coverage
 $(TESTS): CFLAGS += -iquote tests/include
 $(TESTS): LDLIBS += -lcriterion
-$(TESTS): LDLIBS += -Wl,--wrap=getline
+$(TESTS): LDLIBS += -Wl,--wrap=getline,--wrap=stat,--wrap=read,--wrap=malloc
 $(TESTS): LDFLAGS += -fprofile-arcs -ftest-coverage
 $(TESTS): $(TEST_OBJ)
 	$Q $(CC) -o $@ $^ $(CFLAGS) $(LDLIBS) $(LDFLAGS)
