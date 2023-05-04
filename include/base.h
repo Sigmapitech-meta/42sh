@@ -31,9 +31,18 @@ USED size_t get_line(char **line)
     return getline(line, &zero, stdin);
 }
 
+static inline
+USED char *str_trans(char *string, char in, char out)
+{
+    for (int i = 0; string[i]; i++)
+        if (string[i] == in)
+            string[i] = out;
+    return string;
+}
+
+
 int str_count(char *string, char *delim);
 char **str_split(char *string, char *delim);
-char *str_trans(char *string, char in, char out);
 
 char *file_read_fd(int fd, size_t filesize);
 char *file_read(char *filepath);

@@ -63,11 +63,3 @@ char **str_split(char *string, char *delim)
     }
     return words;
 }
-
-char *str_trans(char *string, char in, char out)
-{
-    for (int i = 0; string[i]; i++)
-        if (string[i] == in)
-            string[i] = out;
-    return string;
-}
