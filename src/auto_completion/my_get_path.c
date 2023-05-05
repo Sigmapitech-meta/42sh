@@ -20,20 +20,19 @@ static int count_file(char *path)
     struct dirent *L_dir = NULL;
     struct stat stats;
     int count = 0;
-    char *path_in_file = NULL;
-
+    AUTOFREE char *path_in_file = NULL;
     path = my_strcat(path, "/");
     path_in_file = strdup(path);
     if (!dir)
         return -84;
     for (L_dir = readdir(dir); L_dir != NULL; L_dir = readdir(dir)) {
-       if (L_dir->d_name[0] == '.')
+        if (L_dir->d_name[0] == '.')
             continue;
-       path_in_file = strdup(path);
-       path_in_file = my_strcat(path_in_file, L_dir->d_name);
-       stat(path_in_file, &stats);
-       if (access(path, X_OK) == 0)
-           count ++;
+        path_in_file = strdup(path);
+        path_in_file = my_strcat(path_in_file, L_dir->d_name);
+        stat(path_in_file, &stats);
+        if (access(path, X_OK) == 0)
+            count ++;
     }
     closedir(dir);
     return count;
@@ -76,6 +75,5 @@ char **my_get_path(char *paths)
         return NULL;
     for (int i = 0; path[i + 2] != NULL; i += 2)
         len += my_fill_bins(path[i], bins, len);
-    return bins;
-    
+    return bins;    
 }
