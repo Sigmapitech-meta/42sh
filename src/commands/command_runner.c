@@ -17,7 +17,7 @@
 
 #include "utils/debug_mode.h"
 #include "utils/sentinel.h"
-#include "utils/autofree.h"
+#include "utils/cleanup.h"
 
 char *command_handle_home(char *target_path)
 {

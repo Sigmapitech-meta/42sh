@@ -12,7 +12,7 @@
 #include "batch.h"
 
 #include "epitech.h"
-#include "utils/autofree.h"
+#include "utils/cleanup.h"
 #include "run_shell_command.h"
 
 void batch_run(char *filepath)
