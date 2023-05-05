@@ -26,7 +26,7 @@ void putenv_safe(char *key, char *value, char **original_env)
     env_setter = env_get_setter(key, value);
     if (!env_setter)
         return;
-    if (putenv(env_setter) == W_SENTINEL)
+    if (putenv(env_setter) == SENTINEL)
         printf("setenv: %s", strerror(errno));
 }
 
@@ -81,6 +81,6 @@ void builtin_unsetenv(context_t *ctx)
         return;
     }
     for (int i = 1; i < cmd->argc; i++)
-        if (unsetenv(cmd->argv[i]) == W_SENTINEL)
+        if (IS_SENTINEL(unsetenv(cmd->argv[i])))
             EPRINTF("unsetenv: %s", strerror(errno));
 }

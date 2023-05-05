@@ -31,7 +31,7 @@ void move_relative(context_t *ctx, char *relative_path)
     if (!realpath(relative_path, target_path))
         return perror(cmd->argv[1]);
     old_dir = getcwd(ctx->prev_dir, 0);
-    if (chdir(target_path) == W_SENTINEL) {
+    if (IS_SENTINEL(chdir(target_path))) {
         EPRINTF("%s: %s.\n", cmd->argv[1], strerror(errno));
         return;
     }

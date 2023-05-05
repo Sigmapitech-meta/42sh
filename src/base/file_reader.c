@@ -17,7 +17,7 @@ size_t file_get_size(char const *filepath)
 {
     stat_t buffer;
 
-    return W_SENTINEL_OR(
+    return SENTINEL_OR(
         stat(filepath, &buffer),
         buffer.st_size
     );
@@ -25,18 +25,15 @@ size_t file_get_size(char const *filepath)
 
 char *file_read_fd(int fd, size_t filesize)
 {
-    long state;
     char *content = malloc((filesize + 1) * sizeof(char));
 
     if (!content)
         return NULL;
-    state = read(fd, content, filesize);
-    if (state == W_SENTINEL_OF(long)) {
-        free(content);
-        return NULL;
-    }
-    content[state] = '\0';
-    return content;
+    content[filesize] = '\0';
+    if (IS_SENTINEL_OF(read(fd, content, filesize), ssize_t))
+        return content;
+    free(content);
+    return NULL;
 }
 
 char *file_read(char *filepath)
@@ -44,7 +41,7 @@ char *file_read(char *filepath)
     int fd = open(filepath, O_RDONLY);
     char *content = NULL;
 
-    if (fd == W_SENTINEL)
+    if (IS_SENTINEL(fd))
         return NULL;
     content = file_read_fd(fd, file_get_size(filepath));
     close(fd);

@@ -74,7 +74,7 @@ static void command_run_internal(context_t *ctx, char *cmd_path, char **env)
     if (errno == ENOEXEC)
         EPRINTF(" Wrong Architecture.");
     EPRINTF("\n");
-    exit(W_SENTINEL);
+    exit(SENTINEL);
 }
 
 void command_run(context_t *ctx)
@@ -84,7 +84,7 @@ void command_run(context_t *ctx)
 
     if (!cmd_path || access(cmd_path, F_OK)) {
         EPRINTF("%s: Command not found.\n", cmd->argv[0]);
-        exit(W_SENTINEL);
+        exit(SENTINEL);
     }
     command_run_internal(ctx, cmd_path, environ);
 }
