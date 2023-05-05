@@ -6,7 +6,7 @@
 */
 
 #include <string.h>
-#include "utils/autofree.h"
+#include "utils/cleanup.h"
 #include "utils/sentinel.h"
 #include "epitech.h"
 
