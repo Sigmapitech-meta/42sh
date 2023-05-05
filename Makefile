@@ -38,33 +38,14 @@ SRC += main.c
 SRC += prompt.c
 SRC += shell.c
 
-VPATH += src/alias
-SRC += add_alias.c
-SRC += alias_command.c
-SRC += create_list_alias.c
-SRC += del_alias.c
-SRC += is_alias.c
-SRC += my_strcat.c
-SRC += replace_alias_with_command.c
-
 VPATH += src/auto_completion
 SRC += my_fill_list.c
 SRC += my_get_path.c
 SRC += my_get_alias.c
 SRC += my_switch_coms.c
-SRC += print_coms.c
 SRC += my_print_recommendations.c
 SRC += my_str_split.c
-
-VPATH += src/builtins
-SRC += builtin_cd.c
-SRC += builtin_env.c
-SRC += builtin_exit.c
-SRC += builtin_setenv.c
-SRC += builtin_unsetenv.c
-
-VPATH += src/helpers
-SRC += file_interaction.c
+SRC += my_strcat.c
 
 VPATH += src/list
 SRC += list_append.c

@@ -5,14 +5,15 @@
 ** to get the binaries
 */
 
-#include "shell/auto_completion.h"
-#include <unistd.h>
 #include <dirent.h>
-#include <sys/stat.h>
 #include <stdlib.h>
-#include <string.h>
 #include <stdio.h>
-#include <errno.h>
+#include <string.h>
+#include <sys/stat.h>
+#include <unistd.h>
+
+#include "utils/autofree.h"
+#include "shell/auto_completion.h"
 
 static int count_file(char *path)
 {
