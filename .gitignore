@@ -25,5 +25,9 @@ override.mk
 # Logs
 *.log
 
+# Python cache (github action)
+__pycache__
+*.pyc
+
 # Tests
 run_tests
