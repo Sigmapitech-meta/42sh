@@ -1,0 +1,6 @@
+# Binaries
+div_zero
+double_free
+free_invalid_pointer
+segfault
+segfault_core_dump

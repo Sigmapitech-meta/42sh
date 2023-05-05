@@ -1,8 +1,8 @@
 /*
 ** EPITECH PROJECT, 2023
-** minishell2
+** 42sh
 ** File description:
-** context.h
+** shell.h
 */
 
 #ifndef SHELL_H
@@ -10,8 +10,9 @@
 
     #define MAX_ARG_COUNT (2)
 
-    #define ENV_FIND_FIXED(env, name) env_find(env, name, sizeof(name) - 1)
-    #define ENV_FIND_VAR(env, name) (ENV_FIND_FIXED(env, name "="))
+extern char **environ;
+
+static const int MINIMAL_INPUT_CHECK = 2;
 
 static const char USAGE[] = (
     "Minishell 2 - Usage: ./mysh [-h]\n"
@@ -25,7 +26,6 @@ static const char USAGE[] = (
 );
 
 typedef _Bool bool_t;
-typedef struct list_s list_t;
 typedef unsigned long size_t;
 
 typedef struct command_s {
@@ -34,23 +34,28 @@ typedef struct command_s {
 } command_t;
 
 typedef struct context_s {
-    unsigned char status;
+    command_t *cmd;
+    unsigned short status;
     bool_t is_running;
     bool_t ran_from_tty;
-    list_t *env;
     char *user_input;
     char *prev_dir;
     size_t input_size;
-    command_t *cmd;
+    char **original_env;
 } context_t;
 
-bool_t command_run_subprocess(context_t *ctx);
+int command_run_subprocess(context_t *ctx);
+
 int shell_run_from_env(char **env);
+void shell_run_from_ctx(context_t *ctx);
 
-list_t *env_parse(char **env);
-char **env_rebuild(list_t *env);
-int env_find(list_t *env, char *name, int n);
+bool_t shell_read_line(context_t *ctx);
+void shell_evaluate(context_t *ctx);
 
-void prompt_display(context_t *ctx);
+void prompt_display(void);
+
+char *env_get_setter(char *key, char *value);
+void env_free_key(char *key, char **original_env);
+void env_free(char **original_env);
 
 #endif /* !SHELL_H */

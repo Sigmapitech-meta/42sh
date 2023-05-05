@@ -20,6 +20,7 @@
             gcovr
             ltrace
             gnumake
+            man-pages
             tcsh
             valgrind
           ];

@@ -1,8 +1,8 @@
 /*
 ** EPITECH PROJECT, 2023
-** lem-in
+** 42sh
 ** File description:
-** k_attributes.h
+** attributes.h
 */
 
 #ifndef K_ATTRIBUTES_H_

@@ -1,6 +1,9 @@
 * text=lf
 * eol=lf
 
+*.batch linguist-detectable=true
+*.batch linguist-language=tcsh
+
 *.png binary
 *.jpg binary
 *.pdf binary

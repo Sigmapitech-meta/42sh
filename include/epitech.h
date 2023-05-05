@@ -8,10 +8,12 @@
 #ifndef EPITECH_H
     #define EPITECH_H
 
-    #define EXIT_MSG(msg, w, v) (w(msg) ? v : v)
+    #include "utils/sentinel.h"
 
-    #define EXIT_KO_MSG(msg) EXIT_MSG(msg, W_ERROR_C, EXIT_KO)
-    #define EXIT_OK_MSG(msg) EXIT_MSG(msg, W_OUTPUT_C, EXIT_OK)
+    #define EXIT_MSG(ret, written) W_SENTINEL_OR(written, ret)
+
+    #define EXIT_KO_MSG(...) EXIT_MSG(EXIT_KO, EPRINTF(__VA_ARGS__))
+    #define EXIT_OK_MSG(...) EXIT_MSG(EXIT_OK, printf(__VA_ARGS__))
 
 typedef _Bool bool_t;
 

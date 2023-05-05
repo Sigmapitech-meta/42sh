@@ -3,6 +3,9 @@
 debug
 angry
 
+# Batch
+batch_runner
+
 # Build
 ?build
 .fast
@@ -10,12 +13,17 @@ angry
 # Coverage
 *.gc??
 
+# Config
+.42shrc
+
 # Lib
 *.a
+
+# Makefile overides
+override.mk
 
 # Logs
 *.log
 
 # Tests
-unittests
-.42shrc
+run_tests
