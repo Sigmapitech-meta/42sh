@@ -12,13 +12,13 @@
 
     #define HOSTNAME_MAX_LEN 64
 
-    #define _PROMPT_BOX(item) BOLD BLUE "[" item BOLD BLUE "]" RESET
-    #define _USER_HOST GREEN "%s" RESET BOLD "@" CYAN "%s"
-    #define _CWD RESET BOLD "%s" BLUE
+    #define PROMPT_BOX(item) BOLD BLUE "[" item BOLD BLUE "]" RESET
+    #define USER_HOST GREEN "%s" RESET BOLD "@" CYAN "%s"
+    #define PWD RESET BOLD "%s" BLUE
 
 static const char *FORMAT_PROMPT = (
-    BOLD BLUE "┌─" _PROMPT_BOX(_USER_HOST) " - " _PROMPT_BOX(_CWD) "\n"
-    BOLD BLUE "└─" _PROMPT_BOX(PURPLE "$") " "
+    BOLD BLUE "┌─" PROMPT_BOX(USER_HOST) " - " PROMPT_BOX(PWD) "\n"
+    BOLD BLUE "└─" PROMPT_BOX(PURPLE "$") " "
 );
 
 #endif /* !PROMPT_H_ */
