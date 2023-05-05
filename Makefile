@@ -29,7 +29,7 @@ NAME_DEBUG := debug
 NAME_ANGRY := angry
 TESTS := run_tests
 
-BINS := $(NAME_BATCH) $(NAME_DEBUG) $(NAME_ANGRY) $(TESTS)
+BINS := $(NAME) $(NAME_BATCH) $(NAME_DEBUG) $(NAME_ANGRY) $(TESTS)
 
 # ↓ Sources
 VPATH += src
@@ -117,6 +117,8 @@ TEST_OBJ += $(filter-out %main.o, $(SRC:%.c=$(BUILD_DIR)/tests/%.o))
 
 BATCH_OBJ := $(BSRC:%.c=$(BUILD_DIR)/batch/%.o)
 
+ALL_OBJS := $(OBJ) $(DEBUG_OBJ) $(ANGRY_OBJ) $(TEST_OBJ)
+
 # ↓ Utils
 ifneq ($(shell tput colors),0)
     C_RESET := \033[00m
@@ -193,7 +195,7 @@ $(BUILD_DIR)/angry/%.o: %.c
 clean:
 	$(eval REMOVED =                                               \
 		$(shell                                                    \
-			$(RM) -v $(OBJ) $(DEBUG_OBJ) $(ANGRY_OBJ) $(TEST_OBJ)  \
+			$(RM) -v $(ALL_OBJS)                                   \
 			| grep "removed" | cut -d ' ' -f 2))
 	$(call LOG,                                                    \
 		$(if $(REMOVED), "removed:c" $(REMOVED), "no file removed."))
