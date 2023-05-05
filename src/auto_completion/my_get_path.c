@@ -33,7 +33,7 @@ static int count_file(char *path)
         path_in_file = my_strcat(path_in_file, L_dir->d_name);
         stat(path_in_file, &stats);
         if (access(path, X_OK) == 0)
-            count ++;
+            count++;
     }
     closedir(dir);
     return count;
@@ -56,7 +56,7 @@ static int my_fill_bins(char *path, char **bins, int index)
         path = my_strcat(path_in_file, L_dir->d_name);
         if (access(path, X_OK) == 0) {
             bins[index] = strdup(L_dir->d_name);
-            index ++;
+            index++;
         }
     }
     return index;
@@ -68,7 +68,7 @@ char **my_get_path(char *paths)
     char **bins = NULL;
     int len = 0;
 
-    for (int i = 0; path[i]; i ++)
+    for (int i = 0; path[i]; i++)
         len += count_file(strdup(path[i]));
     bins = calloc(sizeof(char *), (len + 1));
     len = 0;

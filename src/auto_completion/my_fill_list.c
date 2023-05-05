@@ -22,9 +22,9 @@ list_t *my_get_bin_list(char *env)
         printf("something went wrong\n");
         return NULL;
     }
-    for (int i = 0; path[i]; i ++)
+    for (int i = 0; path[i]; i++)
         list_append(bins, path[i]);
-    for (int i = 0; alias[i]; i ++)
+    for (int i = 0; alias[i]; i++)
         list_append(bins, alias[i]);
     return bins;
 }

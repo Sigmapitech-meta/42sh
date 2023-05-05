@@ -22,7 +22,7 @@ static bool is_alias_1(char *str)
         str[2] == 'i' &&
         str[3] == 'a' &&
         str[4] == 's')
-        return true;;
+        return true;
     return false;
 }
 
@@ -44,7 +44,7 @@ static char **parse_alias(char **file)
 
     if (!alias)
         return NULL;
-    for (int i = 0; file[i]; i ++)
+    for (int i = 0; file[i]; i++)
         if (is_alias_1(file[i]) && strcmp(file[i], "") != 0)
             alias[j++] = strdup(file[i]);
     alias[line_nbr] = NULL;

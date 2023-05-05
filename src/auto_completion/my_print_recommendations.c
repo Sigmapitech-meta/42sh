@@ -16,7 +16,7 @@ static bool_t start_the_same_way(char *bin, char *input)
 {
     if (strlen(input) > strlen(bin))
         return FALSE;
-    for (int i = 0; input[i]; i ++)
+    for (int i = 0; input[i]; i++)
         if (input[i] != bin[i])
             return FALSE;
     return TRUE;
@@ -45,7 +45,7 @@ char *my_print_recommendations(list_t *bins, char *input)
             printf("\n");
         }
         if (save != i)
-            count ++;
+            count++;
     }
     printf("\n");
     if (count == 1)
