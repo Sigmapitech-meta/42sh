@@ -7,17 +7,23 @@
 
 #include <stdlib.h>
 #include <string.h>
-#include <stdio.h>
 
 #include "epitech.h"
 #include "shell/auto_completion.h"
 #include "shell/helpers.h"
 #include "utils/autofree.h"
 
-static
-bool_t is_alias(char *str)
+static bool is_alias_1(char *str)
 {
-    return strcmp(str, "alias");
+    if (strlen(str) < 5)
+        return false;
+    if (str[0] == 'a' &&
+        str[1] == 'l' &&
+        str[2] == 'i' &&
+        str[3] == 'a' &&
+        str[4] == 's')
+        return true;;
+    return false;
 }
 
 static int count_alias(char **file_content)
@@ -25,7 +31,7 @@ static int count_alias(char **file_content)
     int count = 0;
 
     for (int i = 0; file_content[i]; i++)
-        if (is_alias(file_content[i]))
+        if (is_alias_1(file_content[i]))
             count++;
     return count;
 }
@@ -34,16 +40,13 @@ static char **parse_alias(char **file)
 {
     int line_nbr = count_alias(file);
     char **alias = calloc(sizeof(char *), (line_nbr + 1));
-    char **one_alias = NULL;
     int j = 0;
 
     if (!alias)
         return NULL;
     for (int i = 0; file[i]; i ++)
-        if (is_alias(file[i]) && strcmp(file[i], "") != 0) {
-            one_alias = my_str_split(file[i], " =");
-            alias[j++] = strdup(one_alias[1]);
-        }
+        if (is_alias_1(file[i]) && strcmp(file[i], "") != 0)
+            alias[j++] = strdup(file[i]);
     alias[line_nbr] = NULL;
     return alias;
 }

@@ -41,10 +41,20 @@ SRC += main.c
 SRC += prompt.c
 SRC += shell.c
 
+VPATH += src/alias
+SRC += add_alias.c
+SRC += alias_command.c
+SRC += create_list_alias.c
+SRC += del_alias.c
+SRC += is_alias.c
+SRC += my_strcat.c
+SRC += replace_alias_with_command.c
+
 VPATH += src/auto_completion
 SRC += my_fill_list.c
 SRC += my_get_path.c
 SRC += my_get_alias.c
+SRC += print_coms.c
 SRC += my_print_recommendations.c
 SRC += my_str_split.c
 
