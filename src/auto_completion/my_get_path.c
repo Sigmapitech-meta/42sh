@@ -75,5 +75,5 @@ char **my_get_path(char *paths)
         return NULL;
     for (int i = 0; path[i + 2] != NULL; i += 2)
         len += my_fill_bins(path[i], bins, len);
-    return bins;    
+    return bins;
 }

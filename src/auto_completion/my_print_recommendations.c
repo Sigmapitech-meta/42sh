@@ -59,16 +59,25 @@ static int my_print_com(char *com)
     return len;
 }
 
-int my_print_recommendations(list_t *bins, char *input)
+char *my_print_recommendations(list_t *bins, char *input)
 {
     int i = 0;
+    int count = 0;
+    int save = 0;
 
     LIST_FOREACH(bins, node) {
+        save = i;
         if (start_the_same_way((char *)node->value, input))
             i += my_print_com((char *)node->value);
-        if (i >= 30)
+        if (i >= 30) {
+            i = 0;
             printf("\n");
+        }
+        if (save != i)
+            count ++;
     }
     printf("\n");
-    return 0;
+    if (count == 1)
+        input = my_switch_coms(bins, input);
+    return input;
 }
