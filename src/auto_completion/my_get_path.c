@@ -1,8 +1,8 @@
 /*
 ** EPITECH PROJECT, 2023
-** my_get_path.c
+** 42sh
 ** File description:
-** to get the binaries
+** my_get_path.c
 */
 
 #include <dirent.h>

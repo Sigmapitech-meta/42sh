@@ -1,8 +1,8 @@
 /*
 ** EPITECH PROJECT, 2023
-** my_switch_coms.c
+** 42sh
 ** File description:
-** to switch the command with the only one corresponding
+** my_switch_coms.c
 */
 
 #include "shell/auto_completion.h"

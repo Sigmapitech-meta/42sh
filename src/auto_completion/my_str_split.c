@@ -1,8 +1,8 @@
 /*
 ** EPITECH PROJECT, 2023
-** my_str_split_2.c
+** 42sh
 ** File description:
-** alternative version of str_split
+** my_str_split.c
 */
 
 #include "shell/auto_completion.h"

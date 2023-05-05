@@ -1,8 +1,8 @@
 /*
-** EPITECH PROJECT, 2022
-** my_strcat.c
+** EPITECH PROJECT, 2023
+** 42sh
 ** File description:
-** to contcatenate a string on another
+** my_strcat.c
 */
 
 #include <stddef.h>
