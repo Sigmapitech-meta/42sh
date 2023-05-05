@@ -17,25 +17,38 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v2
+    - name: Get branch name
+      id: branch-names
+      uses: tj-actions/branch-names@v6
+
+    - uses: actions/checkout@v3
+      with:
+          ref: ${{ steps.branch-names.outputs.head_ref_branch }}
+
+    - name: setup git
+      run: |
+        git config --local user.email "41898282+github-actions[bot]@users.noreply.github.com"
+        git config --local user.name "github-actions[bot]"
+        git fetch --unshallow origin
+
     - uses: actions/setup-python@v2
       with:
         persist-credentials: false
         fetch-depth: 0
         python-version: '3.11'
         architecture: 'x64'
+
     - name: running script
       run: python ./.github/fix_headers.py
-    - name: setup git
-      run: |
-        git config --local user.email "41898282+github-actions[bot]@users.noreply.github.com"
-        git config --local user.name "github-actions[bot]"
+
     - name: add to git
       run: |
-        git pull
         git add .
-        git diff-index --quiet HEAD || git commit -m ":art: Fix Headers"
-        git push origin main
+        git commit -m ":art: Fix Headers" || echo "nothing to commit."
+
+    - name: push
+      run: |
+        git push || echo "nothing to commit."
 
   run_epitech_coding_style_checker:
     needs: [fix_headers]
@@ -46,17 +59,22 @@ jobs:
         uses: actions/checkout@v3
         with:
           fetch-depth: 0
+
       - name: Install SSH key
         uses: shimataro/ssh-key-action@v2
         with:
           key: ${{ secrets.GH_SSH_PRIVATE_KEY }}
           known_hosts: $GH_PUB_KEY
+
       - name: Setup Nix via cachix
         uses: cachix/install-nix-action@v20
+
       - name: Setup cachix cli
         run: nix-env -iA cachix -f https://cachix.org/api/v1/install
+
       - name: Install coding-style
         run: cachix use coding-style
+
       - name: Run
         run: |
           nix run github:Sigmanificient/coding-style-checker \
@@ -70,11 +88,13 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v3
+
       - name: Install SSH key
         uses: shimataro/ssh-key-action@v2
         with:
           key: ${{ secrets.GH_SSH_PRIVATE_KEY }}
           known_hosts: $GH_PUB_KEY
+
       - name: push to epitech
         run: |
           git config --global user.email "edhyjox@gmail.com"
