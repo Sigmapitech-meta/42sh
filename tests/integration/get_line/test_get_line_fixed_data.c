@@ -57,5 +57,5 @@ $ {
         CR_ASSERT(size > 0);
         size = get_line(&line);
     }
-    CR_ASSERT_EQ(size, W_SENTINEL_OF(ssize_t));
+    CR_ASSERT_EQ(size, SENTINEL_OF(ssize_t));
 }

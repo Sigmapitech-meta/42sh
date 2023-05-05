@@ -30,7 +30,7 @@ char *file_read_fd(int fd, size_t filesize)
     if (!content)
         return NULL;
     content[filesize] = '\0';
-    if (IS_SENTINEL_OF(read(fd, content, filesize), ssize_t))
+    if (!IS_SENTINEL_OF(read(fd, content, filesize), ssize_t))
         return content;
     free(content);
     return NULL;
