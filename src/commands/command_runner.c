@@ -21,7 +21,6 @@
 
 char *command_handle_home(char *target_path)
 {
-    char *path;
     char *dir = getenv("HOME");
 
     if (!dir) {
@@ -29,12 +28,10 @@ char *command_handle_home(char *target_path)
         return NULL;
     }
     dir = strdup(dir);
-    if (!dir)
-        return NULL;
-    path = path_concat(dir, target_path + 2);
-    if (!path)
-        return NULL;
-    return path;
+    return NULL_OR(
+        dir,
+        path_concat(dir, target_path + 2)
+    );
 }
 
 char *command_get_full_path(char **params)
@@ -52,8 +49,6 @@ char *command_get_full_path(char **params)
         path = path_concat(dir, target_path);
     } else
         path = path_find_cmd(target_path);
-    if (!path)
-        return NULL;
     return path;
 }
 

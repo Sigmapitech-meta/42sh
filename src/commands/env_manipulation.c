@@ -67,9 +67,8 @@ void builtin_setenv(context_t *ctx)
         EPRINTF("setenv: Too many arguments.\n");
         return;
     }
-    if (!is_valid_env_key_case(cmd->argv[1]))
-        return;
-    putenv_safe(cmd->argv[1], cmd->argv[2], ctx->original_env);
+    if (is_valid_env_key_case(cmd->argv[1]))
+        putenv_safe(cmd->argv[1], cmd->argv[2], ctx->original_env);
 }
 
 void builtin_unsetenv(context_t *ctx)

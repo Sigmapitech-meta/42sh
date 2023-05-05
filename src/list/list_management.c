@@ -10,14 +10,7 @@
 
 list_t *list_create(void)
 {
-    list_t *list = malloc(sizeof(list_t));
-
-    if (!list)
-        return NULL;
-    list->head = NULL;
-    list->tail = NULL;
-    list->size = 0;
-    return list;
+    return calloc(1, sizeof(list_t));
 }
 
 void list_destroy(list_t *list)

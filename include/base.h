@@ -15,6 +15,8 @@
 /** printf-like within the standard error */
     #define EPRINTF(...) (fprintf(stderr, __VA_ARGS__))
 
+    #define NULL_OR(cond, expr) ((cond) ? expr : NULL)
+
 typedef struct stat stat_t;
 
 static inline
@@ -45,6 +47,6 @@ int str_count(char *string, char *delim);
 char **str_split(char *string, char *delim);
 
 char *file_read_fd(int fd, size_t filesize);
-char *file_read(char *filepath);
+char *file_read(char const *filepath);
 
 #endif /* !BASE_H_ */
