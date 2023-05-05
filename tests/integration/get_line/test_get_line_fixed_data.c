@@ -2,7 +2,7 @@
 ** EPITECH PROJECT, 2023
 ** 42sh
 ** File description:
-** test_getline.c
+** test_get_line_fixed_data.c
 */
 
 #include "base.h"

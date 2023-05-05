@@ -2,7 +2,7 @@
 ** EPITECH PROJECT, 2023
 ** 42sh
 ** File description:
-** command.c
+** command_runner.c
 */
 
 #include <errno.h>

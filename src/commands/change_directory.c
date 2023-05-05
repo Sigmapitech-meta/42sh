@@ -2,7 +2,7 @@
 ** EPITECH PROJECT, 2023
 ** 42sh
 ** File description:
-** builtin_cd.c
+** change_directory.c
 */
 
 #include <errno.h>

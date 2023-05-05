@@ -1,8 +1,8 @@
 /*
 ** EPITECH PROJECT, 2023
-** Kepler
+** 42sh
 ** File description:
-** mock_stat.c
+** mock_getline.c
 */
 
 #include <unistd.h>

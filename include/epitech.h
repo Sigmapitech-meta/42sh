@@ -1,8 +1,8 @@
 /*
 ** EPITECH PROJECT, 2023
-** Lib ido
+** 42sh
 ** File description:
-** Character mapping
+** epitech.h
 */
 
 #ifndef EPITECH_H
