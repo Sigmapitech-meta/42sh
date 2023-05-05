@@ -32,10 +32,9 @@ jobs:
         git config --local user.name "github-actions[bot]"
     - name: add to git
       run: |
-        git pull
         git add .
         git diff-index --quiet HEAD || git commit -m ":art: Fix Headers"
-        git push origin main
+        git push origin ${{ github.head_ref || github.ref_name }}
 
   run_epitech_coding_style_checker:
     needs: [fix_headers]
