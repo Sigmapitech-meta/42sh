@@ -36,7 +36,7 @@ char *file_read_fd(int fd, size_t filesize)
     return NULL;
 }
 
-char *file_read(char *filepath)
+char *file_read(char const *filepath)
 {
     int fd = open(filepath, O_RDONLY);
     char *content = NULL;
