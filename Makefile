@@ -46,6 +46,12 @@ VPATH += src/base
 SRC += str_split.c
 SRC += file_reader.c
 
+VPATH += src/list
+SRC += list_append.c
+SRC += list_get.c
+SRC += list_management.c
+SRC += list_remove.c
+
 VPATH += src/commands
 SRC += builtins.c
 SRC += debug_builtins.c
