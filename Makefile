@@ -47,6 +47,7 @@ SRC += my_fill_list.c
 SRC += my_get_path.c
 SRC += my_get_alias.c
 SRC += my_switch_coms.c
+SRC += print_coms.c
 SRC += my_print_recommendations.c
 SRC += my_str_split.c
 SRC += my_strcat.c

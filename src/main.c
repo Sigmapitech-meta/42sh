@@ -15,7 +15,7 @@
 #include "utils/debug_mode.h"
 
 int main(int argc, char **argv, char **env)
-{    
+{
     DEBUG("Received %d arg(s)", argc);
     if (argc > 1 && !strncmp(argv[1], "-h", 2))
         return EXIT_OK_MSG("%s", USAGE);
