@@ -15,6 +15,8 @@
 /** printf-like within the standard error */
     #define EPRINTF(...) (fprintf(stderr, __VA_ARGS__))
 
+    #define NULL_OR(cond, expr) ((cond) ? expr : NULL)
+
 typedef struct stat stat_t;
 
 static inline
