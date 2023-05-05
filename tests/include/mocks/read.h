@@ -1,8 +1,8 @@
 /*
 ** EPITECH PROJECT, 2023
-** Kepler
+** 42sh
 ** File description:
-** mocks.h
+** read.h
 */
 
 #ifndef MOCK_read_H_

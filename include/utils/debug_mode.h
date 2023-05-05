@@ -15,8 +15,9 @@
     #ifdef DEBUG_MODE
         #include <stdio.h>
 
-        #define HEAD_FMT BOLD BLUE "%s" RESET ":" PURPLE BOLD "%d" RESET ": !"
+        #define HEAD_FMT BOLD BLUE "%s" RESET ":" PURPLE BOLD "%d" RESET ": "
         #define COLORED(s) debug_colorize(HEAD_FMT s "\n")
+        static const int START = sizeof (HEAD_FMT) - 1;
 
         #define HEAD __FILE_NAME__, __LINE__
         #define DEBUG(fmt, ...) (printf(COLORED(fmt), HEAD, __VA_ARGS__))
@@ -59,8 +60,8 @@ static const debug_color_t FLAGS_COLORS[] = {
     {'s', CYAN}, {'d', YELLOW}, {'i', RED},
 };
 
-static const int FLAGS_COL_COUNT = ARR_SIZE(FLAGS_COLORS);
-static const int FLAG_COL_SIZE = (COLORS_STRING_SIZE + RESET_STRING_SIZE);
+static const size_t FLAGS_COLORS_SIZE = ARR_SIZE(FLAGS_COLORS);
+static const size_t FLAG_COL_SIZE = (COLORS_STRING_SIZE + RESET_STRING_SIZE);
 
 char *debug_colorize(char *fmt);
     #endif

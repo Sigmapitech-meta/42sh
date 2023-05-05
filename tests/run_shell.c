@@ -53,7 +53,7 @@ $ {
     };
 
     if (!ctx.user_input)
-        return W_SENTINEL;
+        return SENTINEL;
     snprintf(ctx.user_input, ctx.input_size, "%s\n", command);
     shell_evaluate(&ctx);
     free(ctx.prev_dir);

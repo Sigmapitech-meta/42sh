@@ -29,7 +29,7 @@ NAME_DEBUG := debug
 NAME_ANGRY := angry
 TESTS := run_tests
 
-BINS := $(NAME_BATCH) $(NAME_DEBUG) $(NAME_ANGRY) $(TESTS)
+BINS := $(NAME) $(NAME_BATCH) $(NAME_DEBUG) $(NAME_ANGRY) $(TESTS)
 
 # ↓ Sources
 VPATH += src
@@ -74,7 +74,7 @@ TSRC := test_sentinel.c
 TSRC += run_shell.c
 TSRC += std_redirect.c
 
-VPATH += tests/e2e
+VPATH += tests/commands
 TSRC += test_setenv.c
 TSRC += test_command_not_found.c
 
@@ -130,6 +130,8 @@ TEST_OBJ := $(TSRC:%.c=$(BUILD_DIR)/tests/%.o)
 TEST_OBJ += $(filter-out %main.o, $(SRC:%.c=$(BUILD_DIR)/tests/%.o))
 
 BATCH_OBJ := $(BSRC:%.c=$(BUILD_DIR)/batch/%.o)
+
+ALL_OBJS := $(OBJ) $(DEBUG_OBJ) $(ANGRY_OBJ) $(TEST_OBJ)
 
 # ↓ Utils
 ifneq ($(shell tput colors),0)
@@ -207,7 +209,7 @@ $(BUILD_DIR)/angry/%.o: %.c
 clean:
 	$(eval REMOVED =                                               \
 		$(shell                                                    \
-			$(RM) -v $(OBJ) $(DEBUG_OBJ) $(ANGRY_OBJ) $(TEST_OBJ)  \
+			$(RM) -v $(ALL_OBJS)                                   \
 			| grep "removed" | cut -d ' ' -f 2))
 	$(call LOG,                                                    \
 		$(if $(REMOVED), "removed:c" $(REMOVED), "no file removed."))
