@@ -17,7 +17,7 @@
 #include "shell/shell.h"
 #include "utils/debug_mode.h"
 #include "utils/sentinel.h"
-#include "utils/autofree.h"
+#include "utils/cleanup.h"
 #include "shell/utils.h"
 
 static

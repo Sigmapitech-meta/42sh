@@ -6,7 +6,7 @@
 */
 
 #include "epitech.h"
-#include "epitech/sputnik.h"
+#include "sputnik.h"
 #include "run_shell_command.h"
 
 TEST_STD(run_shell_command, echo_foo)
