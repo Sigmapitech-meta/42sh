@@ -7,11 +7,8 @@
 
 #include "base.h"
 
-#include "epitech/norm.h"
-#include "epitech/sputnik.h"
-
-#include "mocks/malloc.h"
-#include "utils/sentinel.h"
+#include "coding_style_fix.h"
+#include "sputnik.h"
 
 TEST(str_count_tok, this_is_fine_space)
 $ {

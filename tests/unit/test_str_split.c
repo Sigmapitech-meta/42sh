@@ -7,8 +7,8 @@
 
 #include "base.h"
 
-#include "epitech/norm.h"
-#include "epitech/sputnik.h"
+#include "coding_style_fix.h"
+#include "sputnik.h"
 #include "mocks/malloc.h"
 
 TEST(str_split, this_is_fine_space)

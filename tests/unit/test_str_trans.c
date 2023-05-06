@@ -7,8 +7,8 @@
 
 #include "base.h"
 
-#include "epitech/norm.h"
-#include "epitech/sputnik.h"
+#include "coding_style_fix.h"
+#include "sputnik.h"
 
 TEST(str_trans, translate_a_string)
 $ {

@@ -8,7 +8,7 @@
 #include <criterion/criterion.h>
 
 #include "base.h"
-#include "epitech/sputnik.h"
+#include "sputnik.h"
 
 #include "mocks/read.h"
 #include "mocks/malloc.h"
