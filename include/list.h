@@ -11,6 +11,8 @@
     #include "coding_style_fix.h"
     #include "utils/attributes.h"
 
+    #include <stdlib.h>
+
     #define LIST_FOREACH(l, n) for (list_node_t *n EQ l->head; n; n EQ n->next)
     #define LIST_APPEND_CHECK(l, v) (list_append(l, v) != W_SENTINEL)
 

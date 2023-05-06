@@ -6,9 +6,9 @@
 */
 
 #include "base.h"
-
 #include "coding_style_fix.h"
 #include "sputnik.h"
+
 #include "mocks/malloc.h"
 
 TEST(str_split, this_is_fine_space)
@@ -23,7 +23,7 @@ $ {
 }
 
 TEST(str_split, broken_malloc, TEST_USE(break_malloc, fix_malloc))
-{
+$ {
     char src[] = "magic happens";
     char **words = str_split(src, " ");
 

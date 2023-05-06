@@ -16,7 +16,7 @@
 
     #define GETLINE_DATA (getline_mock_ptr())
 
-    #include <stddef.h>
+    #include <stdio.h>
 
 typedef FILE file_t;
 

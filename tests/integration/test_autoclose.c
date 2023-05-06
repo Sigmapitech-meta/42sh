@@ -6,6 +6,7 @@
 */
 
 #include <fcntl.h>
+
 #include "sputnik.h"
 #include "mocks/getline.h"
 #include "utils/cleanup.h"
