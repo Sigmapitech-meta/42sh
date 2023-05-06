@@ -1,8 +1,8 @@
 /*
 ** EPITECH PROJECT, 2023
-** Kepler
+** 42sh
 ** File description:
-** mocks.h
+** stat.h
 */
 
 #ifndef MOCK_stat_H_

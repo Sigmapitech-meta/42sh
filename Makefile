@@ -31,9 +31,9 @@ NAME_AFL := $(NAME)_afl
 
 TESTS := run_tests
 
-BINS := $(NAME_BATCH) $(NAME_DEBUG)
-BINS += $(NAME_ANGRY) $(NAME_AFL)
-BINS += $(TESTS)
+BINS := $(NAME) $(NAME_BATCH)
+BINS += $(NAME_DEBUG) $(NAME_ANGRY)
+BINS += $(NAME_AFL) $(TESTS)
 
 # ↓ Sources
 VPATH += src
@@ -64,7 +64,7 @@ TSRC := test_sentinel.c
 TSRC += run_shell.c
 TSRC += std_redirect.c
 
-VPATH += tests/e2e
+VPATH += tests/commands
 TSRC += test_setenv.c
 TSRC += test_command_not_found.c
 
@@ -125,6 +125,10 @@ AFL_OBJ := $(BSRC:%.c=$(BUILD_DIR)/afl/%.o)
 OBJS := $(OBJ) $(AFL_OBJ)
 OBJS += $(DEBUG_OBJ) $(ANGRY_OBJ)
 OBJS += $(TEST_OBJ)
+
+ALL_OBJS := $(OBJ)
+ALL_OBJS += $(DEBUG_OBJ) $(ANGRY_OBJ) 
+ALL_OBJS += $(TEST_OBJ) $(AFL_OBJ)
 
 # ↓ Utils
 ifneq ($(shell tput colors),0)
@@ -219,7 +223,7 @@ $(BUILD_DIR)/afl/%.o: %.c
 clean:
 	$(eval REMOVED =                                               \
 		$(shell                                                    \
-			$(RM) -v $(OBJ) $(DEBUG_OBJ) $(ANGRY_OBJ) $(TEST_OBJ)  \
+			$(RM) -v $(ALL_OBJS)                                   \
 			| grep "removed" | cut -d ' ' -f 2))
 	$(call LOG,                                                    \
 		$(if $(REMOVED), "removed:c" $(REMOVED), "no file removed."))

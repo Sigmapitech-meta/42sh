@@ -22,6 +22,7 @@
             ltrace
             gnumake
             man-pages
+            python311
             tcsh
             valgrind
           ];

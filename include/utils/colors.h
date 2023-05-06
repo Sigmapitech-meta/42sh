@@ -20,7 +20,7 @@
     #define PURPLE COL_FMT(35)
     #define CYAN COL_FMT(36)
 
-static const int COLORS_STRING_SIZE = sizeof (BLUE) - 1;
-static const int RESET_STRING_SIZE = sizeof (RESET) - 1;
+static const size_t COLORS_STRING_SIZE = sizeof (BLUE) - 1;
+static const size_t RESET_STRING_SIZE = sizeof (RESET) - 1;
 
 #endif /* !COLORS_H_ */

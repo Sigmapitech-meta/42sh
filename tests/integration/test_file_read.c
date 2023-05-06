@@ -1,8 +1,8 @@
 /*
-** EPITECH PROJECT, 2022
-** BSQ - The Biggest square
+** EPITECH PROJECT, 2023
+** 42sh
 ** File description:
-** Unittests
+** test_file_read.c
 */
 
 #include <criterion/criterion.h>

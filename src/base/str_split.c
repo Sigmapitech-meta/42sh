@@ -18,7 +18,7 @@ int str_count(char *string, char *delim)
     char *rest;
 
     if (!copy)
-        return W_SENTINEL;
+        return SENTINEL;
     token = strtok_r(copy, delim, &rest);
     if (!token)
         return 0;

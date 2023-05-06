@@ -12,7 +12,7 @@
 
 extern char **environ;
 
-static const int MINIMAL_INPUT_CHECK = 2;
+static const size_t MINIMAL_INPUT_CHECK = 2;
 
 static const char USAGE[] = (
     "Minishell 2 - Usage: ./mysh [-h]\n"

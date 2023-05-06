@@ -1,8 +1,8 @@
 /*
 ** EPITECH PROJECT, 2023
-** Kepler
+** 42sh
 ** File description:
-** mocks.h
+** malloc.h
 */
 
 #ifndef MOCK_MALLOC_H_

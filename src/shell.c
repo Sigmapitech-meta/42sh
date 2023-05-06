@@ -10,6 +10,7 @@
 #include <string.h>
 #include <unistd.h>
 #include <errno.h>
+#include <ctype.h>
 
 #include "base.h"
 #include "epitech.h"
@@ -25,7 +26,7 @@ bool_t shell_read_line(context_t *ctx)
 {
     ctx->input_size = get_line(&ctx->user_input);
     DEBUG("[%d] characters entered", ctx->input_size);
-    if (ctx->input_size == W_SENTINEL_OF(size_t)) {
+    if (IS_SENTINEL_OF(ctx->input_size, size_t)) {
         if (errno == ENOMEM) {
             ctx->is_running = FALSE;
             ctx->status = EXIT_FAILURE;
@@ -39,7 +40,10 @@ bool_t shell_read_line(context_t *ctx)
     if (ctx->input_size < MINIMAL_INPUT_CHECK)
         return FALSE;
     ctx->user_input[ctx->input_size - 1] = '\0';
-    return TRUE;
+    for (int i = 0; ctx->user_input[i]; i++)
+        if (!isspace(ctx->user_input[i]))
+            return TRUE;
+    return FALSE;
 }
 
 int shell_evaluate_expression(context_t *ctx)
