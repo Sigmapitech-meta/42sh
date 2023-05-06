@@ -14,7 +14,8 @@
 #include "mocks/malloc.h"
 #include "mocks/stat.h"
 
-TEST(read_file, can_read_a_file) {
+TEST(read_file, can_read_a_file)
+$ {
     CR_ASSERT_STR_EQ(
         file_read("tests/fixtures/test_file"),
         "Hello my name is Albert\n"

@@ -20,12 +20,6 @@
 typedef struct stat stat_t;
 
 static inline
-USED int evprintf(const char *fmt, va_list args)
-{
-    return vdprintf(STDERR_FILENO, fmt, args);
-}
-
-static inline
 USED size_t get_line(char **line)
 {
     static size_t zero = 0;
@@ -43,7 +37,7 @@ USED char *str_trans(char *string, char in, char out)
 }
 
 
-int str_count(char *string, char *delim);
+int str_count_tok(char *string, char *delim);
 char **str_split(char *string, char *delim);
 
 char *file_read_fd(int fd, size_t filesize);
