@@ -1,0 +1,39 @@
+cd /
+cd -
+cd ..
+cd ~
+cd /bin
+cd /root
+cd /..
+cd ../..
+cd .
+cd
+env
+setenv a b
+setenv
+unsetenv a
+unsetenv b
+where which
+which where
+which ls
+which man
+which
+where
+
+
+hello
+.
+..
+~
+/
+kek
+?
+!!
+exit
+exit 1
+ls
+cat Makefile
+echo
+echo foo
+ls -alr
+echo -e "hello\n"

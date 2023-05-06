@@ -27,9 +27,13 @@ BUILD_DIR := .build
 NAME_BATCH := batch_runner
 NAME_DEBUG := debug
 NAME_ANGRY := angry
+NAME_AFL := $(NAME)_afl
+
 TESTS := run_tests
 
-BINS := $(NAME) $(NAME_BATCH) $(NAME_DEBUG) $(NAME_ANGRY) $(TESTS)
+BINS := $(NAME) $(NAME_BATCH)
+BINS += $(NAME_DEBUG) $(NAME_ANGRY)
+BINS += $(NAME_AFL) $(TESTS)
 
 # ↓ Sources
 VPATH += src
@@ -128,8 +132,15 @@ TEST_OBJ := $(TSRC:%.c=$(BUILD_DIR)/tests/%.o)
 TEST_OBJ += $(filter-out %main.o, $(SRC:%.c=$(BUILD_DIR)/tests/%.o))
 
 BATCH_OBJ := $(BSRC:%.c=$(BUILD_DIR)/batch/%.o)
+AFL_OBJ := $(BSRC:%.c=$(BUILD_DIR)/afl/%.o)
 
-ALL_OBJS := $(OBJ) $(DEBUG_OBJ) $(ANGRY_OBJ) $(TEST_OBJ)
+OBJS := $(OBJ) $(AFL_OBJ)
+OBJS += $(DEBUG_OBJ) $(ANGRY_OBJ)
+OBJS += $(TEST_OBJ)
+
+ALL_OBJS := $(OBJ)
+ALL_OBJS += $(DEBUG_OBJ) $(ANGRY_OBJ)
+ALL_OBJS += $(TEST_OBJ) $(AFL_OBJ)
 
 # ↓ Utils
 ifneq ($(shell tput colors),0)
@@ -204,6 +215,31 @@ $(BUILD_DIR)/angry/%.o: %.c
 	$Q $(CC) $(CFLAGS) -c $< -o $@
 	$(call LOG, ":c" $(notdir $@))
 
+afl: $(NAME_AFL)
+
+.PHONY: afl
+
+$(NAME_AFL): CC := afl-gcc
+$(NAME_AFL): HEADER += "AFL"
+$(NAME_AFL): CFLAGS += -iquote tests/include
+$(NAME_AFL): CFLAGS += -D DEBUG_MODE
+$(NAME_AFL): $(AFL_OBJ)
+	$Q $(CC) $(CFLAGS) $(LIBFLAGS) $(LDLIBS) -o $@ $^
+	$(call LOG,":g$@")
+
+afl_run: $(NAME_AFL)
+	echo core | sudo tee /proc/sys/kernel/core_pattern
+	$Q afl-fuzz -o tests/generated \
+        -i tests/fixtures/input -x tests/fixtures/tokens \
+        -- ./42sh_afl @@
+
+.PHONY: afl_run
+
+$(BUILD_DIR)/afl/%.o: %.c
+	@ mkdir -p $(dir $@)
+	$Q $(CC) $(CFLAGS) -c $< -o $@
+	$(call LOG, ":c" $(notdir $@))
+
 clean:
 	$(eval REMOVED =                                               \
 		$(shell                                                    \
@@ -223,6 +259,7 @@ fclean:
 			| grep "removed" | cut -d ' ' -f 2))
 	$(call LOG,                                                    \
 		$(if $(REMOVED),"removed:g" $(REMOVED), "no binary to remove."))
+	@ $(MAKE) -sC bin fclean
 
 .PHONY: clean fclean
 
@@ -236,7 +273,7 @@ re: fclean
 $(BUILD_DIR)/tests/%.o: %.c
 	$Q mkdir -p $(dir $@)
 	$Q $(CC) $(CFLAGS) -c $< -o $@
-	$(call LOG, ":c" $(notdir $@))
+	$(call LOG,":c" $(notdir $@))
 
 $(TESTS): CFLAGS += -g3 --coverage
 $(TESTS): CFLAGS += -iquote tests/include
@@ -267,13 +304,19 @@ $(BUILD_DIR)/batch/%.o: HEADER += "batch"
 $(BUILD_DIR)/batch/%.o: %.c
 	@ mkdir -p $(dir $@)
 	$Q $(CC) $(CFLAGS) -c $< -o $@
-	$(call LOG, ":c" $(notdir $@))
+	$(call LOG,":c" $(notdir $@))
 
 $(NAME_BATCH): CFLAGS += -iquote tests/include
 $(NAME_BATCH): CFLAGS += -D DEBUG_MODE
 $(NAME_BATCH): $(BATCH_OBJ)
 	$Q $(CC) -o $@ $^ $(CFLAGS) $(LDLIBS) $(LDFLAGS)
 	$(call LOG,":g$@")
+
+bundle: $(BINS)
+	@+ $(MAKE) -sC bin
+	$(call LOG,":g$@")
+
+.PHONY: bundle
 
 # ↓ Utils
 RECURSE = $(MAKE) $(1) --no-print-directory START_TIME=$(START_TIME)
