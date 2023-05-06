@@ -80,6 +80,5 @@ void builtin_unsetenv(context_t *ctx)
         return;
     }
     for (int i = 1; i < cmd->argc; i++)
-        if (IS_SENTINEL(unsetenv(cmd->argv[i])))
-            EPRINTF("unsetenv: %s", strerror(errno));
+        env_free_key(cmd->argv[i], ctx->original_env);
 }
