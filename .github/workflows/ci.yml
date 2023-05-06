@@ -80,6 +80,8 @@ jobs:
           --extra-experimental-features 'nix-command flakes'
 
   check_compilation:
+    runs-on: ubuntu-latest
+
     steps:
       - name: Checkout
         uses: actions/checkout@v3
