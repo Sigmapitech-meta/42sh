@@ -11,8 +11,7 @@
 #include "base.h"
 #include "utils/debug_mode.h"
 
-static
-int str_replace_count(char *src, char *from)
+int str_count(char *src, char *from)
 {
     int count = 0;
     size_t len = strlen(from);
@@ -41,25 +40,29 @@ char *str_replace_fill(char *out, char *src, char *from, char *to)
         } else
             out[write_index++] = src[i];
     }
-    DEBUG("[[%s]]", out);
     return out;
 }
 
-char *str_replace(char *src, char *from, char *to)
+char *str_nreplace(char *src, char *from, char *to, int n)
 {
-    size_t new_len;
-    int count = str_replace_count(src, from);
     char *out;
+    size_t new_len = strlen(src) - (strlen(from) * n) + (strlen(to) * n);
 
-    if (count < 1)
-        return src;
-    new_len = strlen(src) - (strlen(from) * count) + (strlen(to) * count);
     if (new_len <= 0)
         return src;
     out = malloc((new_len + 1) * sizeof (char));
     if (!out)
         return src;
     out[new_len] = '\0';
-    DEBUG("%d -> %d", count, new_len);
     return str_replace_fill(out, src, from, to);
+}
+
+char *str_replace(char *src, char *from, char *to)
+{
+    int count = str_count(src, from);
+
+    return (
+        (count >= 1) ?
+        str_nreplace(src, from, to, count) : src
+    );
 }

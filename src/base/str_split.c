@@ -6,7 +6,8 @@
 */
 
 #include <string.h>
-#include <stdio.h>
+
+#include "base.h"
 #include "utils/cleanup.h"
 #include "utils/sentinel.h"
 
@@ -27,7 +28,7 @@ int str_count_tok(char *string, char *delim)
 }
 
 static
-void str_split_populate(char *string, char **arr, char *delim)
+char **str_split_populate(char *string, char **arr, char *delim)
 {
     char *rest;
     char *token = strtok_r(string, delim, &rest);
@@ -37,18 +38,23 @@ void str_split_populate(char *string, char **arr, char *delim)
         arr[i++] = token;
         token = strtok_r(NULL, delim, &rest);
     }
+    return arr;
+}
+
+char **str_nsplit(char *string, char *delim, int n)
+{
+    char **words = malloc(n * sizeof(char *));
+
+    return NULL_OR(
+        words, str_split_populate(string, words, delim)
+    );
 }
 
 char **str_split(char *string, char *delim)
 {
     size_t count = str_count_tok(string, delim);
-    char **words;
 
-    if (!count)
-        return NULL;
-    words = malloc(count * sizeof(char *));
-    if (!words)
-        return NULL;
-    str_split_populate(string, words, delim);
-    return words;
+    return NULL_OR(
+        count, str_nsplit(string, delim, count)
+    );
 }
