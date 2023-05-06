@@ -23,12 +23,11 @@ typedef struct {
 
     #ifdef WRAP_UNWANTED_COMMANDS
 
-static inline
-void builtin_skip(context_t *ctx)
+static inline void builtin_skip(context_t *ctx)
 {
-    printf("no");
+    ;
 }
-#endif
+    #endif
 
 bool_t builtins_check(context_t *ctx);
 void builtin_cd(context_t *ctx);
