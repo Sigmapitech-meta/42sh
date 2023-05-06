@@ -98,11 +98,14 @@ int shell_run_from_env(char **env)
 {
     command_t cmd = { 0 };
     context_t ctx = {
-        .original_env = env,
-        .ran_from_tty = isatty(STDIN_FILENO),
-        .prev_dir = getcwd(NULL, 0),
         .is_running = TRUE,
+        .ran_from_tty = isatty(STDIN_FILENO),
         .cmd = &cmd,
+        .original_env = env,
+        .prev_dir = getcwd(NULL, 0),
+        .user_input = NULL,
+        .input_size = 0,
+        .status = 0
     };
 
     if (!ctx.prev_dir)
