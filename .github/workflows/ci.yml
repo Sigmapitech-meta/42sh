@@ -23,7 +23,7 @@ jobs:
 
     - uses: actions/checkout@v3
       with:
-          ref: ${{ steps.branch-names.outputs.head_ref_branch }}
+        ref: ${{ steps.branch-names.outputs.head_ref_branch }}
 
     - name: setup git
       run: |
@@ -104,7 +104,9 @@ jobs:
         run: cachix use coding-style # ← package with everything we need
 
       - name: Run
-        run: nix develop --command make -j bundle
+        run: |
+          touch .fast
+          nix develop --command make bundle
 
   run_tests:
     needs: [run_epitech_coding_style_checker, check_compilation]
@@ -131,7 +133,9 @@ jobs:
         run: cachix use coding-style # ← package with everything we need
 
       - name: Run
-        run: nix develop --command make cov
+        run: |
+          touch .fast
+          nix develop --command make cov
 
   sync_repository:
     needs: [run_tests]
