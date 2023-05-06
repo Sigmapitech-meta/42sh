@@ -47,6 +47,8 @@ bool_t builtins_check(context_t *ctx)
     char *builtin_name;
     command_t *cmd = ctx->cmd;
 
+    if (!cmd->argc || !cmd->argv[0])
+        return FALSE;
     for (int i = 0; i < BUILTIN_COUNT; i++) {
         builtin_name = BUILTINS[i].name;
         if (!strcmp(cmd->argv[0], builtin_name)) {

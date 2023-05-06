@@ -222,6 +222,8 @@ afl: $(NAME_AFL)
 .PHONY: afl
 
 $(NAME_AFL): CC := afl-gcc
+$(NAME_AFL): CC += -Ofast -march=native
+$(NAME_AFL): CC += -D WRAP_UNWANTED_COMMANDS
 $(NAME_AFL): HEADER += "AFL"
 $(NAME_AFL): CFLAGS += -iquote tests/include
 $(NAME_AFL): $(AFL_OBJ)

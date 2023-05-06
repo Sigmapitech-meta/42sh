@@ -41,7 +41,7 @@ bool_t shell_read_line(context_t *ctx)
         return FALSE;
     ctx->user_input[ctx->input_size - 1] = '\0';
     for (int i = 0; ctx->user_input[i]; i++)
-        if (!isspace(ctx->user_input[i]))
+        if (!isspace(ctx->user_input[i]) && ctx->user_input[i] != ';')
             return TRUE;
     return FALSE;
 }
