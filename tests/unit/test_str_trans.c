@@ -10,7 +10,7 @@
 #include "epitech/norm.h"
 #include "epitech/sputnik.h"
 
-TEST(str_trans, print_to_stderr)
+TEST(str_trans, translate_a_string)
 $ {
     char src[] = "this is fine";
     char *out = str_trans(src, 'i', ' ');

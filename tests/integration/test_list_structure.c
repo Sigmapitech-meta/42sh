@@ -11,6 +11,7 @@
 #include "epitech/sputnik.h"
 #include "list.h"
 #include "utils/sentinel.h"
+#include "mocks/malloc.h"
 
 static
 list_t * create_test_list(char *words[6])
@@ -67,4 +68,16 @@ $ {
     check_nodes(lst, words);
     check_list_remove_clear(lst, words);
     list_destroy(lst);
+}
+
+TEST(lst, broken_malloc, TEST_USE(break_malloc, fix_malloc))
+{
+    char *words[6] = {"Hello", "this", "is", "my", "friend", "albert"};
+    list_t *lst = create_test_list(words);
+    list_t empty = { 0 };
+    int ret;
+
+    CR_ASSERT_NOT(lst);
+    ret = list_append(&empty, words[0]);
+    CR_ASSERT_EQ(ret, SENTINEL);
 }
