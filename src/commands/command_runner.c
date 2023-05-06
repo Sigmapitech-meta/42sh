@@ -2,7 +2,7 @@
 ** EPITECH PROJECT, 2023
 ** 42sh
 ** File description:
-** command.c
+** command_runner.c
 */
 
 #include <errno.h>
@@ -11,30 +11,27 @@
 #include <sys/wait.h>
 #include <unistd.h>
 
+#include "base.h"
 #include "shell/shell.h"
 #include "shell/utils.h"
 
 #include "utils/debug_mode.h"
 #include "utils/sentinel.h"
-#include "printf_expansion.h"
-#include "utils/autofree.h"
+#include "utils/cleanup.h"
 
 char *command_handle_home(char *target_path)
 {
-    char *path;
     char *dir = getenv("HOME");
 
     if (!dir) {
-        eprintf("No $home variable set\n");
+        EPRINTF("No $home variable set\n");
         return NULL;
     }
     dir = strdup(dir);
-    if (!dir)
-        return NULL;
-    path = path_concat(dir, target_path + 2);
-    if (!path)
-        return NULL;
-    return path;
+    return NULL_OR(
+        dir,
+        path_concat(dir, target_path + 2)
+    );
 }
 
 char *command_get_full_path(char **params)
@@ -52,8 +49,6 @@ char *command_get_full_path(char **params)
         path = path_concat(dir, target_path);
     } else
         path = path_find_cmd(target_path);
-    if (!path)
-        return NULL;
     return path;
 }
 
@@ -64,17 +59,17 @@ static void command_run_internal(context_t *ctx, char *cmd_path, char **env)
     char *binary_name = cmd->argv[0];
 
     if (last_arg[0] == '|' && !last_arg[1]) {
-        eprintf("Invalid null command.\n");
+        EPRINTF("Invalid null command.\n");
         return;
     }
     DEBUG("running [%s]", cmd_path);
     execve(cmd_path, cmd->argv, env);
     DEBUG_MSG("STOP");
-    eprintf("%s: %s.", binary_name, strerror(errno));
+    EPRINTF("%s: %s.", binary_name, strerror(errno));
     if (errno == ENOEXEC)
-        eprintf(" Wrong Architecture.", binary_name, strerror(errno));
-    eprintf("\n");
-    exit(W_SENTINEL);
+        EPRINTF(" Wrong Architecture.");
+    EPRINTF("\n");
+    exit(SENTINEL);
 }
 
 void command_run(context_t *ctx)
@@ -83,8 +78,8 @@ void command_run(context_t *ctx)
     AUTOFREE char *cmd_path = command_get_full_path(cmd->argv);
 
     if (!cmd_path || access(cmd_path, F_OK)) {
-        eprintf("%s: Command not found.\n", cmd->argv[0]);
-        exit(W_SENTINEL);
+        EPRINTF("%s: Command not found.\n", cmd->argv[0]);
+        exit(SENTINEL);
     }
     command_run_internal(ctx, cmd_path, environ);
 }

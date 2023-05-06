@@ -10,10 +10,9 @@
 
     #define MAX_ARG_COUNT (2)
 
-    #define ENV_FIND_FIXED(env, name) env_find(env, name, sizeof(name) - 1)
-    #define ENV_FIND_VAR(env, name) (ENV_FIND_FIXED(env, name "="))
-
 extern char **environ;
+
+static const size_t MINIMAL_INPUT_CHECK = 2;
 
 static const char USAGE[] = (
     "Minishell 2 - Usage: ./mysh [-h]\n"
@@ -35,14 +34,14 @@ typedef struct command_s {
 } command_t;
 
 typedef struct context_s {
-    command_t *cmd;
-    unsigned char status;
     bool_t is_running;
     bool_t ran_from_tty;
-    char *user_input;
-    char *prev_dir;
-    size_t input_size;
+    command_t *cmd;
     char **original_env;
+    char *prev_dir;
+    char *user_input;
+    size_t input_size;
+    unsigned short status;
 } context_t;
 
 int command_run_subprocess(context_t *ctx);

@@ -27,22 +27,30 @@ BUILD_DIR := .build
 NAME_BATCH := batch_runner
 NAME_DEBUG := debug
 NAME_ANGRY := angry
+NAME_AFL := $(NAME)_afl
+
 TESTS := run_tests
 
-# ↓ Clear all possible junk
-VPATH :=
-
-SRC :=
-BSRC :=
-TSRC :=
+BINS := $(NAME) $(NAME_BATCH)
+BINS += $(NAME_DEBUG) $(NAME_ANGRY)
+BINS += $(NAME_AFL) $(TESTS)
 
 # ↓ Sources
 VPATH += src
 SRC += environment.c
-SRC += eprintf.c
 SRC += main.c
 SRC += prompt.c
 SRC += shell.c
+
+VPATH += src/base
+SRC += str_split.c
+SRC += str_replace.c
+SRC += file_reader.c
+
+VPATH += src/list
+SRC += list_append.c
+SRC += list_get.c
+SRC += list_remove.c
 
 VPATH += src/commands
 SRC += builtins.c
@@ -53,7 +61,6 @@ SRC += env_manipulation.c
 SRC += location_builtins.c
 
 VPATH += src/utils
-SRC += get_line.c
 SRC += parameters.c
 SRC += path.c
 SRC += status.c
@@ -63,17 +70,18 @@ TSRC := test_sentinel.c
 TSRC += run_shell.c
 TSRC += std_redirect.c
 
-VPATH += tests/e2e
+VPATH += tests/commands
 TSRC += test_setenv.c
 TSRC += test_command_not_found.c
 TSRC += test_ls.c
 
-VPATH += tests/e2e/cd
+VPATH += tests/commands/cd
 TSRC += test_cd.c
+TSRC += test_cd_home.c
 TSRC += test_cd_root.c
 TSRC += test_cd_not_dir.c
 
-VPATH += tests/e2e/env
+VPATH += tests/commands/env
 TSRC += test_env.c
 TSRC += test_setenv.c
 TSRC += test_setenv_fail_one.c
@@ -82,7 +90,7 @@ TSRC += test_setenv_tma.c
 TSRC += test_unsetenv_nea.c
 TSRC += test_unsetenv.c
 
-VPATH += tests/e2e/location
+VPATH += tests/commands/location
 # TSRC += test_which_ls.c
 # TSRC += test_where_builtin.c
 TSRC += test_where_fail.c
@@ -91,22 +99,37 @@ TSRC += test_which_fail.c
 
 VPATH += tests/mocks
 TSRC += mock_getline.c
+TSRC += mock_malloc.c
+TSRC += mock_read.c
+TSRC += mock_stat.c
 
 VPATH += tests/integration
 TSRC += test_autofree.c
+TSRC += test_autoclose.c
+TSRC += test_list_structure.c
+#TSRC += test_file_read.c
+
+VPATH += tests/unit
+TSRC += test_str_count_tok.c
+TSRC += test_str_split.c
+TSRC += test_str_trans.c
+TSRC += test_str_replace.c
 
 VPATH += tests/integration/get_line
 TSRC += test_get_line_fixed_data.c
 TSRC += test_get_line_broken.c
 
-# ↓ Batch runner sources
+# ↓ Debug only sources
 
-BSRC += $(filter-out %main.c, $(SRC))
+DSRC := $(SRC)
+DSRC += debug_colorize.c
+
+# ↓ Batch runner sources
+BSRC += $(filter-out %main.c, $(DSRC))
 BSRC += tests/run_shell.c
 
 VPATH += batch
 BSRC += batch_main.c
-BSRC += file_reader.c
 
 vpath %.c $(VPATH)
 
@@ -126,13 +149,23 @@ endif
 
 # ↓ Generators
 OBJ := $(SRC:%.c=$(BUILD_DIR)/release/%.o)
-DEBUG_OBJ := $(SRC:%.c=$(BUILD_DIR)/debug/%.o)
-ANGRY_OBJ := $(SRC:%.c=$(BUILD_DIR)/angry/%.o)
+
+DEBUG_OBJ := $(DSRC:%.c=$(BUILD_DIR)/debug/%.o)
+ANGRY_OBJ := $(DSRC:%.c=$(BUILD_DIR)/angry/%.o)
 
 TEST_OBJ := $(TSRC:%.c=$(BUILD_DIR)/tests/%.o)
 TEST_OBJ += $(filter-out %main.o, $(SRC:%.c=$(BUILD_DIR)/tests/%.o))
 
 BATCH_OBJ := $(BSRC:%.c=$(BUILD_DIR)/batch/%.o)
+AFL_OBJ := $(SRC:%.c=$(BUILD_DIR)/afl/%.o)
+
+OBJS := $(OBJ) $(AFL_OBJ)
+OBJS += $(DEBUG_OBJ) $(ANGRY_OBJ)
+OBJS += $(TEST_OBJ)
+
+ALL_OBJS := $(OBJ)
+ALL_OBJS += $(DEBUG_OBJ) $(ANGRY_OBJ)
+ALL_OBJS += $(TEST_OBJ) $(AFL_OBJ)
 
 # ↓ Utils
 ifneq ($(shell tput colors),0)
@@ -194,7 +227,8 @@ $(BUILD_DIR)/debug/%.o: %.c
 	$Q $(CC) $(CFLAGS) -c $< -o $@
 	$(call LOG, ":c" $(notdir $@))
 
-$(NAME_ANGRY): CFLAGS += -g3 -D DEBUG_MODE -fsanitize=address,leak,undefined
+$(NAME_ANGRY): CFLAGS += -D DEBUG_MODE
+$(NAME_ANGRY): CFLAGS += -g3 -fsanitize=address,leak,undefined
 $(NAME_ANGRY): LDFLAGS += -lasan
 $(NAME_ANGRY): HEADER += "angry"
 $(NAME_ANGRY): $(ANGRY_OBJ)
@@ -206,25 +240,50 @@ $(BUILD_DIR)/angry/%.o: %.c
 	$Q $(CC) $(CFLAGS) -c $< -o $@
 	$(call LOG, ":c" $(notdir $@))
 
+afl: $(NAME_AFL)
+
+.PHONY: afl
+
+$(NAME_AFL): CC := afl-gcc
+$(NAME_AFL): HEADER += "AFL"
+$(NAME_AFL): CFLAGS += -iquote tests/include
+$(NAME_AFL): $(AFL_OBJ)
+	$Q $(CC) $(CFLAGS) $(LIBFLAGS) $(LDLIBS) -o $@ $^
+	$(call LOG,":g$@")
+
+afl_run: $(NAME_AFL)
+	echo core | sudo tee /proc/sys/kernel/core_pattern
+	$Q afl-fuzz -o tests/generated \
+        -i tests/fixtures/input -x tests/fixtures/tokens \
+        -- ./42sh_afl
+
+.PHONY: afl_run
+
+$(BUILD_DIR)/afl/%.o: %.c
+	@ mkdir -p $(dir $@)
+	$Q $(CC) $(CFLAGS) -c $< -o $@
+	$(call LOG, ":c" $(notdir $@))
+
 clean:
 	$(eval REMOVED =                                               \
 		$(shell                                                    \
-			$(RM) -v $(OBJ) $(DEBUG_OBJ) $(ANGRY_OBJ) $(TEST_OBJ)  \
+			$(RM) -v $(ALL_OBJS)                                   \
 			| grep "removed" | cut -d ' ' -f 2))
 	$(call LOG,                                                    \
 		$(if $(REMOVED), "removed:c" $(REMOVED), "no file removed."))
 
 fclean:
-	$(call LOG,                                                       \
-		$(if $(shell find . -type d -name $(BUILD_DIR)),              \
-			":r-:c $(BUILD_DIR)~",                                    \
+	$(call LOG,                                                    \
+		$(if $(shell find . -type d -name $(BUILD_DIR)),           \
+			":r-:c $(BUILD_DIR)~",                                 \
 			"no build dir to remove."))
 	@ $(RM) -r $(BUILD_DIR)
-	$(eval REMOVED =                                                  \
-		$(shell $(RM) -v $(NAME) $(NAME_DEBUG) $(NAME_ANGRY) $(TESTS) \
+	$(eval REMOVED =                                               \
+		$(shell $(RM) -v $(BINS)                                   \
 			| grep "removed" | cut -d ' ' -f 2))
-	$(call LOG,                                                       \
+	$(call LOG,                                                    \
 		$(if $(REMOVED),"removed:g" $(REMOVED), "no binary to remove."))
+	@ $(MAKE) -sC bin fclean
 
 .PHONY: clean fclean
 
@@ -238,12 +297,12 @@ re: fclean
 $(BUILD_DIR)/tests/%.o: %.c
 	$Q mkdir -p $(dir $@)
 	$Q $(CC) $(CFLAGS) -c $< -o $@
-	$(call LOG, ":c" $(notdir $@))
+	$(call LOG,":c" $(notdir $@))
 
 $(TESTS): CFLAGS += -g3 --coverage
 $(TESTS): CFLAGS += -iquote tests/include
 $(TESTS): LDLIBS += -lcriterion
-$(TESTS): LDLIBS += -Wl,--wrap=getline
+$(TESTS): LDLIBS += -Wl,--wrap=getline,--wrap=stat,--wrap=read,--wrap=malloc
 $(TESTS): LDFLAGS += -fprofile-arcs -ftest-coverage
 $(TESTS): $(TEST_OBJ)
 	$Q $(CC) -o $@ $^ $(CFLAGS) $(LDLIBS) $(LDFLAGS)
@@ -269,13 +328,19 @@ $(BUILD_DIR)/batch/%.o: HEADER += "batch"
 $(BUILD_DIR)/batch/%.o: %.c
 	@ mkdir -p $(dir $@)
 	$Q $(CC) $(CFLAGS) -c $< -o $@
-	$(call LOG, ":c" $(notdir $@))
+	$(call LOG,":c" $(notdir $@))
 
 $(NAME_BATCH): CFLAGS += -iquote tests/include
 $(NAME_BATCH): CFLAGS += -D DEBUG_MODE
 $(NAME_BATCH): $(BATCH_OBJ)
 	$Q $(CC) -o $@ $^ $(CFLAGS) $(LDLIBS) $(LDFLAGS)
 	$(call LOG,":g$@")
+
+bundle: $(BINS)
+	@+ $(MAKE) -sC bin
+	$(call LOG,":g$@")
+
+.PHONY: bundle
 
 # ↓ Utils
 RECURSE = $(MAKE) $(1) --no-print-directory START_TIME=$(START_TIME)

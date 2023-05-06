@@ -13,6 +13,7 @@
       with import nixpkgs { inherit system; }; {
         devShells.default = mkShell {
           packages = [
+            afl
             cs.packages.${system}.report
             criterion
             gcc12
@@ -21,6 +22,7 @@
             ltrace
             gnumake
             man-pages
+            python311
             tcsh
             valgrind
           ];

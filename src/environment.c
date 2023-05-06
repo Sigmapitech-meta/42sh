@@ -12,7 +12,7 @@
 #include "epitech.h"
 #include "shell/shell.h"
 #include "utils/debug_mode.h"
-#include "utils/autofree.h"
+#include "utils/cleanup.h"
 
 char *env_get_setter(char *key, char *value)
 {
@@ -61,7 +61,7 @@ void env_free_key(char *key, char **original_env)
     if (!line_start)
         return;
     size = strlen(line_start);
-    for (; strncmp(environ[i], line_start, size); i++)
+    for (; environ[i] && (bool_t)strncmp(environ[i], line_start, size); i++)
         ;
     if (environ[i] != original_env[i]) {
         transaction_ptr = environ[i];

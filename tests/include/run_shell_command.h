@@ -2,7 +2,7 @@
 ** EPITECH PROJECT, 2023
 ** 42sh
 ** File description:
-** run_shell.h
+** run_shell_command.h
 */
 
 #ifndef RUN_SHELL_H_

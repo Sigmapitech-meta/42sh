@@ -2,14 +2,14 @@
 ** EPITECH PROJECT, 2023
 ** 42sh
 ** File description:
-** test_getline.c
+** test_get_line_fixed_data.c
 */
 
-#include "epitech/sputnik.h"
-#include "mocks/mock_getline.h"
+#include "base.h"
+#include "sputnik.h"
 
-#include "shell/utils.h"
-#include "utils/autofree.h"
+#include "mocks/getline.h"
+#include "utils/cleanup.h"
 #include "utils/sentinel.h"
 
 static
@@ -57,5 +57,5 @@ $ {
         CR_ASSERT(size > 0);
         size = get_line(&line);
     }
-    CR_ASSERT_EQ(size, W_SENTINEL_OF(ssize_t));
+    CR_ASSERT_EQ(size, SENTINEL_OF(ssize_t));
 }

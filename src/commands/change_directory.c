@@ -2,7 +2,7 @@
 ** EPITECH PROJECT, 2023
 ** 42sh
 ** File description:
-** builtin_cd.c
+** change_directory.c
 */
 
 #include <errno.h>
@@ -12,12 +12,12 @@
 #include <string.h>
 #include <unistd.h>
 
-#include "shell/shell.h"
+#include "base.h"
 
-#include "printf_expansion.h"
+#include "shell/shell.h"
 #include "utils/debug_mode.h"
 #include "utils/sentinel.h"
-#include "utils/autofree.h"
+#include "utils/cleanup.h"
 #include "shell/utils.h"
 
 static
@@ -31,8 +31,8 @@ void move_relative(context_t *ctx, char *relative_path)
     if (!realpath(relative_path, target_path))
         return perror(cmd->argv[1]);
     old_dir = getcwd(ctx->prev_dir, 0);
-    if (chdir(target_path) == W_SENTINEL) {
-        eprintf("%s: %s.\n", cmd->argv[1], strerror(errno));
+    if (IS_SENTINEL(chdir(target_path))) {
+        EPRINTF("%s: %s.\n", cmd->argv[1], strerror(errno));
         return;
     }
     free(ctx->prev_dir);
@@ -47,7 +47,7 @@ void move_to_home(context_t *ctx)
     char *home = getenv("HOME");
 
     if (!home) {
-        eprintf("No $home variable set\n");
+        EPRINTF("No $home variable set\n");
         return;
     }
     if (cmd->argc != 2 || strlen(cmd->argv[1]) <= 2)
@@ -63,7 +63,7 @@ void builtin_cd(context_t *ctx)
     char *target_path = cmd->argv[1];
 
     if (cmd->argc > 2) {
-        eprintf("cd: Too many arguments.\n");
+        EPRINTF("cd: Too many arguments.\n");
         return;
     }
     if (

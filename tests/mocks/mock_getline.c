@@ -1,16 +1,15 @@
 /*
 ** EPITECH PROJECT, 2023
-** Kepler
+** 42sh
 ** File description:
-** mock_stat.c
+** mock_getline.c
 */
 
-#include <unistd.h>
-#include <bits/types/FILE.h>
-#include <string.h>
 #include <errno.h>
+#include <string.h>
+#include <unistd.h>
 
-#include "mocks/mock_getline.h"
+#include "mocks/getline.h"
 #include "utils/sentinel.h"
 
 gl_mock_t *getline_mock_ptr(void)
@@ -28,7 +27,7 @@ ssize_t wrap_getline(char **line, size_t *read, file_t *stream)
     if (GETLINE_DATA->mode == BROKEN) {
         errno = ENOMEM;
         *line = NULL;
-        return W_SENTINEL;
+        return SENTINEL;
     }
     if (GETLINE_DATA->mode == TABLE) {
         read_line = GETLINE_DATA->table[index++];
@@ -37,7 +36,7 @@ ssize_t wrap_getline(char **line, size_t *read, file_t *stream)
             return (ssize_t)strlen(read_line);
         } else {
             *line = NULL;
-            return W_SENTINEL;
+            return SENTINEL;
         }
     }
     return real_getline(line, read, stream);

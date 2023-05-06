@@ -5,10 +5,11 @@
 ** test_get_line_broken.c
 */
 
+#include "base.h"
 #include "epitech.h"
-#include "epitech/sputnik.h"
-#include "mocks/mock_getline.h"
+#include "mocks/getline.h"
 #include "shell/shell.h"
+#include "sputnik.h"
 
 TEST_STD(get_line, getline_broken)
 $ {

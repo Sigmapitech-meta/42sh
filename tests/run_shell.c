@@ -6,17 +6,19 @@
 */
 
 #include <stddef.h>
+#include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <stdio.h>
+#include <unistd.h>
 
+#include "coding_style_fix.h"
+#include "epitech.h"
 #include "run_shell_command.h"
+#include "store_env.h"
+
 #include "shell/shell.h"
 #include "utils/attributes.h"
-#include "epitech.h"
 #include "utils/sentinel.h"
-#include "store_env.h"
-#include "epitech/norm.h"
 
 void **store(void)
 {
@@ -45,15 +47,18 @@ $ {
     size_t cmd_len = strlen(command) + 1;
     command_t cmd = { 0 };
     context_t ctx = {
-        .cmd = &cmd, 0,
+        .is_running = TRUE,
+        .ran_from_tty = FALSE,
+        .cmd = &cmd,
         .original_env = ENV_STORE(&store_env),
+        .prev_dir = getcwd(NULL, 0),
         .user_input = malloc((cmd_len + 1) * sizeof (char)),
         .input_size = cmd_len,
-        .is_running = TRUE
+        .status = 0
     };
 
     if (!ctx.user_input)
-        return W_SENTINEL;
+        return SENTINEL;
     snprintf(ctx.user_input, ctx.input_size, "%s\n", command);
     shell_evaluate(&ctx);
     free(ctx.prev_dir);

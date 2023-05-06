@@ -13,41 +13,141 @@ env:
     AAAAC3NzaC1lZDI1NTE5AAAAIOMqqnkVzrm0SdG6UOoqKLsabgH5C9okWi0dh2l9GKJl
 
 jobs:
+  fix_headers:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Get branch name
+      id: branch-names
+      uses: tj-actions/branch-names@v6
+
+    - uses: actions/checkout@v3
+      with:
+          ref: ${{ steps.branch-names.outputs.head_ref_branch }}
+
+    - name: setup git
+      run: |
+        git config --local user.email "41898282+github-actions[bot]@users.noreply.github.com"
+        git config --local user.name "github-actions[bot]"
+        git fetch --unshallow origin
+
+    - uses: actions/setup-python@v2
+      with:
+        persist-credentials: false
+        fetch-depth: 0
+        python-version: '3.11'
+        architecture: 'x64'
+
+    - name: running script
+      run: python ./.github/fix_headers.py
+
+    - name: add to git
+      run: |
+        git add .
+        git commit -m ":art: Fix Headers" || echo "nothing to commit."
+
+    - name: push
+      run: git push || echo "nothing to commit."
+
   run_epitech_coding_style_checker:
+    needs: [fix_headers]
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+
+      - name: Install SSH key
+        uses: shimataro/ssh-key-action@v2
+        with:
+          key: ${{ secrets.GH_SSH_PRIVATE_KEY }}
+          known_hosts: $GH_PUB_KEY
+
+      - name: Setup Nix via cachix
+        uses: cachix/install-nix-action@v20
+
+      - name: Setup cachix cli
+        run: nix-env -iA cachix -f https://cachix.org/api/v1/install
+
+      - name: Install coding-style
+        run: cachix use coding-style # ← package with everything we need
+
+      - name: Run
+        run: |
+          nix run github:Sigmanificient/coding-style-checker \
+          --extra-experimental-features 'nix-command flakes'
+
+  check_compilation:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+
+      - name: Install SSH key
+        uses: shimataro/ssh-key-action@v2
+        with:
+          key: ${{ secrets.GH_SSH_PRIVATE_KEY }}
+          known_hosts: $GH_PUB_KEY
+
+      - name: Setup Nix via cachix
+        uses: cachix/install-nix-action@v20
+
+      - name: Setup cachix cli
+        run: nix-env -iA cachix -f https://cachix.org/api/v1/install
+
+      - name: Install coding-style
+        run: cachix use coding-style # ← package with everything we need
+
+      - name: Run
+        run: nix develop --command make -j bundle
+
+  run_tests:
+    needs: [run_epitech_coding_style_checker, check_compilation]
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
         uses: actions/checkout@v3
         with:
           fetch-depth: 0
+
       - name: Install SSH key
         uses: shimataro/ssh-key-action@v2
         with:
           key: ${{ secrets.GH_SSH_PRIVATE_KEY }}
           known_hosts: $GH_PUB_KEY
+
       - name: Setup Nix via cachix
         uses: cachix/install-nix-action@v20
+
       - name: Setup cachix cli
         run: nix-env -iA cachix -f https://cachix.org/api/v1/install
+
       - name: Install coding-style
-        run: cachix use coding-style
+        run: cachix use coding-style # ← package with everything we need
+
       - name: Run
-        run: |
-          nix run github:Sigmanificient/coding-style-checker \
-          --extra-experimental-features 'nix-command flakes'
-  
+        run: nix develop --command make cov
+
   sync_repository:
-    needs: [run_epitech_coding_style_checker]
+    needs: [run_tests]
     if: ${{ !github.event.pull_request }}
     runs-on: ubuntu-latest
+
     steps:
       - name: Checkout
         uses: actions/checkout@v3
+
       - name: Install SSH key
         uses: shimataro/ssh-key-action@v2
         with:
           key: ${{ secrets.GH_SSH_PRIVATE_KEY }}
           known_hosts: $GH_PUB_KEY
+
       - name: push to epitech
         run: |
           git config --global user.email "edhyjox@gmail.com"
