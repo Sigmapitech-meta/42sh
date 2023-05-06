@@ -10,22 +10,19 @@
 #include "utils/sentinel.h"
 #include "epitech.h"
 
-int str_count(char *string, char *delim)
+int str_count_tok(char *string, char *delim)
 {
     int i = 0;
     AUTOFREE char *copy = strdup(string);
-    char *token;
-    char *rest;
+    char *rest = NULL;
 
     if (!copy)
         return SENTINEL;
-    token = strtok_r(copy, delim, &rest);
-    if (!token)
+    if (!strtok_r(copy, delim, &rest))
         return 0;
-    while (token) {
-        token = strtok_r(NULL, delim, &rest);
+    do {
         i++;
-    }
+    } while (strtok_r(NULL, delim, &rest));
     return i;
 }
 
@@ -48,7 +45,7 @@ bool_t str_split_populate(char *string, char **arr, char *delim)
 char **str_split(char *string, char *delim)
 {
     bool_t succeed;
-    size_t count = str_count(string, delim);
+    size_t count = str_count_tok(string, delim);
     char **words;
 
     if (!count)

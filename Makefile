@@ -82,6 +82,9 @@ TSRC += test_autoclose.c
 TSRC += test_list_structure.c
 TSRC += test_file_read.c
 
+VPATH += tests/unit
+TSRC += test_str_count_tok.c
+
 VPATH += tests/integration/get_line
 TSRC += test_get_line_fixed_data.c
 TSRC += test_get_line_broken.c
