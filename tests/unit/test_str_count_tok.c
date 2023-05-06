@@ -10,8 +10,7 @@
 #include "epitech/norm.h"
 #include "epitech/sputnik.h"
 
-
-TEST(str_count_tok, this_is_find_space)
+TEST(str_count_tok, this_is_fine_space)
 $ {
     CR_ASSERT_EQ(str_count_tok("this is fine", " "), 3);
 }
