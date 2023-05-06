@@ -9,6 +9,7 @@
     #define LIST_H_
 
     #include "coding_style_fix.h"
+    #include "utils/attributes.h"
 
     #define LIST_FOREACH(l, n) for (list_node_t *n EQ l->head; n; n EQ n->next)
     #define LIST_APPEND_CHECK(l, v) (list_append(l, v) != W_SENTINEL)
@@ -31,9 +32,6 @@ struct list_s {
     ssize_t size;
 };
 
-list_t *list_create(void);
-void list_destroy(list_t *list);
-
 ssize_t list_append(list_t *list, void *value);
 ssize_t list_append_node(list_t *list, list_node_t *node);
 
@@ -43,5 +41,18 @@ list_node_t *list_get_node(list_t *list, uint_t index);
 void list_remove(list_t *list, uint_t index);
 void list_remove_node(list_t *list, list_node_t *node);
 void list_clear(list_t *list);
+
+static inline
+USED list_t *list_create(void)
+{
+    return calloc(1, sizeof(list_t));
+}
+
+static inline
+USED void list_destroy(list_t *list)
+{
+    list_clear(list);
+    free(list);
+}
 
 #endif /* !LIST_H_ */
