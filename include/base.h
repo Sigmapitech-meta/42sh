@@ -39,6 +39,7 @@ USED char *str_trans(char *string, char in, char out)
 
 int str_count_tok(char *string, char *delim);
 char **str_split(char *string, char *delim);
+char *str_replace(char *src, char *from, char *to);
 
 char *file_read_fd(int fd, size_t filesize);
 char *file_read(char const *filepath);

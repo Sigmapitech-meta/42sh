@@ -44,6 +44,7 @@ SRC += shell.c
 
 VPATH += src/base
 SRC += str_split.c
+SRC += str_replace.c
 SRC += file_reader.c
 
 VPATH += src/list
@@ -89,6 +90,7 @@ VPATH += tests/unit
 TSRC += test_str_count_tok.c
 TSRC += test_str_split.c
 TSRC += test_str_trans.c
+TSRC += test_str_replace.c
 
 VPATH += tests/integration/get_line
 TSRC += test_get_line_fixed_data.c
