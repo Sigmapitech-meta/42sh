@@ -2,7 +2,7 @@
 ** EPITECH PROJECT, 2023
 ** 42sh
 ** File description:
-** segfault.c
+** floating_exeption.c
 */
 
 #include <stdio.h>
