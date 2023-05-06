@@ -8,7 +8,7 @@
 #ifndef MOCK_GETLINE_H_
     #define MOCK_GETLINE_H_
 
-    #include "epitech/norm.h"
+    #include "coding_style_fix.h"
     #include "utils/attributes.h"
 
     #define real_getline __real_getline

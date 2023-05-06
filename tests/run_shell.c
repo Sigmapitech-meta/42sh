@@ -16,7 +16,7 @@
 #include "epitech.h"
 #include "utils/sentinel.h"
 #include "store_env.h"
-#include "epitech/norm.h"
+#include "coding_style_fix.h"
 
 void **store(void)
 {

@@ -5,7 +5,7 @@
 ** test_autofree.c
 */
 
-#include "epitech/sputnik.h"
+#include "sputnik.h"
 #include "mocks/getline.h"
 #include "utils/cleanup.h"
 

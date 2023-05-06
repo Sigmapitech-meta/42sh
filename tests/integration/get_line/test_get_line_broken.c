@@ -7,7 +7,7 @@
 
 #include "base.h"
 #include "epitech.h"
-#include "epitech/sputnik.h"
+#include "sputnik.h"
 #include "mocks/getline.h"
 #include "shell/shell.h"
 
