@@ -2,7 +2,7 @@
 ** EPITECH PROJECT, 2023
 ** 42sh
 ** File description:
-** div_zero.c
+** floating_exeption_core_dump.c
 */
 
 int main(void)
