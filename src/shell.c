@@ -52,7 +52,7 @@ int shell_evaluate_expression(context_t *ctx)
         return EXIT_OK;
     DEBUG("Running [%s] as command", ctx->user_input);
     ctx->status = command_run_subprocess(ctx);
-    if (!ctx->status | ctx->ran_from_tty)
+    if (!ctx->status || ctx->ran_from_tty)
         return EXIT_OK;
     ctx->is_running = FALSE;
     if (ctx->status == SENTINEL_DETECT)

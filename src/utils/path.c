@@ -11,7 +11,7 @@
 #include <unistd.h>
 
 #include "utils/debug_mode.h"
-#include "utils/autofree.h"
+#include "utils/cleanup.h"
 
 char *path_concat(char *left, char *right)
 {
@@ -22,11 +22,10 @@ char *path_concat(char *left, char *right)
     if (!out)
         return NULL;
     written = snprintf(out, new_size, "%s/%s", left, right);
-    if (++written != new_size) {
-        free(out);
-        return NULL;
-    }
-    return out;
+    if (++written == new_size)
+        return out;
+    free(out);
+    return NULL;
 }
 
 char *path_find_access(char *path, char *cmd)

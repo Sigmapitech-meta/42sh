@@ -29,10 +29,10 @@ ssize_t list_append(list_t *list, void *value)
     list_node_t *node;
 
     if (!value)
-        return W_SENTINEL;
+        return SENTINEL;
     node = malloc(sizeof(list_node_t));
     if (!node)
-        return W_SENTINEL;
+        return SENTINEL;
     node->value = value;
     node->next = NULL;
     node->prev = NULL;

@@ -5,7 +5,7 @@
 ** test_command_not_found.c
 */
 
-#include "epitech/sputnik.h"
+#include "sputnik.h"
 #include "run_shell_command.h"
 
 TEST_STD(run_shell_command, command_not_found)
