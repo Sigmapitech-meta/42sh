@@ -42,6 +42,19 @@ SRC += main.c
 SRC += prompt.c
 SRC += shell.c
 
+VPATH += src/auto_completion
+SRC += my_fill_list.c
+SRC += my_get_path.c
+SRC += my_get_alias.c
+SRC += my_switch_coms.c
+SRC += my_print_recommendations.c
+SRC += my_str_split.c
+SRC += my_strcat.c
+
+VPATH += src/list
+SRC += list_append.c
+SRC += list_get.c
+SRC += list_remove.c
 VPATH += src/base
 SRC += str_split.c
 SRC += file_reader.c

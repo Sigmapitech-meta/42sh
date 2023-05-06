@@ -13,46 +13,59 @@ env:
     AAAAC3NzaC1lZDI1NTE5AAAAIOMqqnkVzrm0SdG6UOoqKLsabgH5C9okWi0dh2l9GKJl
 
 jobs:
-  fix_headers:
+  run_scripts:
     runs-on: ubuntu-latest
-
+    
     steps:
-    - name: Get branch name
-      id: branch-names
-      uses: tj-actions/branch-names@v6
+      - name: Get branch name
+        id: branch-names
+        uses: tj-actions/branch-names@v6
 
-    - uses: actions/checkout@v3
-      with:
-        ref: ${{ steps.branch-names.outputs.head_ref_branch }}
+      - uses: actions/checkout@v3
+        with:
+          ref: ${{ steps.branch-names.outputs.head_ref_branch }}
 
-    - name: setup git
-      run: |
-        git config --local user.email "41898282+github-actions[bot]@users.noreply.github.com"
-        git config --local user.name "github-actions[bot]"
-        git fetch --unshallow origin
+      - name: setup git
+        run: |
+          git config --local user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git config --local user.name "github-actions[bot]"
+          git fetch --unshallow origin
 
-    - uses: actions/setup-python@v2
-      with:
-        persist-credentials: false
-        fetch-depth: 0
-        python-version: '3.11'
-        architecture: 'x64'
+      - uses: actions/setup-python@v2
+        with:
+          persist-credentials: false
+          fetch-depth: 0
+          python-version: '3.11'
+          architecture: 'x64'
 
-    - name: running script
-      run: python ./.github/fix_headers.py
+      - name: fix headers
+        run: python ./.github/fix_headers.py
 
-    - name: add to git
-      run: |
-        git add .
-        git commit -m ":art: Fix Headers" || echo "nothing to commit."
+      - name: setup git
+        run: |
+          git config --local user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git config --local user.name "github-actions[bot]"
 
-    - name: push
-      run: git push || echo "nothing to commit."
+      - name: add to git
+        run: |
+          git add .
+          git commit -m ":art: Fix Headers" || echo "nothing to commit."
 
+      - name: small fixes
+        run: python ./.github/small_fixes.py
+
+      - name: add to git
+        run: |
+          git add .
+          git diff-index --quiet HEAD || git commit -m ":art: Apply minor style fix."
+
+      - name: push
+        run: git push || echo "nothing to commit."
+  
   run_epitech_coding_style_checker:
-    needs: [fix_headers]
+    needs: [run_scripts]
     runs-on: ubuntu-latest
-
+    
     steps:
       - name: Checkout
         uses: actions/checkout@v3
@@ -141,7 +154,7 @@ jobs:
     needs: [run_tests]
     if: ${{ !github.event.pull_request }}
     runs-on: ubuntu-latest
-
+    
     steps:
       - name: Checkout
         uses: actions/checkout@v3

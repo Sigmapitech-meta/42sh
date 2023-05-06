@@ -11,6 +11,7 @@
 #include "epitech.h"
 
 #include "shell/shell.h"
+#include "shell/auto_completion.h"
 #include "utils/debug_mode.h"
 
 int main(int argc, char **argv, char **env)
