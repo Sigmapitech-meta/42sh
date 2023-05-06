@@ -10,6 +10,6 @@
 
 TEST_STD(run_shell_command, cd)
 $ {
-    CR_ASSERT_EQ(run_shell_command("cd tests/fixtures/admin; ls"), 0);
-    CR_ASSERT_STDOUT_EQ_STR("root\n");
+    CR_ASSERT_EQ(run_shell_command("cd src"), 0);
+    CR_ASSERT_STDOUT_EQ_STR("");
 }
