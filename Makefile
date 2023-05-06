@@ -78,6 +78,7 @@ TSRC += mock_stat.c
 
 VPATH += tests/integration
 TSRC += test_autofree.c
+TSRC += test_autoclose.c
 TSRC += test_list_structure.c
 TSRC += test_file_read.c
 
