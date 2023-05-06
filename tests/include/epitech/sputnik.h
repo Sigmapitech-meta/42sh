@@ -11,7 +11,7 @@
     #include <criterion/criterion.h>
     #include <criterion/redirect.h>
 
-    #include "coding_style_fix.h"
+    #include "norm.h"
     #include "utils/attributes.h"
 
     #define TEST(...) Test(__VA_ARGS__)

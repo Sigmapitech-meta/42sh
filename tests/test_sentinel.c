@@ -6,7 +6,7 @@
 */
 
 #include "epitech.h"
-#include "sputnik.h"
+#include "epitech/sputnik.h"
 
 TEST(test, sentinel)
 $ {

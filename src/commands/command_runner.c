@@ -17,10 +17,11 @@
 
 #include "utils/debug_mode.h"
 #include "utils/sentinel.h"
-#include "utils/cleanup.h"
+#include "utils/autofree.h"
 
 char *command_handle_home(char *target_path)
 {
+    char *path;
     char *dir = getenv("HOME");
 
     if (!dir) {
@@ -28,10 +29,12 @@ char *command_handle_home(char *target_path)
         return NULL;
     }
     dir = strdup(dir);
-    return NULL_OR(
-        dir,
-        path_concat(dir, target_path + 2)
-    );
+    if (!dir)
+        return NULL;
+    path = path_concat(dir, target_path + 2);
+    if (!path)
+        return NULL;
+    return path;
 }
 
 char *command_get_full_path(char **params)
@@ -49,6 +52,8 @@ char *command_get_full_path(char **params)
         path = path_concat(dir, target_path);
     } else
         path = path_find_cmd(target_path);
+    if (!path)
+        return NULL;
     return path;
 }
 

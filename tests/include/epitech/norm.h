@@ -2,7 +2,7 @@
 ** EPITECH PROJECT, 2023
 ** 42sh
 ** File description:
-** coding_style_fix.h
+** norm.h
 */
 
 #ifndef NORM_H_

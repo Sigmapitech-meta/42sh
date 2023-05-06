@@ -24,7 +24,7 @@ sw_stat_t *switch_stat(void);
 void *wrap_stat(size_t size);
 void *real_stat(size_t size);
 
-void fix_stat(void);
-void break_stat(void);
+extern void fix_stat(void);
+extern void break_stat(void);
 
 #endif /* !MOCK_STAT_H_ */

@@ -8,7 +8,7 @@
 #ifndef MOCK_GETLINE_H_
     #define MOCK_GETLINE_H_
 
-    #include "coding_style_fix.h"
+    #include "epitech/norm.h"
     #include "utils/attributes.h"
 
     #define real_getline __real_getline
@@ -16,7 +16,7 @@
 
     #define GETLINE_DATA (getline_mock_ptr())
 
-    #include <stdio.h>
+    #include <stddef.h>
 
 typedef FILE file_t;
 

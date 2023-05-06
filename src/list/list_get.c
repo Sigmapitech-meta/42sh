@@ -6,15 +6,18 @@
 */
 
 #include <stddef.h>
-
-#include "base.h"
 #include "list.h"
 
 list_node_t *list_get_node(list_t *list, uint_t index)
 {
-    list_node_t *node = NULL_OR(list, list->head);
+    list_node_t *node;
     uint_t curr = 0;
 
+    if (!list)
+        return NULL;
+    node = list->head;
+    if (!node)
+        return NULL;
     while (node && curr < index) {
         node = node->next;
         curr++;
@@ -26,5 +29,7 @@ void *list_get(list_t *list, uint_t index)
 {
     list_node_t *node = list_get_node(list, index);
 
-    return NULL_OR(node, node->value);
+    if (!node)
+        return NULL;
+    return node->value;
 }

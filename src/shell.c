@@ -52,7 +52,7 @@ int shell_evaluate_expression(context_t *ctx)
         return EXIT_OK;
     DEBUG("Running [%s] as command", ctx->user_input);
     ctx->status = command_run_subprocess(ctx);
-    if (!ctx->status || ctx->ran_from_tty)
+    if (!ctx->status | ctx->ran_from_tty)
         return EXIT_OK;
     ctx->is_running = FALSE;
     if (ctx->status == SENTINEL_DETECT)
@@ -98,14 +98,11 @@ int shell_run_from_env(char **env)
 {
     command_t cmd = { 0 };
     context_t ctx = {
-        .is_running = TRUE,
-        .ran_from_tty = isatty(STDIN_FILENO),
-        .cmd = &cmd,
         .original_env = env,
+        .ran_from_tty = isatty(STDIN_FILENO),
         .prev_dir = getcwd(NULL, 0),
-        .user_input = NULL,
-        .input_size = 0,
-        .status = 0
+        .is_running = TRUE,
+        .cmd = &cmd,
     };
 
     if (!ctx.prev_dir)

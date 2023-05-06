@@ -5,9 +5,10 @@
 ** mock_getline.c
 */
 
-#include <errno.h>
-#include <string.h>
 #include <unistd.h>
+#include <bits/types/FILE.h>
+#include <string.h>
+#include <errno.h>
 
 #include "mocks/getline.h"
 #include "utils/sentinel.h"

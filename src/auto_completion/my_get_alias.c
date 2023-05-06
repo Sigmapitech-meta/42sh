@@ -11,7 +11,7 @@
 #include "epitech.h"
 #include "shell/auto_completion.h"
 #include "shell/helpers.h"
-#include "utils/cleanup.h"
+#include "utils/autofree.h"
 
 static bool is_alias_1(char *str)
 {

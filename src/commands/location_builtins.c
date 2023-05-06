@@ -15,7 +15,7 @@
 #include "shell/builtins.h"
 #include "shell/shell.h"
 #include "shell/utils.h"
-#include "utils/cleanup.h"
+#include "utils/autofree.h"
 
 static
 bool_t is_builtin(char *cmd_name)

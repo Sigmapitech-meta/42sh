@@ -6,10 +6,10 @@
 */
 
 #include "base.h"
-#include "sputnik.h"
-
+#include "epitech/sputnik.h"
 #include "mocks/getline.h"
-#include "utils/cleanup.h"
+
+#include "utils/autofree.h"
 #include "utils/sentinel.h"
 
 static

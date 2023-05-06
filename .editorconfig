@@ -19,7 +19,7 @@ ij_wrap_on_typing = false
 [{Makefile,*.mk}]
 indent_style = tab
 
-[{*.nix, *.yml}]
+[*.nix]
 tab_width = 2
 
 [{*.c,*.h}]

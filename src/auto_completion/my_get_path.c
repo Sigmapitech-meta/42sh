@@ -12,7 +12,7 @@
 #include <sys/stat.h>
 #include <unistd.h>
 
-#include "utils/cleanup.h"
+#include "utils/autofree.h"
 #include "shell/auto_completion.h"
 
 static int count_file(char *path)

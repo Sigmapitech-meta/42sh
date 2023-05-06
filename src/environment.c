@@ -12,7 +12,7 @@
 #include "epitech.h"
 #include "shell/shell.h"
 #include "utils/debug_mode.h"
-#include "utils/cleanup.h"
+#include "utils/autofree.h"
 
 char *env_get_setter(char *key, char *value)
 {

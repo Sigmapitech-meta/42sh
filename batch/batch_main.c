@@ -9,9 +9,10 @@
 #include <string.h>
 
 #include "base.h"
+#include "batch.h"
 
 #include "epitech.h"
-#include "utils/cleanup.h"
+#include "utils/autofree.h"
 #include "run_shell_command.h"
 
 void batch_run(char *filepath)
@@ -34,5 +35,5 @@ int main(int argc, char **argv)
     if (argc == 1)
         return EXIT_OK_MSG("Missing filepath.\n");
     batch_run(argv[1]);
-    return EXIT_OK;
+    return EXIT_KO;
 }

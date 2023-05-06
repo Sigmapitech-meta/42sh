@@ -13,7 +13,6 @@
       with import nixpkgs { inherit system; }; {
         devShells.default = mkShell {
           packages = [
-            afl
             cs.packages.${system}.report
             criterion
             gcc12

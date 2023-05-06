@@ -5,13 +5,11 @@
 ** test_autofree.c
 */
 
-#include "sputnik.h"
-
+#include "epitech/sputnik.h"
 #include "mocks/getline.h"
-#include "utils/cleanup.h"
+#include "utils/autofree.h"
 
-static
-void is_ptr_null(char *ptr)
+static void is_ptr_null(char *ptr)
 {
     setbuf(stdout, 0);
     printf("%s", (ptr) ? "no" : "yes");

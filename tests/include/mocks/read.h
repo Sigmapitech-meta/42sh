@@ -24,7 +24,7 @@ sw_read_t *switch_read(void);
 void *wrap_read(size_t size);
 void *real_read(size_t size);
 
-void fix_read(void);
-void break_read(void);
+extern void fix_read(void);
+extern void break_read(void);
 
 #endif /* !MOCK_READ_H_ */

@@ -10,8 +10,6 @@
 
     #define ATTR(key) __attribute__((key))
 
-    #define ALWAYS_INLINE ATTR(always_inline)
-
     #define USED ATTR(used)
     #define UNUSED ATTR(unused)
 
