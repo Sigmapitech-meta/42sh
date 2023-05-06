@@ -127,7 +127,7 @@ OBJS += $(DEBUG_OBJ) $(ANGRY_OBJ)
 OBJS += $(TEST_OBJ)
 
 ALL_OBJS := $(OBJ)
-ALL_OBJS += $(DEBUG_OBJ) $(ANGRY_OBJ) 
+ALL_OBJS += $(DEBUG_OBJ) $(ANGRY_OBJ)
 ALL_OBJS += $(TEST_OBJ) $(AFL_OBJ)
 
 # ↓ Utils
@@ -214,6 +214,14 @@ $(NAME_AFL): CFLAGS += -D DEBUG_MODE
 $(NAME_AFL): $(AFL_OBJ)
 	$Q $(CC) $(CFLAGS) $(LIBFLAGS) $(LDLIBS) -o $@ $^
 	$(call LOG,":g$@")
+
+afl_run: $(NAME_AFL)
+	echo core | sudo tee /proc/sys/kernel/core_pattern
+	$Q afl-fuzz -o tests/generated \
+        -i tests/fixtures/input -x tests/fixtures/tokens \
+        -- ./42sh_afl @@
+
+.PHONY: afl_run
 
 $(BUILD_DIR)/afl/%.o: %.c
 	@ mkdir -p $(dir $@)
