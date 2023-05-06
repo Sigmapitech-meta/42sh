@@ -2,7 +2,7 @@
 ** EPITECH PROJECT, 2023
 ** 42sh
 ** File description:
-** test_str_count.c
+** test_str_count_tok.c
 */
 
 #include "base.h"
