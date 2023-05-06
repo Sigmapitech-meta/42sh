@@ -247,6 +247,7 @@ fclean:
 			| grep "removed" | cut -d ' ' -f 2))
 	$(call LOG,                                                    \
 		$(if $(REMOVED),"removed:g" $(REMOVED), "no binary to remove."))
+	@ $(MAKE) -sC bin fclean
 
 .PHONY: clean fclean
 
@@ -260,7 +261,7 @@ re: fclean
 $(BUILD_DIR)/tests/%.o: %.c
 	$Q mkdir -p $(dir $@)
 	$Q $(CC) $(CFLAGS) -c $< -o $@
-	$(call LOG, ":c" $(notdir $@))
+	$(call LOG,":c" $(notdir $@))
 
 $(TESTS): CFLAGS += -g3 --coverage
 $(TESTS): CFLAGS += -iquote tests/include
@@ -291,7 +292,7 @@ $(BUILD_DIR)/batch/%.o: HEADER += "batch"
 $(BUILD_DIR)/batch/%.o: %.c
 	@ mkdir -p $(dir $@)
 	$Q $(CC) $(CFLAGS) -c $< -o $@
-	$(call LOG, ":c" $(notdir $@))
+	$(call LOG,":c" $(notdir $@))
 
 $(NAME_BATCH): CFLAGS += -iquote tests/include
 $(NAME_BATCH): CFLAGS += -D DEBUG_MODE
@@ -300,9 +301,10 @@ $(NAME_BATCH): $(BATCH_OBJ)
 	$(call LOG,":g$@")
 
 bundle: $(BINS)
+	@+ $(MAKE) -sC bin
+	$(call LOG,":g$@")
 
 .PHONY: bundle
-	+ $(MAKE) -sC bin all
 
 # ↓ Utils
 RECURSE = $(MAKE) $(1) --no-print-directory START_TIME=$(START_TIME)
