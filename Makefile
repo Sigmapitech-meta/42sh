@@ -215,6 +215,14 @@ $(NAME_AFL): $(AFL_OBJ)
 	$Q $(CC) $(CFLAGS) $(LIBFLAGS) $(LDLIBS) -o $@ $^
 	$(call LOG,":g$@")
 
+afl_run: $(NAME_AFL)
+	echo core | sudo tee /proc/sys/kernel/core_pattern
+	$Q afl-fuzz -o tests/generated \
+        -i tests/fixtures/input -x tests/fixtures/tokens \
+        -- ./42sh_afl @@
+
+.PHONY: afl_run
+
 $(BUILD_DIR)/afl/%.o: %.c
 	@ mkdir -p $(dir $@)
 	$Q $(CC) $(CFLAGS) -c $< -o $@
