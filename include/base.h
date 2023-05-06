@@ -20,12 +20,6 @@
 typedef struct stat stat_t;
 
 static inline
-USED int evprintf(const char *fmt, va_list args)
-{
-    return vdprintf(STDERR_FILENO, fmt, args);
-}
-
-static inline
 USED size_t get_line(char **line)
 {
     static size_t zero = 0;
