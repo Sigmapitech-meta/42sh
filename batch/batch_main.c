@@ -35,5 +35,5 @@ int main(int argc, char **argv)
     if (argc == 1)
         return EXIT_OK_MSG("Missing filepath.\n");
     batch_run(argv[1]);
-    return EXIT_KO;
+    return EXIT_OK;
 }
