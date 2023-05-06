@@ -66,6 +66,9 @@ TSRC += std_redirect.c
 VPATH += tests/e2e
 TSRC += test_setenv.c
 TSRC += test_command_not_found.c
+TSRC += test_ls.c
+TSRC += test_cd.c
+TSRC += test_cd_root.c
 
 VPATH += tests/mocks
 TSRC += mock_getline.c
