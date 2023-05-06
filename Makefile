@@ -71,10 +71,18 @@ TSRC += test_ls.c
 VPATH += tests/e2e/cd
 TSRC += test_cd.c
 TSRC += test_cd_root.c
-# TSRC += test_cd_not_dir.c
+TSRC += test_cd_not_dir.c
 
 VPATH += tests/e2e/env
 TSRC += test_env.c
+TSRC += test_setenv_fail_one.c
+
+VPATH += tests/e2e/location
+# TSRC += test_which_ls.c
+# TSRC += test_where_builtin.c
+TSRC += test_where_fail.c
+# TSRC += test_which_builtin.c
+TSRC += test_which_fail.c
 
 VPATH += tests/mocks
 TSRC += mock_getline.c
