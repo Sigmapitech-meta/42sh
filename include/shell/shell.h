@@ -34,14 +34,14 @@ typedef struct command_s {
 } command_t;
 
 typedef struct context_s {
-    command_t *cmd;
-    unsigned short status;
     bool_t is_running;
     bool_t ran_from_tty;
-    char *user_input;
-    char *prev_dir;
-    size_t input_size;
+    command_t *cmd;
     char **original_env;
+    char *prev_dir;
+    char *user_input;
+    size_t input_size;
+    unsigned short status;
 } context_t;
 
 int command_run_subprocess(context_t *ctx);

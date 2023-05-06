@@ -12,7 +12,6 @@
     #define wrap_malloc __wrap_malloc
 
     #define MALLOC_SWITCH (*switch_malloc())
-    #define BREAK_MALLOC .init RAW_EQ break_malloc, .fini RAW_EQ fix_malloc
 
 typedef _Bool bool_t;
 typedef struct {
@@ -25,7 +24,7 @@ sw_malloc_t *switch_malloc(void);
 void *wrap_malloc(size_t size);
 void *real_malloc(size_t size);
 
-extern void fix_malloc(void);
-extern void break_malloc(void);
+void fix_malloc(void);
+void break_malloc(void);
 
 #endif /* !MOCK_MALLOC_H_ */

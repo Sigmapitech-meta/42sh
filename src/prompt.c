@@ -10,7 +10,7 @@
 
 #include "shell/prompt.h"
 #include "shell/shell.h"
-#include "utils/autofree.h"
+#include "utils/cleanup.h"
 
 void prompt_display(void)
 {

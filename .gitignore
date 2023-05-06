@@ -1,5 +1,6 @@
 # Binaries
 42sh
+42sh_afl
 debug
 angry
 
@@ -21,6 +22,9 @@ batch_runner
 
 # Makefile overides
 override.mk
+
+# AFL generated
+tests/generated
 
 # Logs
 *.log
