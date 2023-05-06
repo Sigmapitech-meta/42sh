@@ -43,7 +43,7 @@ void builtin_which(context_t *ctx)
     char *path = getenv("PATH");
 
     if (ctx->cmd->argc < 2) {
-        EPRINTF("which: Too few arguments.");
+        EPRINTF("which: Too few arguments.\n");
         return;
     }
     for (int i = 1; i < ctx->cmd->argc; i++) {
@@ -87,7 +87,7 @@ void builtin_where(context_t *ctx)
     command_t *cmd = ctx->cmd;
 
     if (cmd->argc < 2) {
-        EPRINTF("where: Too few arguments.");
+        EPRINTF("where: Too few arguments.\n");
         return;
     }
     for (int i = 0; i < cmd->argc; i++) {
