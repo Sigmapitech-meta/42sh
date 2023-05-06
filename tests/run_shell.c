@@ -6,17 +6,18 @@
 */
 
 #include <stddef.h>
+#include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <stdio.h>
 
+#include "coding_style_fix.h"
+#include "epitech.h"
 #include "run_shell_command.h"
+#include "store_env.h"
+
 #include "shell/shell.h"
 #include "utils/attributes.h"
-#include "epitech.h"
 #include "utils/sentinel.h"
-#include "store_env.h"
-#include "coding_style_fix.h"
 
 void **store(void)
 {

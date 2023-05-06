@@ -7,8 +7,8 @@
 
 #include "base.h"
 #include "sputnik.h"
-#include "mocks/getline.h"
 
+#include "mocks/getline.h"
 #include "utils/cleanup.h"
 #include "utils/sentinel.h"
 

@@ -6,7 +6,6 @@
 */
 
 #include "base.h"
-
 #include "coding_style_fix.h"
 #include "sputnik.h"
 

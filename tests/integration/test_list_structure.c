@@ -8,13 +8,14 @@
 #include <criterion/criterion.h>
 
 #include "base.h"
-#include "sputnik.h"
 #include "list.h"
+#include "sputnik.h"
+
 #include "utils/sentinel.h"
 #include "mocks/malloc.h"
 
 static
-list_t * create_test_list(char *words[6])
+list_t *create_test_list(char *words[6])
 {
     int ret;
     list_t *lst = list_create();
@@ -71,7 +72,7 @@ $ {
 }
 
 TEST(lst, broken_malloc, TEST_USE(break_malloc, fix_malloc))
-{
+$ {
     char *words[6] = {"Hello", "this", "is", "my", "friend", "albert"};
     list_t *lst = create_test_list(words);
     list_t empty = { 0 };

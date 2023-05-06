@@ -9,7 +9,6 @@
 #include <string.h>
 
 #include "base.h"
-#include "batch.h"
 
 #include "epitech.h"
 #include "utils/cleanup.h"
