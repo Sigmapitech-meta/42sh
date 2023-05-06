@@ -104,7 +104,7 @@ jobs:
         run: cachix use coding-style # ← package with everything we need
 
       - name: Run
-        run: nix develop --command make -j bunble
+        run: nix develop --command make -j bundle
 
   run_tests:
     needs: [run_epitech_coding_style_checker, check_compilation]
