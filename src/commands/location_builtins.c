@@ -55,7 +55,7 @@ void builtin_which(context_t *ctx)
             return;
         cmd_path = path_find_access(path, ctx->cmd->argv[i]);
         if (!cmd_path)
-            printf("%s: Command not found.\n", ctx->cmd->argv[i]);
+            EPRINTF("%s: Command not found.\n", ctx->cmd->argv[i]);
         else
             printf("%s\n", cmd_path);
     }
