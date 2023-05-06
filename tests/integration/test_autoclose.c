@@ -2,7 +2,7 @@
 ** EPITECH PROJECT, 2023
 ** 42sh
 ** File description:
-** test_autofree.c
+** test_autoclose.c
 */
 
 #include <fcntl.h>
