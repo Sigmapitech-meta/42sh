@@ -12,6 +12,7 @@
 
 #include "base.h"
 #include "utils/sentinel.h"
+#include "utils/cleanup.h"
 
 size_t file_get_size(char const *filepath)
 {
@@ -36,14 +37,12 @@ char *file_read_fd(int fd, size_t filesize)
     return NULL;
 }
 
-char *file_read(char *filepath)
+char *file_read(char const *filepath)
 {
-    int fd = open(filepath, O_RDONLY);
-    char *content = NULL;
+    AUTOCLOSE int fd = open(filepath, O_RDONLY);
 
-    if (IS_SENTINEL(fd))
-        return NULL;
-    content = file_read_fd(fd, file_get_size(filepath));
-    close(fd);
-    return content;
+    return (
+        IS_SENTINEL(fd) ?
+        NULL : file_read_fd(fd, file_get_size(filepath))
+    );
 }

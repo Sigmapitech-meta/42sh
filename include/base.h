@@ -15,13 +15,9 @@
 /** printf-like within the standard error */
     #define EPRINTF(...) (fprintf(stderr, __VA_ARGS__))
 
-typedef struct stat stat_t;
+    #define NULL_OR(cond, expr) ((cond) ? expr : NULL)
 
-static inline
-USED int evprintf(const char *fmt, va_list args)
-{
-    return vdprintf(STDERR_FILENO, fmt, args);
-}
+typedef struct stat stat_t;
 
 static inline
 USED size_t get_line(char **line)
@@ -41,10 +37,10 @@ USED char *str_trans(char *string, char in, char out)
 }
 
 
-int str_count(char *string, char *delim);
+int str_count_tok(char *string, char *delim);
 char **str_split(char *string, char *delim);
 
 char *file_read_fd(int fd, size_t filesize);
-char *file_read(char *filepath);
+char *file_read(char const *filepath);
 
 #endif /* !BASE_H_ */
