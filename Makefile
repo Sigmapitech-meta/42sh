@@ -299,6 +299,11 @@ $(NAME_BATCH): $(BATCH_OBJ)
 	$Q $(CC) -o $@ $^ $(CFLAGS) $(LDLIBS) $(LDFLAGS)
 	$(call LOG,":g$@")
 
+bundle: $(BINS)
+
+.PHONY: bundle
+	+ $(MAKE) -sC bin all
+
 # ↓ Utils
 RECURSE = $(MAKE) $(1) --no-print-directory START_TIME=$(START_TIME)
 
