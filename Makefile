@@ -134,7 +134,7 @@ TEST_OBJ := $(TSRC:%.c=$(BUILD_DIR)/tests/%.o)
 TEST_OBJ += $(filter-out %main.o, $(SRC:%.c=$(BUILD_DIR)/tests/%.o))
 
 BATCH_OBJ := $(BSRC:%.c=$(BUILD_DIR)/batch/%.o)
-AFL_OBJ := $(BSRC:%.c=$(BUILD_DIR)/afl/%.o)
+AFL_OBJ := $(SRC:%.c=$(BUILD_DIR)/afl/%.o)
 
 OBJS := $(OBJ) $(AFL_OBJ)
 OBJS += $(DEBUG_OBJ) $(ANGRY_OBJ)
@@ -224,7 +224,6 @@ afl: $(NAME_AFL)
 $(NAME_AFL): CC := afl-gcc
 $(NAME_AFL): HEADER += "AFL"
 $(NAME_AFL): CFLAGS += -iquote tests/include
-$(NAME_AFL): CFLAGS += -D DEBUG_MODE
 $(NAME_AFL): $(AFL_OBJ)
 	$Q $(CC) $(CFLAGS) $(LIBFLAGS) $(LDLIBS) -o $@ $^
 	$(call LOG,":g$@")
@@ -233,7 +232,7 @@ afl_run: $(NAME_AFL)
 	echo core | sudo tee /proc/sys/kernel/core_pattern
 	$Q afl-fuzz -o tests/generated \
         -i tests/fixtures/input -x tests/fixtures/tokens \
-        -- ./42sh_afl @@
+        -- ./42sh_afl
 
 .PHONY: afl_run
 
