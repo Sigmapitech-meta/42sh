@@ -67,6 +67,7 @@ VPATH += tests/e2e
 TSRC += test_setenv.c
 TSRC += test_command_not_found.c
 TSRC += test_ls.c
+TSRC += test_prompt.c
 
 VPATH += tests/e2e/cd
 TSRC += test_cd.c
@@ -75,7 +76,12 @@ TSRC += test_cd_not_dir.c
 
 VPATH += tests/e2e/env
 TSRC += test_env.c
+TSRC += test_setenv.c
 TSRC += test_setenv_fail_one.c
+TSRC += test_setenv_fail_two.c
+TSRC += test_setenv_tma.c
+TSRC += test_unsetenv_nea.c
+TSRC += test_unsetenv.c
 
 VPATH += tests/e2e/location
 # TSRC += test_which_ls.c
