@@ -88,6 +88,10 @@ TSRC += mock_malloc.c
 TSRC += mock_read.c
 TSRC += mock_stat.c
 
+TSRC += mock_gethostname.c
+TSRC += mock_getcwd.c
+TSRC += mock_getenv.c
+
 VPATH += tests/integration
 TSRC += test_autofree.c
 TSRC += test_autoclose.c
@@ -100,6 +104,7 @@ TSRC += test_str_split.c
 TSRC += test_str_trans.c
 TSRC += test_str_replace.c
 TSRC += test_is_debug.c
+TSRC += test_prompt.c
 
 VPATH += tests/integration/get_line
 TSRC += test_get_line_fixed_data.c
@@ -322,10 +327,21 @@ $(BUILD_DIR)/tests/%.o: %.c
 	$Q $(CC) $(CFLAGS) -c $< -o $@
 	$(call LOG,":c" $(notdir $@))
 
+_TEST_WRAPS := --wrap=getline
+_TEST_WRAPS += --wrap=stat
+_TEST_WRAPS += --wrap=read
+_TEST_WRAPS += --wrap=malloc
+_TEST_WRAPS += --wrap=getenv
+_TEST_WRAPS += --wrap=getcwd
+_TEST_WRAPS += --wrap=gethostname
+
+_COMMA := ,
+SPACE := $(subst a, ,a)
+
 $(TESTS): CFLAGS += -g3 --coverage
 $(TESTS): CFLAGS += -iquote tests/include
 $(TESTS): LDLIBS += -lcriterion
-$(TESTS): LDLIBS += -Wl,--wrap=getline,--wrap=stat,--wrap=read,--wrap=malloc
+$(TESTS): LDLIBS += -Wl,$(subst $(SPACE),$(_COMMA),$(_TEST_WRAPS))
 $(TESTS): LDFLAGS += -fprofile-arcs -ftest-coverage
 $(TESTS): $(TEST_OBJ)
 	$Q $(CC) -o $@ $^ $(CFLAGS) $(LDLIBS) $(LDFLAGS)
