@@ -75,7 +75,7 @@ void shell_evaluate(context_t *ctx)
         DEBUG("Found %d arguments", cmd->argc);
         param_fill(cmd->argv, ctx->user_input);
         cmd->argv[cmd->argc] = NULL;
-        shell_evaluate_expression(ctx);
+        ctx->status = shell_evaluate_expression(ctx);
         ctx->user_input = strtok_r(NULL, ";", &checkpoint);
         free(cmd->argv);
     }

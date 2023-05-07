@@ -11,8 +11,12 @@
 
 TEST_STD(run_command_getenv, should_do_stuff)
 {
+    CTX_AUTOFREE context_t *ctx = NULL;
+
     if (!is_debug_mode())
-        cr_skip();
-    run_shell_command("setenv a b; getenv a");
+        CR_SKIP("Debug only test.");
+    ctx = run_shell_command("setenv a b; getenv a");
+    if (!ctx)
+        CR_SKIP("Allocation error.");
     CR_ASSERT_STDOUT_EQ_STR("--- a ---\nb");
 }

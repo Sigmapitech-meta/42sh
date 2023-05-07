@@ -7,9 +7,14 @@
 
 #include "sputnik.h"
 #include "run_shell_command.h"
+#include "shell/shell.h"
 
 TEST_STD(run_shell_command, command_not_found)
 $ {
-    CR_ASSERT_EQ(run_shell_command("aaa"), 1);
+    CTX_AUTOFREE context_t *ctx = run_shell_command("aaa");
+
+    if (!ctx)
+        CR_SKIP("Allocation error.");
+    CR_ASSERT_EQ(ctx->status, 1);
     CR_ASSERT_STDERR_EQ_STR("aaa: Command not found.\n");
 }
