@@ -29,7 +29,7 @@
         #define DEBUG_MSG_IF(cond, fmt) ((cond) ? DEBUG_MSG(fmt) : 0)
 
         #define DEBUG_USED NOTHING
-        #define DEBUG_EXPR(func) func
+        #define DEBUG_EXPR(...) __VA_ARGS__
 
     #else
         #define DEBUG(...) NOTHING
@@ -40,7 +40,7 @@
         #define DEBUG_MSG_IF(...) NOTHING
 
         #define DEBUG_USED __attribute__((unused))
-        #define DEBUG_EXPR(func) /* nop */
+        #define DEBUG_EXPR(...) /* nop */
     #endif
 
 

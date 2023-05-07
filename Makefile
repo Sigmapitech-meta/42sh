@@ -131,6 +131,9 @@ BSRC += tests/run_shell.c
 VPATH += batch
 BSRC += batch_main.c
 
+ASRC := $(SRC)
+ASRC += mock_execve.c
+
 vpath %.c $(VPATH)
 
 # ↓ `touch .fast` to force multi-threading
@@ -157,7 +160,7 @@ TEST_OBJ := $(TSRC:%.c=$(BUILD_DIR)/tests/%.o)
 TEST_OBJ += $(filter-out %main.o, $(SRC:%.c=$(BUILD_DIR)/tests/%.o))
 
 BATCH_OBJ := $(BSRC:%.c=$(BUILD_DIR)/batch/%.o)
-AFL_OBJ := $(SRC:%.c=$(BUILD_DIR)/afl/%.o)
+AFL_OBJ := $(ASRC:%.c=$(BUILD_DIR)/afl/%.o)
 
 OBJS := $(OBJ) $(AFL_OBJ)
 OBJS += $(DEBUG_OBJ) $(ANGRY_OBJ)
@@ -248,12 +251,12 @@ afl: $(NAME_AFL)
 .PHONY: afl
 
 $(NAME_AFL): CC := afl-gcc
-$(NAME_AFL): CC += -Ofast -march=native -fsanitize=address
-$(NAME_AFL): CC += -D WRAP_UNWANTED_COMMANDS
-$(NAME_AFL): HEADER += "AFL"
+$(NAME_AFL): CFLAGS += -g3 -march=native -fsanitize=address
 $(NAME_AFL): CFLAGS += -iquote tests/include
+$(NAME_AFL): CFLAGS += -Wl,--wrap=execve
+$(NAME_AFL): HEADER += "AFL"
 $(NAME_AFL): $(AFL_OBJ)
-	$Q $(CC) $(CFLAGS) $(LIBFLAGS) $(LDLIBS) -o $@ $^
+	$Q AFL_USE_ASAN=1 $(CC) $(CFLAGS) $(LIBFLAGS) $(LDLIBS) -o $@ $^
 	$(call LOG,":g$@")
 
 _afl_run_cmd_%:
@@ -273,8 +276,8 @@ _afl_run_cmd_%:
 
 _afl_run: _afl_run_cmd_1 _afl_run_cmd_2
 
-afl_run:
-	afl-fuzz \
+afl_run: $(NAME_AFL)
+	@ afl-fuzz \
 		-o tests/generated        \
 		-m none                   \
 		-i tests/fixtures/input   \
