@@ -54,7 +54,6 @@ SRC += list_remove.c
 
 VPATH += src/commands
 SRC += builtins.c
-SRC += debug_builtins.c
 SRC += command_runner.c
 SRC += change_directory.c
 SRC += env_manipulation.c
@@ -75,7 +74,6 @@ TSRC += test_cd.c
 TSRC += test_command_not_found.c
 TSRC += test_env.c
 TSRC += test_exit.c
-TSRC += test_getenv.c
 TSRC += test_ls.c
 TSRC += test_setenv.c
 TSRC += test_setenv.c
@@ -101,6 +99,7 @@ TSRC += test_str_count_tok.c
 TSRC += test_str_split.c
 TSRC += test_str_trans.c
 TSRC += test_str_replace.c
+TSRC += test_is_debug.c
 
 VPATH += tests/integration/get_line
 TSRC += test_get_line_fixed_data.c
@@ -110,6 +109,7 @@ TSRC += test_get_line_broken.c
 
 DSRC := $(SRC)
 DSRC += debug_colorize.c
+DSRC += debug_builtins.c
 
 # ↓ Batch runner sources
 BSRC += $(filter-out %main.c, $(DSRC))
