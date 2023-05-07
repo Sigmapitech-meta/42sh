@@ -88,6 +88,7 @@ TSRC += test_cd_not_dir.c
 VPATH += tests/commands/env
 TSRC += test_env.c
 TSRC += test_setenv.c
+TSRC += test_setenv_no_arg.c
 TSRC += test_setenv_fail_one.c
 TSRC += test_setenv_fail_two.c
 TSRC += test_setenv_tma.c
