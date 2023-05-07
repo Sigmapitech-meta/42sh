@@ -2,7 +2,7 @@
 ** EPITECH PROJECT, 2023
 ** 42sh
 ** File description:
-** xxx.h
+** gethostname.h
 */
 
 #ifndef MOCK_GETHOSTNAME_H_

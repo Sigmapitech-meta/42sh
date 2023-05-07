@@ -2,7 +2,7 @@
 ** EPITECH PROJECT, 2023
 ** 42sh
 ** File description:
-** mock_xxx.c
+** mock_getcwd.c
 */
 
 #include <string.h>
