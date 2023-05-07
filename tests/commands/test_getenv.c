@@ -2,7 +2,7 @@
 ** EPITECH PROJECT, 2023
 ** 42sh
 ** File description:
-** test_setenv_getenv.c
+** test_getenv.c
 */
 
 #include "run_shell_command.h"

@@ -2,7 +2,7 @@
 ** EPITECH PROJECT, 2023
 ** 42sh
 ** File description:
-** test_where_fail.c
+** test_where.c
 */
 
 #include <unistd.h>

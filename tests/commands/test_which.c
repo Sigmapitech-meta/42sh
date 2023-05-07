@@ -1,7 +1,8 @@
 /*
 ** EPITECH PROJECT, 2023
+** 42sh
 ** File description:
-** test_which_fail.c
+** test_which.c
 */
 
 #include <unistd.h>
