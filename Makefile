@@ -103,7 +103,6 @@ TSRC += test_str_count_tok.c
 TSRC += test_str_split.c
 TSRC += test_str_trans.c
 TSRC += test_str_replace.c
-TSRC += test_is_debug.c
 TSRC += test_prompt.c
 
 VPATH += tests/integration/get_line

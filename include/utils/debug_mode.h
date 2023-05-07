@@ -34,8 +34,6 @@
         #define DEBUG_EXPR(...) __VA_ARGS__
 
     #else
-        #define DEBUG_MODE FALSE
-
         #define DEBUG(...) NOTHING
         #define DEBUG_MSG(...) NOTHING
 
@@ -46,12 +44,6 @@
         #define DEBUG_USED __attribute__((unused))
         #define DEBUG_EXPR(...) /* nop */
     #endif
-
-static inline
-USED bool_t is_debug_mode(void)
-{
-    return DEBUG_MODE;
-};
 
     #ifdef DEBUG_MODE
         #define ARR_SIZE(arr) (sizeof (arr) / sizeof(arr[0]))
