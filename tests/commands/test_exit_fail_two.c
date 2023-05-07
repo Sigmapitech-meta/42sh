@@ -2,7 +2,7 @@
 ** EPITECH PROJECT, 2023
 ** 42sh
 ** File description:
-** test_ls.c
+** test_exit_fail_two.c
 */
 
 #include "sputnik.h"

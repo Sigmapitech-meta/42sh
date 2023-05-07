@@ -2,7 +2,7 @@
 ** EPITECH PROJECT, 2023
 ** 42sh
 ** File description:
-** test_setenv.c
+** test_setenv_already.c
 */
 
 #include "sputnik.h"
