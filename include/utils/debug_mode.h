@@ -15,6 +15,8 @@
     #ifdef DEBUG_MODE
         #include <stdio.h>
 
+        #define IS_DEBUG_MODE 1
+
         #define HEAD_FMT BOLD BLUE "%s" RESET ":" PURPLE BOLD "%d" RESET ": "
         #define COLORED(s) debug_colorize(HEAD_FMT s "\n")
         static const int START = sizeof (HEAD_FMT) - 1;
@@ -32,6 +34,9 @@
         #define DEBUG_EXPR(func) func
 
     #else
+
+        #define IS_DEBUG_MODE 0
+
         #define DEBUG(...) NOTHING
         #define DEBUG_MSG(...) NOTHING
 

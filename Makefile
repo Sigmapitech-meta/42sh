@@ -93,6 +93,7 @@ TSRC += test_setenv_fail_one.c
 TSRC += test_setenv_fail_two.c
 TSRC += test_setenv_tma.c
 TSRC += test_unsetenv_nea.c
+TSRC += test_setenv_getenv.c
 TSRC += test_unsetenv.c
 TSRC += test_setenv_already.c
 
