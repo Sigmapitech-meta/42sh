@@ -92,6 +92,8 @@ int command_run_subprocess(context_t *ctx)
     pid_t pid = fork();
 
     DEBUG("PID [%d | %d]", pid, getpid());
+    if (ctx->input_size > strlen(ctx->user_input))
+        return EXIT_FAILURE;
     ctx->user_input[ctx->input_size - 1] = '\0';
     if (!pid)
         command_run(ctx);
