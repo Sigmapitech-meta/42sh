@@ -36,7 +36,7 @@ $ {
 
     if (!ctx)
         CR_SKIP("Allocation error.");
-    CR_ASSERT_EQ(ctx->status, EXIT_OK);
+    CR_ASSERT_EQ(ctx->status, EXIT_FAILURE);
     CR_ASSERT_STDERR_EQ_STR("Makefile: Not a directory.\n");
 }
 

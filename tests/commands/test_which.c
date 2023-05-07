@@ -28,7 +28,7 @@ $ {
     int state;
     char buff[1024] = { '\0' };
     file_t *fake_stdout = cr_get_redirected_stdout();
-    CTX_AUTOFREE context_t *ctx = run_shell_command("which");
+    CTX_AUTOFREE context_t *ctx = run_shell_command("which ls");
 
     if (!ctx)
         CR_SKIP("Allocation error.");

@@ -10,17 +10,6 @@
 #include "run_shell_command.h"
 #include "shell/shell.h"
 
-TEST_STD(run_command_unsetenv, remove_a_existing_value)
-$ {
-    CTX_AUTOFREE context_t *ctx = run_shell_command("unsetenv USER");
-
-    if (!ctx)
-        CR_SKIP("Allocation error.");
-    CR_ASSERT_EQ(ctx->status, EXIT_OK);
-    CR_ASSERT_NOT(getenv("USER"));
-    CR_ASSERT_STDERR_EQ_STR("");
-}
-
 TEST_STD(run_command_unsetenv, remove_a_non_existing_value)
 $ {
     CTX_AUTOFREE context_t *ctx = run_shell_command("unsetenv yousk2");

@@ -15,6 +15,6 @@ $ {
 
     if (!ctx)
         CR_SKIP("Allocation error.");
-    CR_ASSERT_EQ(ctx->status, 1);
+    CR_ASSERT_EQ(ctx->status, EXIT_FAILURE);
     CR_ASSERT_STDERR_EQ_STR("aaa: Command not found.\n");
 }
