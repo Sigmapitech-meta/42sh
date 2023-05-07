@@ -2,7 +2,7 @@
 ** EPITECH PROJECT, 2023
 ** 42sh
 ** File description:
-** test_is_debug_mode.c
+** test_is_debug.c
 */
 
 #include "coding_style_fix.h"
