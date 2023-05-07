@@ -8,7 +8,7 @@
 #include "sputnik.h"
 #include "run_shell_command.h"
 
-TEST_STD(run_shell_command, where)
+TEST_STD(run_command_where, where)
 $ {
     CR_ASSERT_EQ(run_shell_command("where"), 0);
     CR_ASSERT_STDERR_EQ_STR("where: Too few arguments.\n");

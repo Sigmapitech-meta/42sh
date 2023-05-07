@@ -71,38 +71,18 @@ TSRC += run_shell.c
 TSRC += std_redirect.c
 
 VPATH += tests/commands
-TSRC += test_setenv.c
-TSRC += test_command_not_found.c
-TSRC += test_ls.c
-TSRC += test_exit.c
-TSRC += test_exit_fail_one.c
-TSRC += test_exit_fail_two.c
-TSRC += test_exit_value.c
-
-VPATH += tests/commands/cd
 TSRC += test_cd.c
-TSRC += test_cd_home.c
-TSRC += test_cd_root.c
-TSRC += test_cd_not_dir.c
-
-VPATH += tests/commands/env
+TSRC += test_command_not_found.c
 TSRC += test_env.c
+TSRC += test_exit.c
+TSRC += test_getenv.c
+TSRC += test_ls.c
 TSRC += test_setenv.c
-TSRC += test_setenv_no_arg.c
-TSRC += test_setenv_fail_one.c
-TSRC += test_setenv_fail_two.c
-TSRC += test_setenv_tma.c
-TSRC += test_unsetenv_nea.c
-TSRC += test_setenv_getenv.c
+TSRC += test_setenv.c
+TSRC += test_setenv_invalid_names.c
 TSRC += test_unsetenv.c
-TSRC += test_setenv_already.c
-
-VPATH += tests/commands/location
-# TSRC += test_which_ls.c
-# TSRC += test_where_builtin.c
-TSRC += test_where_fail.c
-# TSRC += test_which_builtin.c
-TSRC += test_which_fail.c
+TSRC += test_where.c
+TSRC += test_which.c
 
 VPATH += tests/mocks
 TSRC += mock_getline.c

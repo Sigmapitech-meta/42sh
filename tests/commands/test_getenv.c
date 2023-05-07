@@ -5,7 +5,6 @@
 ** test_setenv_getenv.c
 */
 
-
 #include "run_shell_command.h"
 #include "sputnik.h"
 #include "utils/debug_mode.h"
