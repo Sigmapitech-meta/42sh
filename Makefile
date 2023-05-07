@@ -74,6 +74,10 @@ VPATH += tests/commands
 TSRC += test_setenv.c
 TSRC += test_command_not_found.c
 TSRC += test_ls.c
+TSRC += test_exit.c
+TSRC += test_exit_fail_one.c
+TSRC += test_exit_fail_two.c
+TSRC += test_exit_value.c
 
 VPATH += tests/commands/cd
 TSRC += test_cd.c
