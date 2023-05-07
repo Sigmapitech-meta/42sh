@@ -107,7 +107,7 @@ VPATH += tests/integration
 TSRC += test_autofree.c
 TSRC += test_autoclose.c
 TSRC += test_list_structure.c
-#TSRC += test_file_read.c
+TSRC += test_file_read.c
 
 VPATH += tests/unit
 TSRC += test_str_count_tok.c

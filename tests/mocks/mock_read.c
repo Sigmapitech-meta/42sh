@@ -17,9 +17,12 @@ sw_read_t *switch_read(void)
     return &state;
 }
 
-void *wrap_read(size_t size)
+void *wrap_read(int fd, void *buff, ssize_t size)
 {
-    return (READ_SWITCH.is_broken) ? NULL : real_read(size);
+    return (
+        (READ_SWITCH.is_broken) ?
+        NULL : real_read(fd, buff, size)
+    );
 }
 
 void fix_read(void)
