@@ -49,7 +49,7 @@ bool_t shell_read_line(context_t *ctx)
 int shell_evaluate_expression(context_t *ctx)
 {
     if (builtins_check(ctx))
-        return EXIT_OK;
+        return ctx->status;
     DEBUG("Running [%s] as command", ctx->user_input);
     ctx->status = command_run_subprocess(ctx);
     if (!ctx->status || ctx->ran_from_tty)
