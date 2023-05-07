@@ -2,7 +2,7 @@
 ** EPITECH PROJECT, 2023
 ** 42sh
 ** File description:
-** test_setenv_tma.c
+** test_setenv_getenv.c
 */
 
 
