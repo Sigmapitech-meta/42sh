@@ -40,6 +40,8 @@ char *command_get_full_path(char **params)
     char *target_path = params[0];
     AUTOFREE char *dir = NULL;
 
+    if (!target_path)
+        return NULL;
     if (target_path[0] == '/')
         return strdup(target_path);
     if (target_path[0] == '~') {

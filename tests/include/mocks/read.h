@@ -21,8 +21,8 @@ typedef struct {
 
 sw_read_t *switch_read(void);
 
-void *wrap_read(size_t size);
-void *real_read(size_t size);
+void *wrap_read(int fd, void *buff, ssize_t size);
+void *real_read(int fd, void *buff, ssize_t size);
 
 void fix_read(void);
 void break_read(void);

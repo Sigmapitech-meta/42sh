@@ -94,7 +94,7 @@ VPATH += tests/integration
 TSRC += test_autofree.c
 TSRC += test_autoclose.c
 TSRC += test_list_structure.c
-#TSRC += test_file_read.c
+TSRC += test_file_read.c
 
 VPATH += tests/unit
 TSRC += test_str_count_tok.c
@@ -117,6 +117,9 @@ BSRC += tests/run_shell.c
 
 VPATH += batch
 BSRC += batch_main.c
+
+ASRC := $(SRC)
+ASRC += mock_execve.c
 
 vpath %.c $(VPATH)
 
@@ -144,7 +147,7 @@ TEST_OBJ := $(TSRC:%.c=$(BUILD_DIR)/tests/%.o)
 TEST_OBJ += $(filter-out %main.o, $(SRC:%.c=$(BUILD_DIR)/tests/%.o))
 
 BATCH_OBJ := $(BSRC:%.c=$(BUILD_DIR)/batch/%.o)
-AFL_OBJ := $(SRC:%.c=$(BUILD_DIR)/afl/%.o)
+AFL_OBJ := $(ASRC:%.c=$(BUILD_DIR)/afl/%.o)
 
 OBJS := $(OBJ) $(AFL_OBJ)
 OBJS += $(DEBUG_OBJ) $(ANGRY_OBJ)
@@ -153,6 +156,9 @@ OBJS += $(TEST_OBJ)
 ALL_OBJS := $(OBJ)
 ALL_OBJS += $(DEBUG_OBJ) $(ANGRY_OBJ)
 ALL_OBJS += $(TEST_OBJ) $(AFL_OBJ)
+
+CMD_NOT_FOUND = $(error $(strip $(1)) is required for this rule)
+CHECK_CMD = $(if $(shell command -v $(1)),, $(call CMD_NOT_FOUND, $(1)))
 
 # ↓ Utils
 ifneq ($(shell tput colors),0)
@@ -232,19 +238,49 @@ afl: $(NAME_AFL)
 .PHONY: afl
 
 $(NAME_AFL): CC := afl-gcc
-$(NAME_AFL): HEADER += "AFL"
+$(NAME_AFL): CFLAGS += -g3 -march=native -fsanitize=address
 $(NAME_AFL): CFLAGS += -iquote tests/include
+$(NAME_AFL): CFLAGS += -Wl,--wrap=execve
+$(NAME_AFL): HEADER += "AFL"
 $(NAME_AFL): $(AFL_OBJ)
-	$Q $(CC) $(CFLAGS) $(LIBFLAGS) $(LDLIBS) -o $@ $^
+	$Q AFL_USE_ASAN=1 $(CC) $(CFLAGS) $(LIBFLAGS) $(LDLIBS) -o $@ $^
 	$(call LOG,":g$@")
 
-afl_run: $(NAME_AFL)
-	echo core | sudo tee /proc/sys/kernel/core_pattern
-	$Q afl-fuzz -o tests/generated \
-        -i tests/fixtures/input -x tests/fixtures/tokens \
-        -- ./42sh_afl
+_afl_run_cmd_%:
+	+$Q kitty \
+        -o initial_window_width=680   \
+        -o initial_window_height=520  \
+        -o font_size=10               \
+        -e afl-fuzz                   \
+            -o tests/generated        \
+            -m none                   \
+            -S $@                     \
+		    -i tests/fixtures/input   \
+		    -x tests/fixtures/tokens  \
+		    -- ./42sh_afl
 
-.PHONY: afl_run
+.PHONY: _afl_run_cmd
+
+_afl_run: _afl_run_cmd_1 _afl_run_cmd_2
+
+afl_run: $(NAME_AFL)
+	@ afl-fuzz \
+		-o tests/generated        \
+		-m none                   \
+		-i tests/fixtures/input   \
+		-x tests/fixtures/tokens  \
+		-- ./42sh_afl
+
+afl_run_dual: $(NAME_AFL)
+	@ $(call CHECK_CMD, kitty)
+
+	echo core | sudo tee /proc/sys/kernel/core_pattern
+	+$Q kitty --single-instance \
+        -o initial_window_width=80  \
+        -o initial_window_height=80 \
+		-e $(MAKE) -j 2 _afl_run
+
+.PHONY: afl_run afl_run_dual _afl_run
 
 $(BUILD_DIR)/afl/%.o: %.c
 	@ mkdir -p $(dir $@)
