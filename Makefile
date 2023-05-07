@@ -89,6 +89,7 @@ TSRC += test_setenv_fail_two.c
 TSRC += test_setenv_tma.c
 TSRC += test_unsetenv_nea.c
 TSRC += test_unsetenv.c
+TSRC += test_setenv_already.c
 
 VPATH += tests/commands/location
 # TSRC += test_which_ls.c
