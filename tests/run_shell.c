@@ -47,7 +47,7 @@ context_t *context_fill(context_t *ctx, char *command)
 }
 
 context_t *run_shell_command(char *command)
-$ {
+{
     context_t *ctx = calloc(1, sizeof (*ctx));
 
     if (!ctx)

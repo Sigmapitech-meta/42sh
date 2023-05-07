@@ -10,7 +10,7 @@
 #include "utils/debug_mode.h"
 
 TEST_STD(run_command_getenv, should_do_stuff)
-{
+$ {
     CTX_AUTOFREE context_t *ctx = NULL;
 
     if (!is_debug_mode())
