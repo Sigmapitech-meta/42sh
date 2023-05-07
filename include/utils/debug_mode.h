@@ -8,14 +8,14 @@
 #ifndef WOLOLO_DEBUG_MODE_H
     #define WOLOLO_DEBUG_MODE_H
 
+    #include "utils/attributes.h"
     #include "utils/colors.h"
+    #include "epitech.h"
 
     #define NOTHING /* Nothing */
 
     #ifdef DEBUG_MODE
         #include <stdio.h>
-
-        #define IS_DEBUG_MODE 1
 
         #define HEAD_FMT BOLD BLUE "%s" RESET ":" PURPLE BOLD "%d" RESET ": "
         #define COLORED(s) debug_colorize(HEAD_FMT s "\n")
@@ -34,8 +34,7 @@
         #define DEBUG_EXPR(func) func
 
     #else
-
-        #define IS_DEBUG_MODE 0
+        #define DEBUG_MODE FALSE
 
         #define DEBUG(...) NOTHING
         #define DEBUG_MSG(...) NOTHING
@@ -48,10 +47,13 @@
         #define DEBUG_EXPR(func) /* nop */
     #endif
 
+static inline
+USED bool_t is_debug_mode(void)
+{
+    return DEBUG_MODE;
+};
 
     #ifdef DEBUG_MODE
-        #include "utils/attributes.h"
-
         #define ARR_SIZE(arr) (sizeof (arr) / sizeof(arr[0]))
 
 typedef struct {
