@@ -28,7 +28,8 @@ void wrap_gethostname(char *name, size_t len)
     name[2] = '\0';
 }
 
-void fix_gethostname(void) {
+void fix_gethostname(void)
+{
     IS_GETHOSTNAME_BROKEN = FALSE;
 }
 

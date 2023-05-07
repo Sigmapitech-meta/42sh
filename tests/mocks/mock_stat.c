@@ -10,24 +10,24 @@
 #include "epitech.h"
 #include "mocks/stat.h"
 
-sw_stat_t *switch_stat(void)
+bool_t *switch_stat(void)
 {
-    static sw_stat_t state = {0};
+    static bool_t state = FALSE;
 
     return &state;
 }
 
 void *wrap_stat(size_t size)
 {
-    return (STAT_SWITCH.is_broken) ? NULL : real_stat(size);
+    return (IS_STAT_BROKEN) ? NULL : real_stat(size);
 }
 
 void fix_stat(void)
 {
-    STAT_SWITCH.is_broken = FALSE;
+    IS_STAT_BROKEN = FALSE;
 }
 
 void break_stat(void)
 {
-    STAT_SWITCH.is_broken = TRUE;
+    IS_STAT_BROKEN = TRUE;
 }
