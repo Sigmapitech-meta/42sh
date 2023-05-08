@@ -30,7 +30,7 @@ TEST(run_shell_command, whitespace, TEST_USE(setup_mocks, teardown_mocks))
 $ {
     command_t cmd = { 0 };
     context_t ctx = { .is_running = TRUE, .cmd = &cmd };
-    
+
     shell_run_from_ctx(&ctx);
     CR_ASSERT_EQ(ctx.status, EXIT_OK);
 }

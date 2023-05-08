@@ -56,7 +56,7 @@ bool_t builtins_check(context_t *ctx)
 {
     command_t *cmd = ctx->cmd;
     int i;
-    
+
     if (!cmd->argc || !cmd->argv[0])
         return FALSE;
     i = get_builtin_id(cmd->argv[0]);

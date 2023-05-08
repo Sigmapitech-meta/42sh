@@ -14,16 +14,6 @@
 #include "shell/shell.h"
 #include "utils/sentinel.h"
 
-TEST_STD(run_command_where, no_arguments)
-$ {
-    CTX_AUTOFREE context_t *ctx = run_shell_command("where");
-
-    if (!ctx)
-        CR_SKIP("Allocation error.");
-    CR_ASSERT_STDERR_EQ_STR("where: Too few arguments.\n");
-    CR_ASSERT_EQ(ctx->status, 1);
-}
-
 static
 void check_result(char *buff)
 {
@@ -37,7 +27,17 @@ void check_result(char *buff)
             "Should end with `.../ls\n`."
         );
         token = strtok_r(NULL, "\n", &rest);
-    } while(token);
+    } while (token);
+}
+
+TEST_STD(run_command_where, no_arguments)
+$ {
+    CTX_AUTOFREE context_t *ctx = run_shell_command("where");
+
+    if (!ctx)
+        CR_SKIP("Allocation error.");
+    CR_ASSERT_STDERR_EQ_STR("where: Too few arguments.\n");
+    CR_ASSERT_EQ(ctx->status, 1);
 }
 
 TEST_STD(run_command_where, which)

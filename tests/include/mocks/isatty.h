@@ -11,7 +11,7 @@
     #define real_isatty __real_isatty
     #define wrap_isatty __wrap_isatty
 
-#define SWITCH_IS_A_TTY (*switch_isatty())
+    #define SWITCH_IS_A_TTY (*switch_isatty())
 
 typedef _Bool bool_t;
 
