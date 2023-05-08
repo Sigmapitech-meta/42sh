@@ -1,8 +1,8 @@
 /*
 ** EPITECH PROJECT, 2023
-** replace_alias_with_command.c
+** 42sh
 ** File description:
-** to replace an alias entered by the correspondingcommand
+** replace_alias_with_command.c
 */
 
 #include "shell/alias.h"

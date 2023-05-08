@@ -1,8 +1,8 @@
 /*
 ** EPITECH PROJECT, 2023
-** alias.h
+** 42sh
 ** File description:
-** alias's header
+** alias.h
 */
 
 #ifndef ALIAS_H

@@ -1,8 +1,8 @@
 /*
 ** EPITECH PROJECT, 2023
-** is_alias.c
+** 42sh
 ** File description:
-** to check wether or not the string passed is an alias
+** is_alias.c
 */
 
 #include "shell/alias.h"

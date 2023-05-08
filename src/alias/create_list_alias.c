@@ -1,8 +1,8 @@
 /*
 ** EPITECH PROJECT, 2023
-** create_alias_list.c
+** 42sh
 ** File description:
-** to create the list of alias
+** create_list_alias.c
 */
 
 #include "shell/alias.h"

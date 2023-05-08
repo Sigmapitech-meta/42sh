@@ -1,8 +1,8 @@
 /*
 ** EPITECH PROJECT, 2023
-** print_coms.c
+** 42sh
 ** File description:
-** print_commands_list
+** print_coms.c
 */
 
 #include "shell/auto_completion.h"

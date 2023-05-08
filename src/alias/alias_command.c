@@ -1,8 +1,8 @@
 /*
 ** EPITECH PROJECT, 2023
-** alias_com.c
+** 42sh
 ** File description:
-** to reproduce the behavior of the alias command
+** alias_command.c
 */
 
 #include "shell/alias.h"

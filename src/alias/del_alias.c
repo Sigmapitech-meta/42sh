@@ -1,8 +1,8 @@
 /*
 ** EPITECH PROJECT, 2023
-** del_alias.c
+** 42sh
 ** File description:
-** to delete an alias
+** del_alias.c
 */
 
 #include "shell/alias.h"

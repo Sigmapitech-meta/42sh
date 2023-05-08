@@ -1,8 +1,8 @@
 /*
 ** EPITECH PROJECT, 2023
-** add_alias.c
+** 42sh
 ** File description:
-** to add an alias
+** add_alias.c
 */
 
 #include "shell/alias.h"
