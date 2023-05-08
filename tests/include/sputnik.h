@@ -30,6 +30,8 @@
     #define CR_ASSERT_STDOUT_EQ_STR(...) cr_assert_stdout_eq_str(__VA_ARGS__)
     #define CR_ASSERT_STDERR_EQ_STR(...) cr_assert_stderr_eq_str(__VA_ARGS__)
 
+    #define CR_ASSERT_STDOUT_NEQ_STR(...) cr_assert_stdout_neq_str(__VA_ARGS__)
+
     #define TEST_SETUP(before) .init EQ before
     #define TEST_TEARDOWN(after) .fini EQ after
 
