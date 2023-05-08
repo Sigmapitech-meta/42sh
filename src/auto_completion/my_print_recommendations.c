@@ -8,26 +8,20 @@
 #include <stdio.h>
 #include <string.h>
 
-#include "epitech.h"
 #include "list.h"
 #include "shell/auto_completion.h"
 
-static bool_t start_the_same_way(char *bin, char *input)
+static
+bool_t start_the_same_way(char *bin, char *input)
 {
-    if (strlen(input) > strlen(bin))
-        return FALSE;
-    for (int i = 0; input[i]; i++)
-        if (input[i] != bin[i])
-            return FALSE;
-    return TRUE;
+    return !strncmp(bin, input, strlen(bin));
 }
 
-static int my_print_com(char *com)
+static
+int my_print_com(char *com)
 {
-    int len = strlen(com);
     printf("%s\t", com);
-    len += 4;
-    return len;
+    return strlen(com) + 4;
 }
 
 char *my_print_recommendations(list_t *bins, char *input)
@@ -38,8 +32,8 @@ char *my_print_recommendations(list_t *bins, char *input)
 
     LIST_FOREACH(bins, node) {
         save = i;
-        if (start_the_same_way((char *)node->value, input))
-            i += my_print_com((char *)node->value);
+        if (start_the_same_way(node->value, input))
+            i += my_print_com(node->value);
         if (i >= 30) {
             i = 0;
             printf("\n");
@@ -48,7 +42,8 @@ char *my_print_recommendations(list_t *bins, char *input)
             count++;
     }
     printf("\n");
-    if (count == 1)
-        input = my_switch_coms(bins, input);
-    return input;
+    return (
+        (count != 1) ?
+        input : my_switch_coms(bins, input)
+    );
 }

@@ -5,37 +5,17 @@
 ** my_strcat.c
 */
 
-#include <stddef.h>
 #include <stdlib.h>
-#include <stdio.h>
 #include <string.h>
 
-static int my_stringlen(char const *str)
+char *my_strcat(char *left, char *right)
 {
-    int nb = 0;
+    int len = strlen(left);
+    int big_len = len + strlen(right);
+    char *str = malloc((big_len + 1) * sizeof(char));
 
-    if (!str)
-        return nb;
-    while (str[nb])
-        nb++;
-    return nb;
-}
-
-char *my_strcat(char *src1, char *src2)
-{
-    int i = 0;
-    int len = my_stringlen(src1);
-    int big_len = len + my_stringlen(src2);
-    char *str = calloc(sizeof(char), big_len + 1);
-
-    while (i < len) {
-        str[i] = src1[i];
-        i++;
-    }
-    while (i < big_len) {
-        str[i] = src2[i - len];
-        i++;
-    }
+    strcpy(str, left);
+    strcat(str + len, right);
     str[big_len] = '\0';
     return str;
 }

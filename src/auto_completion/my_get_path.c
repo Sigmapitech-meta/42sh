@@ -14,41 +14,43 @@
 #include "shell/auto_completion.h"
 #include "base.h"
 
-static int count_file(char *path)
+static
+int count_file(char *path)
 {
     DIR *dir = opendir(path);
-    struct dirent *L_dir = NULL;
+    struct dirent *l_dir = NULL;
     int count = 0;
 
     path = my_strcat(path, "/");
     if (!dir)
         return -84;
-    for (L_dir = readdir(dir); L_dir != NULL; L_dir = readdir(dir)) {
-        if (L_dir->d_name[0] == '.')
+    for (l_dir = readdir(dir); l_dir; l_dir = readdir(dir)) {
+        if (l_dir->d_name[0] == '.')
             continue;
-        if (access(path, X_OK) == 0)
+        if (!access(path, X_OK))
             count++;
     }
     closedir(dir);
     return count;
 }
 
-static int my_fill_bins(char *path, char **bins, int index)
+static
+int my_fill_bins(char *path, char **bins, int index)
 {
     DIR *dir = opendir(path);
-    struct dirent *L_dir = NULL;
+    struct dirent *l_dir = NULL;
     char *path_in_file = my_strcat(path, "/");
 
-    if (dir == NULL) {
+    if (!dir) {
         printf("couldn't open %s\n", path);
         return 0;
     }
-    for (L_dir = readdir(dir); L_dir != NULL; L_dir = readdir(dir)) {
-        if (L_dir->d_name[0] == '.')
+    for (l_dir = readdir(dir); l_dir; l_dir = readdir(dir)) {
+        if (l_dir->d_name[0] == '.')
             continue;
-        path = my_strcat(path_in_file, L_dir->d_name);
-        if (access(path, X_OK) == 0) {
-            bins[index] = strdup(L_dir->d_name);
+        path = my_strcat(path_in_file, l_dir->d_name);
+        if (!access(path, X_OK)) {
+            bins[index] = strdup(l_dir->d_name);
             index++;
         }
     }
@@ -65,9 +67,9 @@ char **my_get_path(char *paths)
         len += count_file(strdup(path[i]));
     bins = calloc(sizeof(char *), (len + 1));
     len = 0;
-    if (bins == NULL)
+    if (!bins)
         return NULL;
-    for (int i = 0; path[i + 2] != NULL; i += 2)
+    for (int i = 0; path[i + 2]; i += 2)
         len += my_fill_bins(path[i], bins, len);
     return bins;
 }

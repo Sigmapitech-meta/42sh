@@ -9,7 +9,6 @@
 #include <string.h>
 
 #include "base.h"
-#include "epitech.h"
 #include "list.h"
 
 #include "shell/alias.h"
@@ -19,21 +18,15 @@ static bool_t is_same(char *alias, char *input)
 {
     AUTOFREE char **array = str_split(alias, " =");
 
-    if (strcmp(array[2], input) == 0)
-        return TRUE;
-    return FALSE;
+    return !strcmp(array[2], input);
 }
 
 void del_alias(list_t *alias, char *input)
 {
-    list_node_t *node = alias->head;
-    uint_t index = 0;
-
-    while (node && !is_same((char *)node->value, input)) {
-        node = node->next;
-        index++;
+    LIST_FOREACH(alias, node) {
+        if (is_same((char *)node->value, input)) {
+            list_remove_node(alias, node);
+            break;
+        }
     }
-    if (!node)
-        return;
-    list_remove(alias, index);
 }

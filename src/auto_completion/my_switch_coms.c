@@ -5,14 +5,18 @@
 ** my_switch_coms.c
 */
 
+#include <stddef.h>
+#include <string.h>
+
+#include "base.h"
+#include "list.h"
 #include "shell/auto_completion.h"
 #include "shell/alias.h"
 
-static char *strdup_alias(char **array)
+static
+char *strdup_alias(char **array)
 {
-    char *output = NULL;
-
-    output = strdup(array[4]);
+    char *output = strdup(array[4]);
     for (int i = 5; array[i]; i++)
         output = my_strcat(output, array[i]);
     return output;
@@ -20,27 +24,25 @@ static char *strdup_alias(char **array)
 
 static char *cmp_alias_and_input(char *node_value, char *input)
 {
-    char *output = NULL;
-    char **array = my_str_split(node_value, " =");
+    char **array = str_split(node_value, " =");
 
-    if (strcmp(array[2], input) == 0)
-        output = strdup_alias(array);
-    return output;
+    return (
+        (!strcmp(array[2], input))
+        ? strdup_alias(array) : NULL
+    );
 }
 
 char *my_switch_coms(list_t *bins, char *input)
 {
-    list_node_t *node = bins->head;
     char *output = NULL;
 
-    while (node) {
-        if (is_alias((char *)node->value))
-            output = cmp_alias_and_input((char *)node->value, input);
+    LIST_FOREACH(bins, node) {
+        if (is_alias(node->value))
+            output = cmp_alias_and_input(node->value, input);
         if (output)
             return output;
-        if (strcmp(input, (char *)node->value) == 0)
-            return (char *)node->value;
-        node = node->next;
+        if (!strcmp(input, node->value))
+            return node->value;
     }
     return NULL;
 }

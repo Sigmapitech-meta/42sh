@@ -17,15 +17,7 @@
 static
 bool_t is_alias_1(char *str)
 {
-    if (strlen(str) < 5)
-        return FALSE;
-    if (str[0] == 'a' &&
-        str[1] == 'l' &&
-        str[2] == 'i' &&
-        str[3] == 'a' &&
-        str[4] == 's')
-        return TRUE;
-    return FALSE;
+    return !strncmp(str, "alias", 5);
 }
 
 static
@@ -39,16 +31,17 @@ int count_alias(char **file_content)
     return count;
 }
 
-static char **parse_alias(char **file)
+static
+char **parse_alias(char **file)
 {
     int line_nbr = count_alias(file);
-    char **alias = calloc(sizeof(char *), (line_nbr + 1));
+    char **alias = malloc((line_nbr + 1) * sizeof(char *));
     int j = 0;
 
     if (!alias)
         return NULL;
     for (int i = 0; file[i]; i++)
-        if (is_alias_1(file[i]) && strcmp(file[i], "") != 0)
+        if (file[i] && is_alias_1(file[i]))
             alias[j++] = strdup(file[i]);
     alias[line_nbr] = NULL;
     return alias;
@@ -62,6 +55,5 @@ char **my_get_alias(void)
     if (!file_content)
         return NULL;
     alias = str_split(file_content, "\n");
-    alias = parse_alias(alias);
-    return alias;
+    return parse_alias(alias);
 }

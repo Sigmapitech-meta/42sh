@@ -11,7 +11,7 @@
 typedef _Bool bool_t;
 typedef struct list_s list_t;
 
-char *my_strcat(char *src1, char *src2);
+char *my_strcat(char *left, char *right);
 char **my_str_split(char *str, char *seps);
 bool_t is_alias(char *str);
 list_t *create_list_alias(void);

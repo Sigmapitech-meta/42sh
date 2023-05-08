@@ -11,11 +11,7 @@
 
 void alias_command(list_t *alias)
 {
-    list_node_t *node = alias->head;
-
-    while (node != NULL) {
-        if (is_alias((char *)node->value))
+    LIST_FOREACH(alias, node)
+        if (is_alias(node->value))
             printf("%s\n", (char *)node->value);
-        node = node->next;
-    }
 }
