@@ -72,6 +72,8 @@ TSRC += std_redirect.c
 VPATH += tests/commands
 TSRC += test_cd.c
 TSRC += test_command_not_found.c
+TSRC += test_echo.c
+TSRC += test_control_d.c
 TSRC += test_env.c
 TSRC += test_exit.c
 TSRC += test_ls.c
@@ -84,6 +86,7 @@ TSRC += test_which.c
 
 VPATH += tests/mocks
 TSRC += mock_getline.c
+TSRC += mock_isatty.c
 TSRC += mock_malloc.c
 TSRC += mock_read.c
 TSRC += mock_stat.c
@@ -334,6 +337,7 @@ _TEST_WRAPS += --wrap=malloc
 _TEST_WRAPS += --wrap=getenv
 _TEST_WRAPS += --wrap=getcwd
 _TEST_WRAPS += --wrap=gethostname
+_TEST_WRAPS += --wrap=isatty
 
 _COMMA := ,
 SPACE := $(subst a, ,a)

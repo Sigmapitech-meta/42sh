@@ -52,7 +52,7 @@ context_t *run_shell_command(char *command)
 
     if (!ctx)
         return NULL;
-    ctx->ran_from_tty = FALSE;
+    ctx->ran_from_tty = isatty(STDIN_FILENO);
     ctx->is_running = TRUE;
     ctx->original_env = ENV_STORE(&store_env);
     ctx->prev_dir = getcwd(NULL, 0);
