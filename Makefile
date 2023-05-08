@@ -54,7 +54,6 @@ SRC += list_remove.c
 
 VPATH += src/commands
 SRC += builtins.c
-SRC += debug_builtins.c
 SRC += command_runner.c
 SRC += change_directory.c
 SRC += env_manipulation.c
@@ -71,37 +70,34 @@ TSRC += run_shell.c
 TSRC += std_redirect.c
 
 VPATH += tests/commands
-TSRC += test_setenv.c
-TSRC += test_command_not_found.c
-TSRC += test_ls.c
-
-VPATH += tests/commands/cd
 TSRC += test_cd.c
-TSRC += test_cd_home.c
-TSRC += test_cd_root.c
-TSRC += test_cd_not_dir.c
-
-VPATH += tests/commands/env
+TSRC += test_cd_errors.c
+TSRC += test_command_invalid.c
+TSRC += test_command_not_found.c
+TSRC += test_echo.c
+TSRC += test_control_d.c
 TSRC += test_env.c
+TSRC += test_exit.c
+TSRC += test_ls.c
+TSRC += test_newline.c
 TSRC += test_setenv.c
-TSRC += test_setenv_fail_one.c
-TSRC += test_setenv_fail_two.c
-TSRC += test_setenv_tma.c
-TSRC += test_unsetenv_nea.c
+TSRC += test_setenv.c
+TSRC += test_setenv_invalid_names.c
 TSRC += test_unsetenv.c
-
-VPATH += tests/commands/location
-# TSRC += test_which_ls.c
-# TSRC += test_where_builtin.c
-TSRC += test_where_fail.c
-# TSRC += test_which_builtin.c
-TSRC += test_which_fail.c
+TSRC += test_where.c
+TSRC += test_which.c
+TSRC += test_whitespace.c
 
 VPATH += tests/mocks
 TSRC += mock_getline.c
+TSRC += mock_isatty.c
 TSRC += mock_malloc.c
 TSRC += mock_read.c
 TSRC += mock_stat.c
+
+TSRC += mock_gethostname.c
+TSRC += mock_getcwd.c
+TSRC += mock_getenv.c
 
 VPATH += tests/integration
 TSRC += test_autofree.c
@@ -114,6 +110,8 @@ TSRC += test_str_count_tok.c
 TSRC += test_str_split.c
 TSRC += test_str_trans.c
 TSRC += test_str_replace.c
+TSRC += test_prompt.c
+TSRC += test_status_show.c
 
 VPATH += tests/integration/get_line
 TSRC += test_get_line_fixed_data.c
@@ -123,6 +121,7 @@ TSRC += test_get_line_broken.c
 
 DSRC := $(SRC)
 DSRC += debug_colorize.c
+DSRC += debug_builtins.c
 
 # ↓ Batch runner sources
 BSRC += $(filter-out %main.c, $(DSRC))
@@ -335,10 +334,22 @@ $(BUILD_DIR)/tests/%.o: %.c
 	$Q $(CC) $(CFLAGS) -c $< -o $@
 	$(call LOG,":c" $(notdir $@))
 
+_TEST_WRAPS := --wrap=getline
+_TEST_WRAPS += --wrap=stat
+_TEST_WRAPS += --wrap=read
+_TEST_WRAPS += --wrap=malloc
+_TEST_WRAPS += --wrap=getenv
+_TEST_WRAPS += --wrap=getcwd
+_TEST_WRAPS += --wrap=gethostname
+_TEST_WRAPS += --wrap=isatty
+
+_COMMA := ,
+SPACE := $(subst a, ,a)
+
 $(TESTS): CFLAGS += -g3 --coverage
 $(TESTS): CFLAGS += -iquote tests/include
 $(TESTS): LDLIBS += -lcriterion
-$(TESTS): LDLIBS += -Wl,--wrap=getline,--wrap=stat,--wrap=read,--wrap=malloc
+$(TESTS): LDLIBS += -Wl,$(subst $(SPACE),$(_COMMA),$(_TEST_WRAPS))
 $(TESTS): LDFLAGS += -fprofile-arcs -ftest-coverage
 $(TESTS): $(TEST_OBJ)
 	$Q $(CC) -o $@ $^ $(CFLAGS) $(LDLIBS) $(LDFLAGS)

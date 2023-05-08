@@ -26,8 +26,11 @@ size_t file_get_size(char const *filepath)
 
 char *file_read_fd(int fd, size_t filesize)
 {
-    char *content = malloc((filesize + 1) * sizeof(char));
+    char *content;
 
+    if (IS_SENTINEL_OF(filesize, size_t))
+        return NULL;
+    content = malloc((filesize + 1) * sizeof(char));
     if (!content)
         return NULL;
     content[filesize] = '\0';

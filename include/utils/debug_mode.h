@@ -8,7 +8,9 @@
 #ifndef WOLOLO_DEBUG_MODE_H
     #define WOLOLO_DEBUG_MODE_H
 
+    #include "utils/attributes.h"
     #include "utils/colors.h"
+    #include "epitech.h"
 
     #define NOTHING /* Nothing */
 
@@ -43,10 +45,7 @@
         #define DEBUG_EXPR(...) /* nop */
     #endif
 
-
     #ifdef DEBUG_MODE
-        #include "utils/attributes.h"
-
         #define ARR_SIZE(arr) (sizeof (arr) / sizeof(arr[0]))
 
 typedef struct {

@@ -5,6 +5,7 @@
 ** mock_execve.c
 */
 
+#include <stdlib.h>
 #include "epitech.h"
 #include "mocks/execve.h"
 
@@ -12,5 +13,5 @@
 
 int wrap_execve(char *path UNUSED, char **argv UNUSED, char **env UNUSED)
 {
-    return EXIT_OK;
+    exit(EXIT_OK);
 }

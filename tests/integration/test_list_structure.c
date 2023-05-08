@@ -17,14 +17,14 @@
 static
 list_t *create_test_list(char *words[6])
 {
-    int ret;
+    ssize_t ret;
     list_t *lst = list_create();
 
     if (!lst)
         return NULL;
     for (int i = 0; i < 6; i++) {
         ret = list_append(lst, words[i]);
-        if (ret == SENTINEL)
+        if (ret == SENTINEL_OF(ssize_t))
             return NULL;
         CR_ASSERT_EQ(ret, i);
     }
@@ -68,6 +68,8 @@ $ {
         return;
     check_nodes(lst, words);
     check_list_remove_clear(lst, words);
+    list_append(lst, NULL);
+    list_remove(NULL, 42);
     list_destroy(lst);
 }
 

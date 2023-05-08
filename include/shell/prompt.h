@@ -8,6 +8,7 @@
 #ifndef PROMPT_H_
     #define PROMPT_H_
 
+    #include "utils/attributes.h"
     #include "utils/colors.h"
 
     #define HOSTNAME_MAX_LEN 64
@@ -16,7 +17,7 @@
     #define USER_HOST GREEN "%s" RESET BOLD "@" CYAN "%s"
     #define PWD RESET BOLD "%s" BLUE
 
-static const char *FORMAT_PROMPT = (
+USED static const char *FORMAT_PROMPT = (
     BOLD BLUE "┌─" PROMPT_BOX(USER_HOST) " - " PROMPT_BOX(PWD) "\n"
     BOLD BLUE "└─" PROMPT_BOX(PURPLE "$") " "
 );

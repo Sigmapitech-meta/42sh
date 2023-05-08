@@ -18,7 +18,6 @@
 
 #include "shell/shell.h"
 #include "utils/attributes.h"
-#include "utils/sentinel.h"
 
 void **store(void)
 {
@@ -33,35 +32,48 @@ void store_env(int argc UNUSED, char **argv UNUSED, char **env)
     ENV_STORE(&store) = env;
 }
 
-IGNORE(
-    /** @warning
-     * cmd_len variable should not be moved within `ctx.user_input`
-     * as gcc will optimize the structure initialization
-     * by doing it in multi-threading causing user_input to be
-     * 0 at allocation time created a corrupted top size.
-    **/
-)
+static
+context_t *context_fill(context_t *ctx, char *command)
+{
+    ctx->cmd = calloc(1, sizeof (command_t));
+    if (!ctx->cmd)
+        return NULL;
+    ctx->input_size = strlen(command) + 1;
+    ctx->user_input = malloc((ctx->input_size + 1) * sizeof (char));
+    if (!ctx->user_input)
+        return NULL;
+    snprintf(ctx->user_input, ctx->input_size, "%s\n", command);
+    return ctx;
+}
 
-int run_shell_command(char *command)
-$ {
-    size_t cmd_len = strlen(command) + 1;
-    command_t cmd = { 0 };
-    context_t ctx = {
-        .is_running = TRUE,
-        .ran_from_tty = FALSE,
-        .cmd = &cmd,
-        .original_env = ENV_STORE(&store_env),
-        .prev_dir = getcwd(NULL, 0),
-        .user_input = malloc((cmd_len + 1) * sizeof (char)),
-        .input_size = cmd_len,
-        .status = 0
-    };
+context_t *run_shell_command(char *command)
+{
+    context_t *ctx = calloc(1, sizeof (*ctx));
 
-    if (!ctx.user_input)
-        return SENTINEL;
-    snprintf(ctx.user_input, ctx.input_size, "%s\n", command);
-    shell_evaluate(&ctx);
-    free(ctx.prev_dir);
-    env_free(ctx.original_env);
-    return ctx.status;
+    if (!ctx)
+        return NULL;
+    ctx->ran_from_tty = isatty(STDIN_FILENO);
+    ctx->is_running = TRUE;
+    ctx->original_env = ENV_STORE(&store_env);
+    ctx->prev_dir = getcwd(NULL, 0);
+    if (!context_fill(ctx, command)) {
+        context_destroy(ctx);
+        return NULL;
+    }
+    shell_evaluate(ctx);
+    return ctx;
+}
+
+void context_destroy(context_t *ctx)
+{
+    if (!ctx)
+        return;
+    if (ctx->cmd)
+        free(ctx->cmd);
+    if (ctx->input_size)
+        free(ctx->user_input);
+    if (ctx->prev_dir)
+        free(ctx->prev_dir);
+    env_free(ctx->original_env);
+    free(ctx);
 }

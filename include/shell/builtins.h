@@ -22,6 +22,8 @@ typedef struct {
 } builtin_t;
 
 bool_t builtins_check(context_t *ctx);
+int get_builtin_id(char *cmd_name);
+
 
 void builtin_echo(context_t *ctx);
 void builtin_cd(context_t *ctx);

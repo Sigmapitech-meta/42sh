@@ -10,27 +10,24 @@
 #include "epitech.h"
 #include "mocks/read.h"
 
-sw_read_t *switch_read(void)
+bool_t *switch_read(void)
 {
-    static sw_read_t state = {0};
+    static bool_t state = FALSE;
 
     return &state;
 }
 
-void *wrap_read(int fd, void *buff, ssize_t size)
+ssize_t wrap_read(int fd, void *buff, ssize_t size)
 {
-    return (
-        (READ_SWITCH.is_broken) ?
-        NULL : real_read(fd, buff, size)
-    );
+    return (IS_READ_BROKEN) ? SENTINEL : real_read(fd, buff, size);
 }
 
 void fix_read(void)
 {
-    READ_SWITCH.is_broken = FALSE;
+    IS_READ_BROKEN = FALSE;
 }
 
 void break_read(void)
 {
-    READ_SWITCH.is_broken = TRUE;
+    IS_READ_BROKEN = TRUE;
 }

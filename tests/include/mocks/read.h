@@ -11,18 +11,14 @@
     #define real_read __real_read
     #define wrap_read __wrap_read
 
-    #define READ_SWITCH (*switch_read())
-    #define BREAK_READ .init RAW_EQ break_read, .fini RAW_EQ fix_read
+    #define IS_READ_BROKEN (*switch_read())
 
 typedef _Bool bool_t;
-typedef struct {
-    bool_t is_broken;
-} sw_read_t;
 
-sw_read_t *switch_read(void);
+bool_t *switch_read(void);
 
-void *wrap_read(int fd, void *buff, ssize_t size);
-void *real_read(int fd, void *buff, ssize_t size);
+ssize_t wrap_read(int fd, void *buff, ssize_t size);
+ssize_t real_read(int fd, void *buff, ssize_t size);
 
 void fix_read(void);
 void break_read(void);
