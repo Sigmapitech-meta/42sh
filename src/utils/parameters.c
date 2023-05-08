@@ -7,12 +7,13 @@
 
 #include <stdlib.h>
 #include <string.h>
+#include "utils/cleanup.h"
 
 int param_count(const char *line)
 {
     int count = 0;
     char *checkpoint;
-    char *line_copy = strdup((char *)line);
+    AUTOFREE char *line_copy = strdup((char *)line);
     char *token = strtok_r(line_copy, " \t", &checkpoint);
 
     if (!token)
@@ -20,7 +21,6 @@ int param_count(const char *line)
     count++;
     while (strtok_r(NULL, " \t", &checkpoint))
         count++;
-    free(line_copy);
     return count;
 }
 
