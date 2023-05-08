@@ -11,11 +11,7 @@
 static char *strdup_alias(char **array)
 {
     char *output = NULL;
-    int len = 0;
 
-    for (int i = 4; array[i] != NULL; i++)
-        len += strlen(array[i]);
-    output = calloc(1, (len + 1));
     output = strdup(array[4]);
     for (int i = 5; array[i] != NULL; i++)
         output = my_strcat(output, array[i]);

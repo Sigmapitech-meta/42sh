@@ -9,29 +9,22 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
-#include <sys/stat.h>
 #include <unistd.h>
 
-#include "utils/cleanup.h"
 #include "shell/auto_completion.h"
 
 static int count_file(char *path)
 {
     DIR *dir = opendir(path);
     struct dirent *L_dir = NULL;
-    struct stat stats;
     int count = 0;
-    AUTOFREE char *path_in_file = NULL;
+
     path = my_strcat(path, "/");
-    path_in_file = strdup(path);
     if (!dir)
         return -84;
     for (L_dir = readdir(dir); L_dir != NULL; L_dir = readdir(dir)) {
         if (L_dir->d_name[0] == '.')
             continue;
-        path_in_file = strdup(path);
-        path_in_file = my_strcat(path_in_file, L_dir->d_name);
-        stat(path_in_file, &stats);
         if (access(path, X_OK) == 0)
             count++;
     }
@@ -52,7 +45,6 @@ static int my_fill_bins(char *path, char **bins, int index)
     for (L_dir = readdir(dir); L_dir != NULL; L_dir = readdir(dir)) {
         if (L_dir->d_name[0] == '.')
             continue;
-        path = strdup(path_in_file);
         path = my_strcat(path_in_file, L_dir->d_name);
         if (access(path, X_OK) == 0) {
             bins[index] = strdup(L_dir->d_name);

@@ -5,7 +5,6 @@
 ** my_fill_list.c
 */
 
-#include <fcntl.h>
 #include <stddef.h>
 #include <stdio.h>
 
