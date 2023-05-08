@@ -71,6 +71,7 @@ TSRC += std_redirect.c
 
 VPATH += tests/commands
 TSRC += test_cd.c
+TSRC += test_cd_errors.c
 TSRC += test_command_not_found.c
 TSRC += test_echo.c
 TSRC += test_control_d.c

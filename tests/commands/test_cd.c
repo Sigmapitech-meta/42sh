@@ -10,7 +10,7 @@
 #include "sputnik.h"
 #include "shell/shell.h"
 
-TEST_STD(run_shell_command, cd)
+TEST_STD(run_command_cd, move_to_folder)
 $ {
     CTX_AUTOFREE context_t *ctx = run_shell_command("cd src");
 
@@ -20,7 +20,7 @@ $ {
     CR_ASSERT_STDOUT_EQ_STR("");
 }
 
-TEST_STD(run_shell_command, cd_home)
+TEST_STD(run_command_cd, cd_home)
 $ {
     CTX_AUTOFREE context_t *ctx = run_shell_command("cd");
 
@@ -30,22 +30,30 @@ $ {
     CR_ASSERT_STDOUT_EQ_STR("");
 }
 
-TEST_STD(run_shell_command, cd_not_dir)
-$ {
-    CTX_AUTOFREE context_t *ctx = run_shell_command("cd Makefile");
-
-    if (!ctx)
-        CR_SKIP("Allocation error.");
-    CR_ASSERT_EQ(ctx->status, EXIT_FAILURE);
-    CR_ASSERT_STDERR_EQ_STR("Makefile: Not a directory.\n");
-}
-
-TEST_STD(run_shell_command, cd_root)
+TEST_STD(run_command_cd, cd_root)
 $ {
     CTX_AUTOFREE context_t *ctx = run_shell_command("cd /");
 
     if (!ctx)
         CR_SKIP("Allocation error.");
-    CR_ASSERT_EQ(ctx->status, 0);
+    CR_ASSERT_EQ(ctx->status, EXIT_OK);
     CR_ASSERT_STDOUT_EQ_STR("");
+}
+
+TEST_STD(run_command_cd, cd_relative)
+$ {
+    CTX_AUTOFREE context_t *ctx = run_shell_command("cd ~/../../../../bin");
+
+    if (!ctx)
+        CR_SKIP("Allocation error.");
+    CR_ASSERT_EQ(ctx->status, EXIT_OK);
+}
+
+TEST_STD(run_command_cd, previous_dir)
+$ {
+    CTX_AUTOFREE context_t *ctx = run_shell_command("cd -");
+
+    if (!ctx)
+        CR_SKIP("Allocation error.");
+    CR_ASSERT_EQ(ctx->status, EXIT_OK);
 }
