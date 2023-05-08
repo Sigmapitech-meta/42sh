@@ -12,6 +12,7 @@
 #include <unistd.h>
 
 #include "shell/auto_completion.h"
+#include "base.h"
 
 static int count_file(char *path)
 {
@@ -56,7 +57,7 @@ static int my_fill_bins(char *path, char **bins, int index)
 
 char **my_get_path(char *paths)
 {
-    char **path = my_str_split(paths, ":");
+    char **path = str_split(paths, ":");
     char **bins = NULL;
     int len = 0;
 

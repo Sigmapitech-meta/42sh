@@ -8,24 +8,28 @@
 #include <stdlib.h>
 #include <string.h>
 
+#include "base.h"
+#include "epitech.h"
+
 #include "shell/auto_completion.h"
-#include "shell/helpers.h"
 #include "utils/cleanup.h"
 
-static bool is_alias_1(char *str)
+static
+bool_t is_alias_1(char *str)
 {
     if (strlen(str) < 5)
-        return false;
+        return FALSE;
     if (str[0] == 'a' &&
         str[1] == 'l' &&
         str[2] == 'i' &&
         str[3] == 'a' &&
         str[4] == 's')
-        return true;
-    return false;
+        return TRUE;
+    return FALSE;
 }
 
-static int count_alias(char **file_content)
+static
+int count_alias(char **file_content)
 {
     int count = 0;
 
@@ -57,7 +61,7 @@ char **my_get_alias(void)
 
     if (!file_content)
         return NULL;
-    alias = my_str_split(file_content, "\n");
+    alias = str_split(file_content, "\n");
     alias = parse_alias(alias);
     return alias;
 }

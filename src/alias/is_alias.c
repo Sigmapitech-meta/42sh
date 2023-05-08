@@ -5,18 +5,19 @@
 ** is_alias.c
 */
 
-#include "shell/alias.h"
-#include <stdbool.h>
 #include <string.h>
+
+#include "epitech.h"
+#include "shell/alias.h"
 #include "utils/cleanup.h"
 
-bool is_alias(char *str)
+bool_t is_alias(char *str)
 {
     AUTOFREE char **words = my_str_split(str, " =");
 
     if (!words[1] || !words[2])
-        return false;
+        return FALSE;
     if (strcmp(words[0], "alias") != 0)
-        return false;
-    return true;
+        return FALSE;
+    return TRUE;
 }

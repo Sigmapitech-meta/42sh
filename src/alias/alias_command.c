@@ -18,5 +18,4 @@ void alias_command(list_t *alias)
             printf("%s\n", (char *)node->value);
         node = node->next;
     }
-    return;
 }

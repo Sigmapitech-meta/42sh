@@ -49,18 +49,18 @@ char **my_str_split(char *str, char *seps)
     int tmp = 0;
     int index = 0;
     int count = 0;
-    int oldcount = 0;
+    int old_count = 0;
 
     for (int i = 0; i != nb; i++, tmp = 0) {
         if (str[count] && !check_char(str[count], seps))
             count = my_get_count(str, count, seps);
         else
             count = my_get_char_count(str, count, seps);
-        array[i] = calloc(sizeof(char), (count - oldcount) + 1);
-        for (int j = oldcount; j != count; j++)
+        array[i] = calloc(sizeof(char), (count - old_count) + 1);
+        for (int j = old_count; j != count; j++)
             array[index][tmp++] = str[j];
         array[index++][tmp] = '\0';
-        oldcount += (count - oldcount);
+        old_count += (count - old_count);
     }
     array[nb + 1] = NULL;
     return array;

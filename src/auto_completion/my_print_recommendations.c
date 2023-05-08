@@ -34,7 +34,7 @@ char *my_print_recommendations(list_t *bins, char *input)
 {
     int i = 0;
     int count = 0;
-    int save = 0;
+    int save;
 
     LIST_FOREACH(bins, node) {
         save = i;

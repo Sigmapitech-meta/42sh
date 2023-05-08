@@ -8,23 +8,25 @@
 #include <stdbool.h>
 #include <string.h>
 
+#include "base.h"
 #include "epitech.h"
+#include "list.h"
+
 #include "shell/alias.h"
 #include "utils/cleanup.h"
-#include "list.h"
 
 static bool is_similar(char *alias_given, char *input)
 {
-    AUTOFREE char **alias = my_str_split(alias_given, " =");
+    AUTOFREE char **alias = str_split(alias_given, " =");
 
     if (strcmp(alias[2], input) == 0)
-        return true;
-    return false;
+        return TRUE;
+    return FALSE;
 }
 
 static char *get_command(char *alias)
 {
-    AUTOFREE char **line = my_str_split(alias, " =");
+    AUTOFREE char **line = str_split(alias, " =");
     char *com = NULL;
     int i = 0;
 
@@ -41,11 +43,11 @@ char *replace_alias_with_command(list_t *alias, char *input)
     list_node_t *node = alias->head;
     char **array = NULL;
 
-    while (node != NULL && !is_similar((char *)node->value, input))
+    while (node && !is_similar((char *)node->value, input))
         node = node->next;
-    if (node == NULL)
+    if (!node)
         return input;
-    array = my_str_split((char *)node->value, " =");
+    array = str_split((char *)node->value, " =");
     input = get_command((char *)node->value);
     for (int i = 0; array[i]; i++)
         free(array[i]);

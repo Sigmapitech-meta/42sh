@@ -17,7 +17,7 @@ list_t *my_get_bin_list(char *env)
     char **alias = my_get_alias();
     list_t *bins = list_create();
 
-    if (bins == NULL || path == NULL || alias == NULL) {
+    if (!bins || !path || !alias) {
         printf("something went wrong\n");
         return NULL;
     }

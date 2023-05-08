@@ -5,21 +5,22 @@
 ** add_alias.c
 */
 
-#include "shell/alias.h"
-#include "list.h"
-#include <stdlib.h>
 #include <stddef.h>
+#include <stdlib.h>
+
+#include "list.h"
+#include "shell/alias.h"
 
 int add_alias(list_t *alias, char *input)
 {
     list_node_t *node = alias->head;
-    list_node_t *newnode = calloc(sizeof(list_node_t), 1);
+    list_node_t *new_node = calloc(sizeof(list_node_t), 1);
 
     if (!is_alias(input))
         return 84;
     while (node != NULL)
         node = node->next;
-    newnode->value = input;
-    list_append_node(alias, newnode);
+    new_node->value = input;
+    list_append_node(alias, new_node);
     return 0;
 }
