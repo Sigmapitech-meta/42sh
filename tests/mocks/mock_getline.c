@@ -32,7 +32,7 @@ ssize_t wrap_getline(char **line, size_t *read, file_t *stream)
     if (GETLINE_DATA->mode == TABLE) {
         read_line = GETLINE_DATA->table[index++];
         if (read_line) {
-            *line = read_line;
+            *line = strdup(read_line);
             return (ssize_t)strlen(read_line);
         } else {
             *line = NULL;

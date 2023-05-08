@@ -62,7 +62,7 @@ static void command_run_internal(context_t *ctx, char *cmd_path, char **env)
 
     if (last_arg[0] == '|' && !last_arg[1]) {
         EPRINTF("Invalid null command.\n");
-        return;
+        exit(SENTINEL);
     }
     DEBUG("running [%s]", cmd_path);
     execve(cmd_path, cmd->argv, env);
@@ -79,7 +79,9 @@ void command_run(context_t *ctx)
     command_t *cmd = ctx->cmd;
     AUTOFREE char *cmd_path = command_get_full_path(cmd->argv);
 
-    if (!cmd_path || access(cmd_path, F_OK)) {
+    if (!cmd_path)
+        exit(SENTINEL);
+    if (access(cmd_path, F_OK)) {
         EPRINTF("%s: Command not found.\n", cmd->argv[0]);
         exit(SENTINEL);
     }
