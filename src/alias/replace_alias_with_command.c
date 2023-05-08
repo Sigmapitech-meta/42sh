@@ -23,10 +23,10 @@ static char *get_command(char *alias)
     int i = 0;
 
     while (line[i] != NULL && strcmp(line[i], "=") != 0)
-        i ++;
-    i ++;
+        i++;
+    i++;
     while (line[i] != NULL)
-        com = my_strcat(com, line[i ++]);
+        com = my_strcat(com, line[i++]);
     return com;
 }
 
@@ -41,7 +41,7 @@ char *replace_alias_with_command(list_t *alias, char *input)
         return input;
     array = my_str_split((char *)node->value, " =");
     input = get_command((char *)node->value);
-    for (int i = 0; array[i]; i ++)
+    for (int i = 0; array[i]; i++)
         free(array[i]);
     free(array);
     return input;

@@ -23,7 +23,7 @@ void del_alias(list_t *alias, char *input)
 
     while (node != NULL && !is_same((char *)node->value, input)) {
         node = node->next;
-        index ++;
+        index++;
     }
     if (node == NULL)
         return;

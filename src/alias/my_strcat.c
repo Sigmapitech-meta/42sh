@@ -17,7 +17,7 @@ static int my_stringlen(char const *str)
     if (str == NULL)
         return nb;
     while (str[nb])
-        nb ++;
+        nb++;
     return nb;
 }
 
@@ -30,11 +30,11 @@ char *my_strcat(char *src1, char *src2)
 
     while (i < len) {
         str[i] = src1[i];
-        i ++;
+        i++;
     }
     while (i < biglen) {
         str[i] = src2[i - len];
-        i ++;
+        i++;
     }
     str[biglen] = '\0';
     return str;

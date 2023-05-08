@@ -16,7 +16,7 @@ list_t *create_list_alias(void)
     if (!file_content)
         return NULL;
     lines = my_str_split(file_content, "\n");
-    for (int i = 0; lines[i]; i ++)
+    for (int i = 0; lines[i]; i++)
         if (is_alias(lines[i]))
             list_append(list, lines[i]);
     return list;
