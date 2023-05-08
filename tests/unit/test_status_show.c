@@ -2,7 +2,7 @@
 ** EPITECH PROJECT, 2023
 ** 42sh
 ** File description:
-** test_prompt.c
+** test_status_show.c
 */
 
 #include "base.h"

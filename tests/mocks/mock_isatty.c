@@ -2,7 +2,7 @@
 ** EPITECH PROJECT, 2023
 ** 42sh
 ** File description:
-** mock_stat.c
+** mock_isatty.c
 */
 
 #include "epitech.h"

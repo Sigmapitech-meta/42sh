@@ -2,7 +2,7 @@
 ** EPITECH PROJECT, 2023
 ** 42sh
 ** File description:
-** test_cd.c
+** test_echo.c
 */
 
 #include "run_shell_command.h"

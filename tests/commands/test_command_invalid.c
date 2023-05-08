@@ -2,7 +2,7 @@
 ** EPITECH PROJECT, 2023
 ** 42sh
 ** File description:
-** test_command_not_found.c
+** test_command_invalid.c
 */
 
 #include "sputnik.h"
