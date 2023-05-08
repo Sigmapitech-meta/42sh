@@ -24,26 +24,37 @@ $ {
     CR_ASSERT_EQ(ctx->status, 1);
 }
 
-TEST_STD(run_command_where, ls)
+static
+void check_result(char *buff)
+{
+    char *rest;
+    char *token = strtok_r(buff, "\n", &rest);
+
+    CR_ASSERT(token);
+    do {
+        CR_ASSERT(
+            strncmp(token + strlen(token) - 4, "/ls\n", 4),
+            "Should end with `.../ls\n`."
+        );
+        token = strtok_r(NULL, "\n", &rest);
+    } while(token);
+}
+
+TEST_STD(run_command_where, which)
 $ {
-    int read;
-    int count = 0;
-    char *buff;
+    int state;
+    char buff[1023] = { '\0' };
     file_t *fake_stdout = cr_get_redirected_stdout();
-    CTX_AUTOFREE context_t *ctx = run_shell_command("which ls");
-    size_t track = 0;
+    CTX_AUTOFREE context_t *ctx = run_shell_command("where ls");
 
     if (!ctx)
         CR_SKIP("Allocation error.");
-    do {
-        read = getline(&buff, &track, fake_stdout);
-        if (IS_SENTINEL_OF(read, ssize_t))
-            break;
-        CR_ASSERT(
-            strncmp(buff + read - 4, "/ls\n", 2),
-            "Should end with `.../ls\n`.");
-    } while (++count);
-    if (!count)
+    CR_ASSERT_EQ(ctx->status, EXIT_OK);
+    fflush(stdout);
+    state = fread(buff, 1, 1023, fake_stdout);
+    if (IS_SENTINEL_OF(state, ssize_t))
         CR_SKIP("Cannot read fake stdout");
+    buff[state] = '\0';
+    check_result(buff);
     CR_ASSERT_EQ(ctx->status, EXIT_OK);
 }
