@@ -6,6 +6,9 @@
 */
 
 #include "shell/alias.h"
+#include "utils/cleanup.h"
+#include "list.h"
+#include "base.h"
 
 list_t *create_list_alias(void)
 {

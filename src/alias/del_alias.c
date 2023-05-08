@@ -5,7 +5,12 @@
 ** del_alias.c
 */
 
+#include <stdbool.h>
+#include <string.h>
+
+#include "list.h"
 #include "shell/alias.h"
+#include "utils/cleanup.h"
 
 static bool is_same(char *alias, char *input)
 {

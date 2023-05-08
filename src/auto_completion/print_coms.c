@@ -5,7 +5,9 @@
 ** print_coms.c
 */
 
+#include <stdio.h>
 #include "shell/auto_completion.h"
+#include "shell/alias.h"
 
 void print_coms(list_t *bins)
 {

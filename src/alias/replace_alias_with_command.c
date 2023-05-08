@@ -5,7 +5,13 @@
 ** replace_alias_with_command.c
 */
 
+#include <stdbool.h>
+#include <string.h>
+
+#include "epitech.h"
 #include "shell/alias.h"
+#include "utils/cleanup.h"
+#include "list.h"
 
 static bool is_similar(char *alias_given, char *input)
 {

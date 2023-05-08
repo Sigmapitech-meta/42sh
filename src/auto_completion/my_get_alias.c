@@ -8,10 +8,9 @@
 #include <stdlib.h>
 #include <string.h>
 
-#include "epitech.h"
 #include "shell/auto_completion.h"
 #include "shell/helpers.h"
-#include "utils/autofree.h"
+#include "utils/cleanup.h"
 
 static bool is_alias_1(char *str)
 {

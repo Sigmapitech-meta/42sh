@@ -5,7 +5,9 @@
 ** alias_command.c
 */
 
+#include <stdio.h>
 #include "shell/alias.h"
+#include "list.h"
 
 void alias_command(list_t *alias)
 {

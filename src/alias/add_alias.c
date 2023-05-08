@@ -6,6 +6,7 @@
 */
 
 #include "shell/alias.h"
+#include "list.h"
 #include <stdlib.h>
 #include <stddef.h>
 

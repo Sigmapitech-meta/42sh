@@ -8,7 +8,7 @@
 #include "shell/alias.h"
 #include <stdbool.h>
 #include <string.h>
-#include "utils/autofree.h"
+#include "utils/cleanup.h"
 
 bool is_alias(char *str)
 {

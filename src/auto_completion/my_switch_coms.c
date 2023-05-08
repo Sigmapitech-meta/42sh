@@ -6,6 +6,7 @@
 */
 
 #include "shell/auto_completion.h"
+#include "shell/alias.h"
 
 static char *strdup_alias(char **array)
 {
