@@ -104,6 +104,7 @@ TSRC += test_str_split.c
 TSRC += test_str_trans.c
 TSRC += test_str_replace.c
 TSRC += test_prompt.c
+TSRC += test_status_show.c
 
 VPATH += tests/integration/get_line
 TSRC += test_get_line_fixed_data.c
