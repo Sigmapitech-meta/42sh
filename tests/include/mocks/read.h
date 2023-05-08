@@ -17,8 +17,8 @@ typedef _Bool bool_t;
 
 bool_t *switch_read(void);
 
-void *wrap_read(int fd, void *buff, ssize_t size);
-void *real_read(int fd, void *buff, ssize_t size);
+ssize_t wrap_read(int fd, void *buff, ssize_t size);
+ssize_t real_read(int fd, void *buff, ssize_t size);
 
 void fix_read(void);
 void break_read(void);

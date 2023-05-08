@@ -30,7 +30,7 @@ $ {
 TEST(read_file, broken_malloc, TEST_USE(break_malloc, fix_malloc))
 $ {
     CR_ASSERT_EQ(
-        file_read("tests/assets/test_file.txt"),
+        file_read("tests/fixtures/test_file"),
         NULL
     );
 }
@@ -38,7 +38,7 @@ $ {
 TEST(read_file, broken_read, TEST_USE(break_read, fix_read))
 $ {
     CR_ASSERT_EQ(
-        file_read("tests/assets/test_file.txt"),
+        file_read("tests/fixtures/test_file"),
         NULL
     );
 }
@@ -46,7 +46,7 @@ $ {
 TEST(read_file, broken_stat, TEST_USE(break_stat, fix_stat))
 $ {
     CR_ASSERT_EQ(
-        file_read("tests/assets/test_file.txt"),
+        file_read("tests/fixtures/test_file"),
         NULL
     );
 }
