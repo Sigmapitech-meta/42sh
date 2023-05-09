@@ -14,6 +14,7 @@
 #include "shell/builtins.h"
 #include "shell/shell.h"
 #include "utils/debug_mode.h"
+#include "shell/alias.h"
 
 void builtin_exit(context_t *ctx)
 {
@@ -56,4 +57,22 @@ bool_t builtins_check(context_t *ctx)
         }
     }
     return FALSE;
+}
+
+void builtin_alias(context_t *ctx)
+{
+    char *out;
+    char *offset;
+    command_t *cmd = ctx->cmd;
+    size_t len;
+
+    if (cmd->argc == 1)
+        return alias_list_print(ctx->aliases);
+    if (cmd->argc == 2)
+        return;
+    offset = strstr(ctx->user_input, cmd->argv[2]);
+    len = strlen(ctx->user_input);
+    out = malloc((len + 1) * sizeof (char));
+    snprintf(out, len + 1, "alias %s=%s", cmd->argv[1], offset);
+    alias_add(ctx->aliases, out);
 }

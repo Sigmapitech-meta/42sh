@@ -47,7 +47,7 @@ void alias_list_print(aliases_t *aliases)
     }
     LIST_FOREACH(aliases->pool, node) {
         al = (alias_t *)(node->value);
-        printf("%s ->", al->key);
+        printf("%s\t", al->key);
         for (size_t i = 0; i < al->member_count; i++)
             printf(" %s", al->members[i]);
         printf("\n");

@@ -39,10 +39,3 @@ void builtin_prev_dir(context_t *ctx)
     printf("-> %s\n", ctx->prev_dir);
     ctx->status = EXIT_KO;
 }
-
-DEBUG_USED
-void builtin_alias_print(context_t *ctx)
-{
-    alias_list_print(ctx->aliases);
-    ctx->status = EXIT_KO;
-}
