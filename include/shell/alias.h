@@ -11,6 +11,7 @@
 typedef _Bool bool_t;
 typedef struct list_s list_t;
 
+bool_t is_the_same_alias(char *alias, char *input);
 char *my_strcat(char *left, char *right);
 char **my_str_split(char *str, char *seps);
 bool_t is_alias(char *str);

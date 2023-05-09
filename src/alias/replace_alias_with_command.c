@@ -14,13 +14,6 @@
 #include "shell/alias.h"
 #include "utils/cleanup.h"
 
-static bool is_similar(char *alias_given, char *input)
-{
-    AUTOFREE char **alias = str_split(alias_given, " =");
-
-    return !strcmp(alias[2], input);
-}
-
 static char *get_command(char *alias)
 {
     AUTOFREE char **line = str_split(alias, " =");
@@ -40,7 +33,7 @@ char *replace_alias_with_command(list_t *alias, char *input)
     list_node_t *node = alias->head;
     char **array = NULL;
 
-    while (node && !is_similar(node->value, input))
+    while (node && !is_the_same_alias(node->value, input))
         node = node->next;
     if (!node)
         return input;
