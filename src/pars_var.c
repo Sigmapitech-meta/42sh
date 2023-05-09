@@ -93,5 +93,14 @@ char *replace_a_var(context_t *ctx, char *input)
 
 char *replace_var(context_t *ctx, char *input)
 {
-    return replace_a_var(ctx, input);
+    char *out = NULL;
+    char *tmp = input;
+
+    do {
+        out = replace_a_var(ctx, tmp);
+        tmp = out;
+        if (!out)
+            return NULL;
+    } while (strstr(out, "$") && tmp != input);
+    return out;
 }
