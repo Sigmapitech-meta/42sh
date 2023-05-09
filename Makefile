@@ -48,7 +48,6 @@ SRC += alias_command.c
 SRC += create_list_alias.c
 SRC += del_alias.c
 SRC += is_alias.c
-SRC += my_strcat.c
 SRC += replace_alias_with_command.c
 
 VPATH += src/base
