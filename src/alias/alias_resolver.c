@@ -17,10 +17,14 @@ alias_t *alias_get_from_key(aliases_t *aliases, char *name)
 {
     alias_t *al;
 
+    if (!aliases->pool || !name)
+        return NULL;
     LIST_FOREACH(aliases->pool, node) {
         al = (alias_t *)node->value;
+        if (!al || !al->key)
+            return NULL;
         if (!strcmp(al->key, name))
-            return node->value;
+            return al;
     }
     return NULL;
 }
@@ -30,6 +34,7 @@ char **alias_expand(aliases_t *aliases, char **ptr, char *name)
 {
     alias_t *al = alias_get_from_key(aliases, name);
 
+    DEBUG("%s -> %p", name, al);
     if (!al) {
         *ptr = name;
         return ++ptr;

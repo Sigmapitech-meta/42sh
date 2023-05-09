@@ -49,9 +49,11 @@ bool_t shell_read_line(context_t *ctx)
 
 int shell_evaluate_expression(context_t *ctx)
 {
+    command_t *cmd = ctx->cmd;
+
     if (builtins_check(ctx))
         return EXIT_OK;
-    DEBUG("Running [%s] as command", ctx->user_input);
+    DEBUG("Running [%s] as command", cmd->argv[0]);
     ctx->status = command_run_subprocess(ctx);
     if (!ctx->status || ctx->ran_from_tty)
         return EXIT_OK;
@@ -73,10 +75,10 @@ void shell_evaluate(context_t *ctx)
     while (ctx->is_running && ctx->user_input) {
         cmd->argc = param_count(ctx->user_input);
         cmd->argv = malloc((cmd->argc + 1) * sizeof (char *));
-        DEBUG("Found %d arguments", cmd->argc);
         param_fill(cmd->argv, ctx->user_input);
         cmd->argv[cmd->argc] = NULL;
         alias_resolve(ctx->aliases, cmd);
+        DEBUG("Found %d arguments", cmd->argc);
         shell_evaluate_expression(ctx);
         ctx->user_input = strtok_r(NULL, ";", &checkpoint);
         free(cmd->argv);
@@ -91,6 +93,7 @@ void shell_run_from_ctx(context_t *ctx)
         free(ctx->prev_dir);
         return;
     }
+    DEBUG_CALL(alias_list_print, ctx->aliases);
     DEBUG_MSG("Entering main loop.");
     while (ctx->is_running) {
         if (ctx->ran_from_tty)

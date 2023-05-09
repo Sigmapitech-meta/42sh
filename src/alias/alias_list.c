@@ -12,6 +12,7 @@
 #include "list.h"
 
 #include "shell/alias.h"
+#include "utils/debug_mode.h"
 
 static
 bool_t alias_init(aliases_t *aliases)
@@ -23,9 +24,10 @@ bool_t alias_init(aliases_t *aliases)
         return FALSE;
     lines = str_split(aliases->config_file, "\n");
     for (int i = 0; lines[i]; i++) {
+        DEBUG("reading: [%s]", lines[i]);
         if (!is_alias(lines[i]))
             continue;
-        if (alias_add(aliases->pool, lines[i]))
+        if (!alias_add(aliases, lines[i]))
             return FALSE;
     }
     aliases->lines = lines;

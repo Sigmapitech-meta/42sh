@@ -43,6 +43,6 @@ void builtin_prev_dir(context_t *ctx)
 DEBUG_USED
 void builtin_alias_print(context_t *ctx)
 {
-    alias_print_command(ctx->aliases);
+    alias_list_print(ctx->aliases);
     ctx->status = EXIT_KO;
 }

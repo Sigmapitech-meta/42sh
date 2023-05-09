@@ -24,6 +24,7 @@ typedef struct {
     char *key;
     size_t member_count;
     char **members;
+    char *raw;
 } alias_t;
 
 // Management
@@ -39,6 +40,6 @@ bool_t is_alias(char *str);
 bool_t alias_is_same_key(char *alias, char *input);
 
 void alias_resolve(aliases_t *aliases, command_t *cmd);
-void alias_print_command(aliases_t *aliases);
+void alias_list_print(aliases_t *aliases);
 
 #endif

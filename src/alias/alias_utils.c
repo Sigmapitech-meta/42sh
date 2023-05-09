@@ -14,11 +14,17 @@
 #include "shell/alias.h"
 #include "utils/cleanup.h"
 #include "shell/shell.h"
+#include "utils/debug_mode.h"
+#include "epitech.h"
 
 bool_t is_alias(char *str)
 {
-    AUTOFREE char **words = str_split(str, " =");
+    AUTOFREE char **words = NULL;
+    char *dup = strdup(str);
 
+    if (!dup)
+        return FALSE;
+    words = str_split(dup, " =");
     return (
         words && words[1] && words[2]
         && !strcmp(words[0], "alias")
@@ -32,8 +38,9 @@ bool_t alias_is_same_key(char *alias, char *input)
     return !strcmp(array[1], input);
 }
 
-void alias_print_command(aliases_t *aliases)
+void alias_list_print(aliases_t *aliases)
 {
+    alias_t *al;
     list_t *pool;
 
     if (!aliases)
@@ -45,6 +52,11 @@ void alias_print_command(aliases_t *aliases)
         printf("No aliases found.\n");
         return;
     }
-    LIST_FOREACH(aliases->pool, node)
-        printf("%s\n", (char *)node->value);
+    LIST_FOREACH(aliases->pool, node) {
+        al = (alias_t *)(node->value);
+        printf("%s ->", al->key);
+        for (size_t i = 0; i < al->member_count; i++)
+            printf(" %s", al->members[i]);
+        printf("\n");
+    }
 }
