@@ -16,15 +16,22 @@ enum {
     SEGFAULT_CORE_DUMP = SEGFAULT | _CORE_DUMP
 };
 
+/** @brief Concatenate two paths */
 char *path_concat(char *left, char *right);
+/** @brief Retrieve the path of a command */
 char *path_find_cmd(char *cmd);
+/** @brief Retrieve the command path if it can be accessed */
 char *path_find_access(char *path, char *cmd);
 
+/** @brief Count the number of parameters */
 int param_count(const char *line);
+/** @brief Fill the list of parameters for a command string */
 void param_fill(char **params, char *string);
 
+/** @brief Print the status message for a given code */
 void status_show(int status);
 
+/** @brief set a environment variable and handle necessary cleanups */
 void putenv_safe(char *key, char *value, char **original_env);
 
 #endif /* !UTILS_H_ */
