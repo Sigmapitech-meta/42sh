@@ -15,17 +15,6 @@
 #include "utils/cleanup.h"
 #include "shell/shell.h"
 
-static
-char *alias_replace_string(char *alias)
-{
-    AUTOFREE char **line = str_split(alias, " =");
-
-    return NULL_OR(
-        (line && line[0] && line[1]),
-        strdup(alias + strlen(line[0]) + strlen(line[1]))
-    );
-}
-
 bool_t is_alias(char *str)
 {
     AUTOFREE char **words = str_split(str, " =");
@@ -58,14 +47,4 @@ void alias_print_command(aliases_t *aliases)
     }
     LIST_FOREACH(aliases->pool, node)
         printf("%s\n", (char *)node->value);
-}
-
-char *alias_resolve(aliases_t *aliases, char *input)
-{
-    if (!aliases)
-        return input;
-    LIST_FOREACH(aliases->pool, node)
-        if (alias_is_same_key(node->value, input))
-            return alias_replace_string(node->value);
-    return input;
 }
