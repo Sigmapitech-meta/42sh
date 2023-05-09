@@ -9,7 +9,6 @@
 #include <string.h>
 
 #include "base.h"
-#include "epitech.h"
 #include "list.h"
 
 #include "shell/alias.h"
