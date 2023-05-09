@@ -29,5 +29,5 @@ tests/generated
 # Tests
 run_tests
 
-#doxygene
+# Docs
 .doxygen/

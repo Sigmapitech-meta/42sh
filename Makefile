@@ -23,6 +23,7 @@ ifeq ($(FORCE_DEBUG),1)
 endif
 
 BUILD_DIR := .build
+DOCS := .doxygen
 
 NAME_BATCH := batch_runner
 NAME_DEBUG := debug
@@ -388,6 +389,14 @@ bundle: $(BINS)
 	$(call LOG,":g$@")
 
 .PHONY: bundle
+
+# ↓ Docs
+$(DOCS): Doxyfile $(SRC)
+	@ doxygen Doxyfile
+
+docs: $(DOCS)
+
+.PHONY: docs
 
 # ↓ Utils
 RECURSE = $(MAKE) $(1) --no-print-directory START_TIME=$(START_TIME)
