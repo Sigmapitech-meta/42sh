@@ -15,10 +15,11 @@
 #include "base.h"
 #include "epitech.h"
 
+#include "shell/alias.h"
 #include "shell/builtins.h"
 #include "shell/shell.h"
-#include "shell/utils.h"
 
+#include "shell/utils.h"
 #include "utils/debug_mode.h"
 #include "utils/sentinel.h"
 
@@ -74,6 +75,8 @@ void shell_evaluate(context_t *ctx)
         cmd->argv = malloc((cmd->argc + 1) * sizeof (char *));
         DEBUG("Found %d arguments", cmd->argc);
         param_fill(cmd->argv, ctx->user_input);
+        for (int i = 0; i < cmd->argc; i++)
+            cmd->argv[i] = alias_resolve(ctx->aliases, cmd->argv[i]);
         cmd->argv[cmd->argc] = NULL;
         shell_evaluate_expression(ctx);
         ctx->user_input = strtok_r(NULL, ";", &checkpoint);
@@ -84,6 +87,11 @@ void shell_evaluate(context_t *ctx)
 
 void shell_run_from_ctx(context_t *ctx)
 {
+    ctx->aliases = alias_list_create();
+    if (!ctx->aliases) {
+        free(ctx->prev_dir);
+        return;
+    }
     DEBUG_MSG("Entering main loop.");
     while (ctx->is_running) {
         if (ctx->ran_from_tty)
@@ -91,6 +99,7 @@ void shell_run_from_ctx(context_t *ctx)
         if (shell_read_line(ctx))
             shell_evaluate(ctx);
     }
+    alias_list_destroy(ctx->aliases);
     free(ctx->user_input);
 }
 

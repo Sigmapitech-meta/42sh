@@ -43,6 +43,7 @@ SRC += prompt.c
 SRC += shell.c
 
 VPATH += src/alias
+SRC += alias_list.c
 SRC += alias_mgmt.c
 SRC += alias_utils.c
 

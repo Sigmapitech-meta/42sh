@@ -10,6 +10,8 @@
 #include "base.h"
 #include "shell/shell.h"
 #include "utils/debug_mode.h"
+#include "shell/alias.h"
+#include "epitech.h"
 
 DEBUG_USED
 void builtin_getenv(context_t *ctx)
@@ -35,4 +37,12 @@ DEBUG_USED
 void builtin_prev_dir(context_t *ctx)
 {
     printf("-> %s\n", ctx->prev_dir);
+    ctx->status = EXIT_KO;
+}
+
+DEBUG_USED
+void builtin_alias_print(context_t *ctx)
+{
+    alias_print_command(ctx->aliases);
+    ctx->status = EXIT_KO;
 }

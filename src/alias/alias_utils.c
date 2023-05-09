@@ -13,6 +13,7 @@
 #include "list.h"
 #include "shell/alias.h"
 #include "utils/cleanup.h"
+#include "shell/shell.h"
 
 static
 char *alias_replace_string(char *alias)
@@ -25,6 +26,16 @@ char *alias_replace_string(char *alias)
     );
 }
 
+bool_t is_alias(char *str)
+{
+    AUTOFREE char **words = str_split(str, " =");
+
+    return (
+        words && words[1] && words[2]
+        && !strcmp(words[0], "alias")
+    );
+}
+
 bool_t alias_is_same_key(char *alias, char *input)
 {
     AUTOFREE char **array = str_split(alias, " =");
@@ -32,15 +43,28 @@ bool_t alias_is_same_key(char *alias, char *input)
     return !strcmp(array[1], input);
 }
 
-void alias_print_command(list_t *alias)
+void alias_print_command(aliases_t *aliases)
 {
-    LIST_FOREACH(alias, node)
+    list_t *pool;
+
+    if (!aliases)
+        return;
+    pool = aliases->pool;
+    if (!pool)
+        return;
+    if (!pool->size) {
+        printf("No aliases found.\n");
+        return;
+    }
+    LIST_FOREACH(aliases->pool, node)
         printf("%s\n", (char *)node->value);
 }
 
-char *alias_resolve(list_t *alias, char *input)
+char *alias_resolve(aliases_t *aliases, char *input)
 {
-    LIST_FOREACH(alias, node)
+    if (!aliases)
+        return input;
+    LIST_FOREACH(aliases->pool, node)
         if (alias_is_same_key(node->value, input))
             return alias_replace_string(node->value);
     return input;

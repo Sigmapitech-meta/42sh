@@ -28,6 +28,9 @@ static const char USAGE[] = (
 typedef _Bool bool_t;
 typedef unsigned long size_t;
 
+typedef struct list_s list_t;
+typedef struct aliases_s aliases_t;
+
 typedef struct command_s {
     int argc;
     char **argv;
@@ -42,6 +45,7 @@ typedef struct context_s {
     char *prev_dir;
     size_t input_size;
     char **original_env;
+    aliases_t *aliases;
 } context_t;
 
 int command_run_subprocess(context_t *ctx);
