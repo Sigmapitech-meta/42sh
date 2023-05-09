@@ -17,26 +17,16 @@
 
 void builtin_exit(context_t *ctx)
 {
-    unsigned char status;
     command_t *cmd = ctx->cmd;
+    unsigned char status = (cmd->argc == 2) ? atoi(cmd->argv[1]) : 0;
+    bool_t fail = cmd->argc > 2;
 
-    if (cmd->argc > 2) {
+    fail |= ((!status && cmd->argc == 2 && cmd->argv[1][0] != '0'));
+    if (fail)
         EPRINTF("exit: Expression Syntax.\n");
-        ctx->status = EXIT_FAILURE;
-        return;
-    }
-    if (cmd->argc == 1) {
+    else
         ctx->is_running = FALSE;
-        return;
-    }
-    status = atoi(cmd->argv[1]);
-    if (!status && cmd->argv[1][0] != '0') {
-        EPRINTF("exit: Expression Syntax.\n");
-        ctx->status = EXIT_FAILURE;
-        return;
-    }
-    ctx->status = status;
-    ctx->is_running = FALSE;
+    ctx->status = status | fail;
 }
 
 void builtin_echo(context_t *ctx)
