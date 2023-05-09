@@ -8,6 +8,13 @@
 #ifndef EPITECH_H
     #define EPITECH_H
 
+/**
+ * @file epitech.h
+ * @author Gabriel Hosquet (gabriel.hosquet@epitech.eu)
+ * @author Yohann Boniface(edhyjox@gmail.com)
+ * @version 0.1
+ *
+ */
     #include "utils/sentinel.h"
 
     #define EXIT_MSG(ret, written) SENTINEL_OR(written, ret)

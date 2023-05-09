@@ -251,7 +251,10 @@ EXCLUDE                =
 
 EXCLUDE_SYMLINKS       = NO
 
-EXCLUDE_PATTERNS       =
+EXCLUDE_PATTERNS       = */tests/*
+EXCLUDE_PATTERNS       += */bin/*
+EXCLUDE_PATTERNS       += */batch/*
+EXCLUDE_PATTERNS       += */debug_colorize.c
 
 EXCLUDE_SYMBOLS        =
 
@@ -297,7 +300,7 @@ VERBATIM_HEADERS       = YES
 
 ALPHABETICAL_INDEX     = YES
 
-IGNORE_PREFIX          =
+IGNORE_PREFIX          = 
 
 GENERATE_HTML          = YES
 
