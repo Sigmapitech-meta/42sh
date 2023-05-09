@@ -29,11 +29,6 @@ void builtin_exit(context_t *ctx)
     ctx->status = status | fail;
 }
 
-void builtin_echo(context_t *ctx)
-{
-    command_run_subprocess(ctx);
-}
-
 int get_builtin_id(char *cmd_name)
 {
     for (int i = 0; i < BUILTIN_COUNT; i++)

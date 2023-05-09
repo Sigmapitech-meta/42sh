@@ -10,6 +10,8 @@
 
     #define CONST_ARR_SIZE(arr) (sizeof(arr) / sizeof(arr[0]))
 
+    #include "shell/shell.h"
+
     #include "utils/attributes.h"
     #include "utils/debug_mode.h"
 
@@ -24,8 +26,12 @@ typedef struct {
 bool_t builtins_check(context_t *ctx);
 int get_builtin_id(char *cmd_name);
 
+static inline
+USED void builtin_echo(context_t *ctx)
+{
+    command_run_subprocess(ctx);
+}
 
-void builtin_echo(context_t *ctx);
 void builtin_cd(context_t *ctx);
 void builtin_exit(context_t *ctx);
 void builtin_setenv(context_t *ctx);
