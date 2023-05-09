@@ -43,12 +43,8 @@ SRC += prompt.c
 SRC += shell.c
 
 VPATH += src/alias
-SRC += add_alias.c
-SRC += alias_command.c
-SRC += create_list_alias.c
-SRC += del_alias.c
-SRC += is_alias.c
-SRC += replace_alias_with_command.c
+SRC += alias_mgmt.c
+SRC += alias_utils.c
 
 VPATH += src/base
 SRC += str_split.c
