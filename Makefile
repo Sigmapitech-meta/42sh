@@ -66,7 +66,6 @@ SRC += env_manipulation.c
 SRC += location_builtins.c
 
 VPATH += src/utils
-SRC += parameters.c
 SRC += path.c
 SRC += status.c
 

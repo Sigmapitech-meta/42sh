@@ -46,9 +46,10 @@ char **str_split(char *string, char *delim)
 
     if (!count)
         return NULL;
-    words = malloc(count * sizeof(char *));
+    words = malloc((count + 1) * sizeof(char *));
     if (!words)
         return NULL;
+    words[count] = NULL;
     str_split_populate(string, words, delim);
     return words;
 }

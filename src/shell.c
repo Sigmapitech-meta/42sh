@@ -68,22 +68,21 @@ int shell_evaluate_expression(context_t *ctx)
 void shell_evaluate(context_t *ctx)
 {
     char *checkpoint;
-    char *raw_inp = ctx->user_input;
+    char *copy = strdup(ctx->user_input);
     command_t *cmd = ctx->cmd;
 
-    ctx->user_input = strtok_r(ctx->user_input, ";", &checkpoint);
-    while (ctx->is_running && ctx->user_input) {
-        cmd->argc = param_count(ctx->user_input);
-        cmd->argv = malloc((cmd->argc + 1) * sizeof (char *));
-        param_fill(cmd->argv, ctx->user_input);
-        cmd->argv[cmd->argc] = NULL;
+    if (!copy)
+        return;
+    copy = strtok_r(copy, ";", &checkpoint);
+    while (ctx->is_running && copy) {
+        cmd->argc = str_count_tok(copy, " \t");
+        cmd->argv = str_split(copy, " \t");
         alias_resolve(ctx->aliases, cmd);
         DEBUG("Found %d arguments", cmd->argc);
         shell_evaluate_expression(ctx);
-        ctx->user_input = strtok_r(NULL, ";", &checkpoint);
+        copy = strtok_r(NULL, ";", &checkpoint);
         free(cmd->argv);
     }
-    ctx->user_input = raw_inp;
 }
 
 void shell_run_from_ctx(context_t *ctx)
@@ -93,7 +92,6 @@ void shell_run_from_ctx(context_t *ctx)
         free(ctx->prev_dir);
         return;
     }
-    DEBUG_CALL(alias_list_print, ctx->aliases);
     DEBUG_MSG("Entering main loop.");
     while (ctx->is_running) {
         if (ctx->ran_from_tty)
