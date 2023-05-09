@@ -49,7 +49,7 @@ bool_t shell_read_line(context_t *ctx)
 
 int shell_evaluate_expression(context_t *ctx)
 {
-    command_t *cmd = ctx->cmd;
+    DEBUG_USED command_t *cmd = ctx->cmd;
 
     if (builtins_check(ctx))
         return EXIT_OK;
