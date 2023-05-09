@@ -54,30 +54,11 @@ char *replace_pid(context_t *ctx)
     return out;
 }
 
-static
-char *replace_tilde(context_t *ctx, char *input)
-{
-    char *out;
-    AUTOFREE char *raw = strdup(input);
-
-    if (!raw)
-        return NULL;
-    out = str_replace(raw, "~", "$HOME");
-    if (!out)
-        return NULL;
-    if (out == raw)
-        return input;
-    ctx->input_size = strlen(out);
-    free(input);
-    return out;
-}
-
 char *prepars(context_t *ctx)
 {
     char *out1 = replace_pid(ctx);
     char *out2 = replace_status(ctx, out1);
-    char *out3 = replace_tilde(ctx, out2);
-    char *out4 = replace_var(ctx, out3);
+    char *out3 = replace_var(ctx, out2);
 
-    return out4;
+    return out3;
 }
