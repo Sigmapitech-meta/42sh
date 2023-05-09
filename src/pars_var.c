@@ -51,7 +51,8 @@ char *env_get_key(char *input)
         free(cpy);
         i++;
     } while (!var_present && environ[i]);
-    var_present = strdup(var_present);
+    if (var_present)
+        var_present = strdup(var_present);
     return var_present;
 }
 
