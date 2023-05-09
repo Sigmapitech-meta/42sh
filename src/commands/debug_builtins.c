@@ -21,6 +21,7 @@ void builtin_getenv(context_t *ctx)
 
     if (cmd->argc == 1) {
         EPRINTF("Not enough arguments.\n");
+        ctx->status = EXIT_FAILURE;
         return;
     }
     for (int i = 1; i < cmd->argc; i++) {
