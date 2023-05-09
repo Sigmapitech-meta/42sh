@@ -10,6 +10,7 @@
 
 #include "shell/alias.h"
 #include "shell/shell.h"
+#include "utils/debug_mode.h"
 
 static
 alias_t *alias_get_from_key(aliases_t *aliases, char *name)
@@ -33,6 +34,7 @@ char **alias_expand(aliases_t *aliases, char **ptr, char *name)
         *ptr = name;
         return ++ptr;
     }
+    DEBUG("Found alias [%s]", al->key);
     for (size_t i = 0; i < al->member_count; i++) {
         *ptr = al->members[i];
         ptr++;
@@ -61,9 +63,9 @@ void alias_resolve(aliases_t *aliases, command_t *cmd)
     char **argv_ptr;
     int count = alias_resolve_size(aliases, cmd);
 
-    if (count == cmd->argc || !aliases)
+    if (!aliases)
         return;
-    argv = malloc(count * sizeof (char *));
+    argv = malloc((count + 1) * sizeof (char *));
     if (!argv)
         return;
     argv_ptr = argv;
@@ -72,4 +74,5 @@ void alias_resolve(aliases_t *aliases, command_t *cmd)
     free(cmd->argv);
     cmd->argv = argv;
     cmd->argc = count;
+    cmd->argv[cmd->argc] = NULL;
 }

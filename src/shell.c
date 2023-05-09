@@ -75,9 +75,8 @@ void shell_evaluate(context_t *ctx)
         cmd->argv = malloc((cmd->argc + 1) * sizeof (char *));
         DEBUG("Found %d arguments", cmd->argc);
         param_fill(cmd->argv, ctx->user_input);
-        for (int i = 0; i < cmd->argc; i++)
-            alias_resolve(ctx->aliases, cmd);
         cmd->argv[cmd->argc] = NULL;
+        alias_resolve(ctx->aliases, cmd);
         shell_evaluate_expression(ctx);
         ctx->user_input = strtok_r(NULL, ";", &checkpoint);
         free(cmd->argv);

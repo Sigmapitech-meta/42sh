@@ -31,7 +31,7 @@ aliases_t *alias_list_create(void);
 void alias_list_destroy(aliases_t *aliases);
 
 // List
-int alias_add(list_t *alias, char *input);
+bool_t alias_add(aliases_t *alias, char *input);
 void alias_remove(list_t *alias, char *input);
 
 // utils
