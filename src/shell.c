@@ -69,6 +69,7 @@ void shell_evaluate(context_t *ctx)
 {
     char *checkpoint;
     char *copy = strdup(ctx->user_input);
+    char *copy_ptr = copy;
     command_t *cmd = ctx->cmd;
 
     if (!copy)
@@ -83,6 +84,7 @@ void shell_evaluate(context_t *ctx)
         copy = strtok_r(NULL, ";", &checkpoint);
         free(cmd->argv);
     }
+    free(copy_ptr);
 }
 
 void shell_run_from_ctx(context_t *ctx)

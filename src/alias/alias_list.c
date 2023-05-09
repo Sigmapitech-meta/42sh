@@ -59,6 +59,7 @@ void alias_list_destroy(aliases_t *aliases)
     LIST_FOREACH(aliases->pool, node) {
         al = (alias_t *)(node->value);
         if (al) {
+            free(al->raw);
             free(al->members - 2);
             free(al);
         }

@@ -14,10 +14,29 @@
 #include "shell/alias.h"
 #include "utils/sentinel.h"
 
+static
+bool_t alias_fill(alias_t *alias, char *str, int count)
+{
+    char **words;
+
+    alias->raw = strdup(str);
+    if (!alias->raw) {
+        return FALSE;
+    }
+    words = str_split(alias->raw, " =");
+    if (!words) {
+        free(alias->raw);
+        return FALSE;
+    }
+    alias->key = words[1];
+    alias->members = words + 2;
+    alias->member_count = count - 2;
+    return TRUE;
+}
+
 bool_t alias_add(aliases_t *aliases, char *str)
 {
     alias_t *alias;
-    char **words;
     int count;
 
     if (!aliases || !is_alias(str))
@@ -26,14 +45,9 @@ bool_t alias_add(aliases_t *aliases, char *str)
     alias = malloc(sizeof (*alias));
     if (!alias)
         return FALSE;
-    words = str_split(str, " =");
-    if (!words) {
+    if (!alias_fill(alias, str, count)) {
         free(alias);
-        return NULL;
+        return FALSE;
     }
-    alias->raw = str;
-    alias->key = words[1];
-    alias->members = words + 2;
-    alias->member_count = count - 2;
     return !IS_SENTINEL(list_append(aliases->pool, alias));
 }
