@@ -28,3 +28,6 @@ tests/generated
 
 # Tests
 run_tests
+
+#doxygene
+.doxygen/
