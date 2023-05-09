@@ -92,7 +92,7 @@ void builtin_where(context_t *ctx)
         return;
     }
     ctx->status = 0;
-    for (int i = 0; i < cmd->argc && !ctx->status; i++) {
+    for (int i = 1; i < cmd->argc && !ctx->status; i++) {
         cmd_name = cmd->argv[i];
         if (!IS_SENTINEL(get_builtin_id(cmd_name)))
             printf("%s is a shell built-in\n", cmd_name);
