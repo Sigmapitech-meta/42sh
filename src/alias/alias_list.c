@@ -17,26 +17,26 @@
 static
 bool_t alias_init(aliases_t *aliases)
 {
-    char **lines;
+    int count_lines;
 
     aliases->config_file = file_read(".42shrc");
     if (!aliases->config_file)
         return FALSE;
-    lines = str_split(aliases->config_file, "\n");
-    for (int i = 0; lines[i]; i++) {
-        DEBUG("reading: [%s]", lines[i]);
-        if (!is_alias(lines[i]))
+    count_lines = str_count_tok(aliases->config_file, "\n");
+    aliases->lines = str_split(aliases->config_file, "\n");
+    for (int i = 0; i < count_lines; i++) {
+        DEBUG("reading: [%s]", aliases->lines[i]);
+        if (!is_alias(aliases->lines[i]))
             continue;
-        if (!alias_add(aliases, lines[i]))
+        if (!alias_add(aliases, aliases->lines[i]))
             return FALSE;
     }
-    aliases->lines = lines;
     return TRUE;
 }
 
 aliases_t *alias_list_create(void)
 {
-    aliases_t *aliases = malloc(sizeof (aliases));
+    aliases_t *aliases = malloc(sizeof (*aliases));
 
     if (!aliases)
         return NULL;
@@ -54,7 +54,17 @@ aliases_t *alias_list_create(void)
 
 void alias_list_destroy(aliases_t *aliases)
 {
+    alias_t *al;
+
+    LIST_FOREACH(aliases->pool, node) {
+        al = (alias_t *)(node->value);
+        if (al) {
+            free(al->members - 2);
+            free(al);
+        }
+    }
     list_destroy(aliases->pool);
     free(aliases->config_file);
     free(aliases->lines);
+    free(aliases);
 }

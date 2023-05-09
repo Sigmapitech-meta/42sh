@@ -20,7 +20,7 @@
 bool_t is_alias(char *str)
 {
     AUTOFREE char **words = NULL;
-    char *dup = strdup(str);
+    AUTOFREE char *dup = strdup(str);
 
     if (!dup)
         return FALSE;
@@ -29,13 +29,6 @@ bool_t is_alias(char *str)
         words && words[1] && words[2]
         && !strcmp(words[0], "alias")
     );
-}
-
-bool_t alias_is_same_key(char *alias, char *input)
-{
-    AUTOFREE char **array = str_split(alias, " =");
-
-    return !strcmp(array[1], input);
 }
 
 void alias_list_print(aliases_t *aliases)

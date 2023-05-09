@@ -13,7 +13,6 @@
 
 #include "shell/alias.h"
 #include "utils/sentinel.h"
-#include "utils/debug_mode.h"
 
 bool_t alias_add(aliases_t *aliases, char *str)
 {
@@ -37,14 +36,4 @@ bool_t alias_add(aliases_t *aliases, char *str)
     alias->members = words + 2;
     alias->member_count = count - 2;
     return !IS_SENTINEL(list_append(aliases->pool, alias));
-}
-
-void alias_remove(list_t *alias, char *input)
-{
-    LIST_FOREACH(alias, node) {
-        if (alias_is_same_key(node->value, input)) {
-            list_remove_node(alias, node);
-            break;
-        }
-    }
 }

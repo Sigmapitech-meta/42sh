@@ -34,7 +34,6 @@ char **alias_expand(aliases_t *aliases, char **ptr, char *name)
 {
     alias_t *al = alias_get_from_key(aliases, name);
 
-    DEBUG("%s -> %p", name, al);
     if (!al) {
         *ptr = name;
         return ++ptr;
