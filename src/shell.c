@@ -22,6 +22,8 @@
 #include "utils/debug_mode.h"
 #include "utils/sentinel.h"
 
+char *prepars(context_t *ctx);
+
 bool_t shell_read_line(context_t *ctx)
 {
     ctx->input_size = get_line(&ctx->user_input);
@@ -52,9 +54,8 @@ int shell_evaluate_expression(context_t *ctx)
         return ctx->status;
     DEBUG("Running [%s] as command", ctx->user_input);
     ctx->status = command_run_subprocess(ctx);
-    if (!ctx->status || ctx->ran_from_tty)
-        return EXIT_OK;
-    ctx->is_running = FALSE;
+    if (!ctx->ran_from_tty)
+        ctx->is_running = FALSE;
     if (ctx->status == SENTINEL_DETECT)
         ctx->status = EXIT_FAILURE;
     if (ctx->status == SEGFAULT)
@@ -65,10 +66,12 @@ int shell_evaluate_expression(context_t *ctx)
 void shell_evaluate(context_t *ctx)
 {
     char *checkpoint;
-    char *raw_inp = ctx->user_input;
+    char *raw_inp = prepars(ctx);
     command_t *cmd = ctx->cmd;
 
-    ctx->user_input = strtok_r(ctx->user_input, ";", &checkpoint);
+    if (!raw_inp)
+        return;
+    ctx->user_input = strtok_r(raw_inp, ";", &checkpoint);
     while (ctx->is_running && ctx->user_input) {
         cmd->argc = param_count(ctx->user_input);
         cmd->argv = malloc((cmd->argc + 1) * sizeof (char *));

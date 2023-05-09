@@ -58,4 +58,6 @@ char *env_get_setter(char *key, char *value);
 void env_free_key(char *key, char **original_env);
 void env_free(char **original_env);
 
+char *replace_var(context_t *ctx, char *input);
+
 #endif /* !SHELL_H */
