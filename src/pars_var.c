@@ -38,7 +38,7 @@ char *env_get_key(char *input)
     char *checkpoint;
     int i = 0;
     char *var_present = NULL;
-    char *dup = cut(input);
+    AUTOFREE char *dup = cut(input);
 
     if (!dup)
         return NULL;
@@ -51,6 +51,7 @@ char *env_get_key(char *input)
         free(cpy);
         i++;
     } while (!var_present && environ[i]);
+    var_present = strdup(var_present);
     return var_present;
 }
 
@@ -76,7 +77,7 @@ static
 char *replace_a_var(context_t *ctx, char *input)
 {
     AUTOFREE char *from = NULL;
-    char *key = env_get_key(input);
+    AUTOFREE char *key = env_get_key(input);
     char *value;
 
     if (!key)
