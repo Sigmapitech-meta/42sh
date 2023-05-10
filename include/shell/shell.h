@@ -59,11 +59,13 @@ int command_run_subprocess(context_t *ctx);
 
 /** @brief main loop */
 int shell_run_from_env(char **env);
+
 /** @brief run a command in the shell* */
 void shell_run_from_ctx(context_t *ctx);
 
 /** @brief read user input */
 bool_t shell_read_line(context_t *ctx);
+
 /** @brief run a command in the shell */
 void shell_evaluate(context_t *ctx);
 
@@ -72,8 +74,10 @@ void prompt_display(void);
 
 /** @brief Retrieve string composed by `$key = $val` */
 char *env_get_setter(char *key, char *value);
+
 /** @brief free a key */
 void env_free_key(char *key, char **original_env);
+
 /** @brief free the env */
 void env_free(char **original_env);
 
