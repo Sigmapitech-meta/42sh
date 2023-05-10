@@ -62,7 +62,6 @@ SRC += list_remove.c
 VPATH += src/commands
 SRC += builtins.c
 SRC += builtin_alias.c
-SRC += debug_builtins.c
 SRC += command_runner.c
 SRC += change_directory.c
 SRC += env_manipulation.c
