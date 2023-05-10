@@ -7,7 +7,9 @@
 
 #include <stdlib.h>
 #include <stdio.h>
+#include <stdlib.h>
 #include <string.h>
+#include <sys/wait.h>
 #include <unistd.h>
 #include <errno.h>
 #include <ctype.h>
@@ -59,8 +61,11 @@ int shell_evaluate_expression(context_t *ctx)
         ctx->is_running = FALSE;
     if (ctx->status == SENTINEL_DETECT)
         ctx->status = EXIT_FAILURE;
-    if (ctx->status == SEGFAULT)
-        ctx->status = SEGFAULT_CORE_DUMP;
+    if (!WCOREDUMP(ctx->status)) {//&& !WIFEXITED(ctx->status) && WIFSIGNALED(ctx->status)) {
+        DEBUG("%i", ctx->status);
+        ctx->status = ctx->status % 255 + 128;
+        DEBUG("%i", ctx->status);
+    }
     return ctx->status;
 }
 
@@ -69,23 +74,23 @@ void shell_evaluate(context_t *ctx)
     char *checkpoint;
     char *copy;
     char *copy_ptr;
-    command_t *cmd = ctx->cmd;
+    char *user_input = prepars(ctx);
 
-    ctx->user_input = prepars(ctx);
-    copy = NULL_OR(ctx->user_input, strdup(ctx->user_input));
+    copy = NULL_OR(user_input, strdup(user_input));
     copy_ptr = copy;
     copy = NULL_OR(copy, strtok_r(copy, ";", &checkpoint));
     while (copy && ctx->is_running) {
-        cmd->argc = str_count_tok(copy, " \t");
-        cmd->argv = str_split(copy, " \t");
-        alias_resolve(ctx->aliases, cmd);
-        DEBUG("Found %d arguments", cmd->argc);
+        ctx->cmd->argc = str_count_tok(copy, " \t");
+        ctx->cmd->argv = str_split(copy, " \t");
+        alias_resolve(ctx->aliases, ctx->cmd);
+        DEBUG("Found %d arguments", ctx->cmd->argc);
         shell_evaluate_expression(ctx);
         copy = strtok_r(NULL, ";", &checkpoint);
-        free(cmd->argv);
+        free(ctx->cmd->argv);
     }
     if (copy_ptr)
         free(copy_ptr);
+    ctx->user_input = user_input;
 }
 
 void shell_run_from_ctx(context_t *ctx)
