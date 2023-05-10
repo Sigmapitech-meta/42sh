@@ -36,7 +36,7 @@ char **alias_expand(aliases_t *aliases, char **ptr, char *name)
 
     if (!al) {
         *ptr = name;
-        return ++ptr;
+        return++ptr;
     }
     DEBUG("Found alias [%s]", al->key);
     for (size_t i = 0; i < al->member_count; i++) {
