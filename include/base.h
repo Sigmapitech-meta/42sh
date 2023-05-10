@@ -26,20 +26,14 @@
 /** @brief do the expression if cond is not NULL */
     #define NULL_OR(cond, expr) ((cond) ? expr : NULL)
 
+/** @brief Get the input source `FILE *` */
+    #define GET_SOURCE_LOCATION (*source_location())
+
+/** @brief retrieve the fd from a `FILE *` */
+    #define fd _fileno
+
 typedef struct stat stat_t;
-
-/**
- * @brief retrieve a line from the stdin
- *
- * @param line a pointer to the line
- */
-static inline
-USED size_t get_line(char **line)
-{
-    static size_t zero = 0;
-
-    return getline(line, &zero, stdin);
-}
+typedef FILE file_t;
 
 /** @brief Translate a string */
 static inline
@@ -51,6 +45,18 @@ USED char *str_trans(char *string, char in, char out)
     return string;
 }
 
+/**
+ * @brief retrieve a line from a file *
+ * Defaults to stdin if set_getline_source is not called.
+ * @param line a pointer to the line
+ */
+size_t get_line(char **line);
+
+/** @brief set the `FILE *` the getline will read from. */
+void set_getline_source(file_t *file);
+
+/** @brief retrieve the a pointer to the `File *` getline reads from. */
+file_t **source_location(void);
 
 /** @brief Count the number of tokens in a string */
 int str_count_tok(char *string, char *delim);

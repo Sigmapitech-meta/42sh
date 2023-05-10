@@ -1,0 +1,2 @@
+#!./42sh
+echo "Hello :D"

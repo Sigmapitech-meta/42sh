@@ -109,7 +109,7 @@ int shell_run_from_env(char **env)
     command_t cmd = { 0 };
     context_t ctx = {
         .is_running = TRUE,
-        .ran_from_tty = isatty(STDIN_FILENO),
+        .ran_from_tty = isatty(GET_SOURCE_LOCATION->fd),
         .cmd = &cmd,
         .original_env = env,
         .prev_dir = getcwd(NULL, 0),

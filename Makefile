@@ -55,6 +55,7 @@ VPATH += src/base
 SRC += str_split.c
 SRC += str_replace.c
 SRC += file_reader.c
+SRC += get_line.c
 
 VPATH += src/list
 SRC += list_append.c
