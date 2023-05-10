@@ -14,9 +14,6 @@
 #include "utils/debug_mode.h"
 #include "utils/sentinel.h"
 
-#define MAX_SHORT_LENGTH 6
-#define MAX_INT_LENGTH 12
-
 static
 char *replace_status(context_t *ctx, char *input)
 {

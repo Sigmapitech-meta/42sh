@@ -9,6 +9,8 @@
     #define SHELL_H
 
     #define MAX_ARG_COUNT (2)
+    #define MAX_SHORT_LENGTH (6)
+    #define MAX_INT_LENGTH (12)
 
 extern char **environ;
 
