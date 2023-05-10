@@ -89,6 +89,7 @@ TSRC += test_env.c
 TSRC += test_exit.c
 TSRC += test_ls.c
 TSRC += test_newline.c
+TSRC += test_restricted_path.c
 TSRC += test_setenv.c
 TSRC += test_setenv.c
 TSRC += test_setenv_invalid_names.c
