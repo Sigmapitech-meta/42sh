@@ -32,6 +32,9 @@ static const char USAGE[] = (
 typedef _Bool bool_t;
 typedef unsigned long size_t;
 
+typedef struct list_s list_t;
+typedef struct aliases_s aliases_t;
+
 typedef struct command_s {
     int argc;
     char **argv;
@@ -46,6 +49,7 @@ typedef struct context_s {
     char *user_input;
     size_t input_size;
     unsigned short status;
+    aliases_t *aliases;
 } context_t;
 
 /** @brief Run a command in the shell */

@@ -11,7 +11,6 @@
     #define CONST_ARR_SIZE(arr) (sizeof(arr) / sizeof(arr[0]))
 
     #include "shell/shell.h"
-
     #include "utils/attributes.h"
     #include "utils/debug_mode.h"
 
@@ -30,6 +29,7 @@ typedef struct {
  * @return bool_t : true if the builtin is valid
  */
 bool_t builtins_check(context_t *ctx);
+void builtin_alias(context_t *ctx);
 /**
  * @brief Get the builtin id
  *
@@ -104,6 +104,7 @@ DEBUG_EXPR(
 
 USED
 static const builtin_t BUILTINS[] = {
+    {"alias", &builtin_alias},
     {"echo", &builtin_echo},
     {"cd", &builtin_cd},
     {"exit", &builtin_exit},

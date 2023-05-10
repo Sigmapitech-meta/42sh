@@ -1,17 +1,22 @@
 from __future__ import annotations
 
 import os
-from dataclasses import dataclass
-
 from datetime import datetime
-from enum import Enum, auto, StrEnum
+from enum import StrEnum
 from pathlib import Path
-from typing import List, Final
+from typing import List, Final, Dict
+
+from file import File, FileType
 
 PROJECT: Final[str] = "42sh"
 YEAR: Final[int] = datetime.now().year
 SENTINEL: Final[int] = -1
 MAKEFILE_COMMENT: Final[str] = "##"
+
+HEADERS: Dict[FileType, str] = {
+    FileType.SOURCE: Path(".github/templates/c.header").read_text(),
+    FileType.MAKEFILE: Path(".github/templates/mk.header").read_text()
+}
 
 
 class CToken(StrEnum):
@@ -19,54 +24,7 @@ class CToken(StrEnum):
     BLOCK_COMMENT_END = "*/"
 
 
-class FileType(Enum):
-    SOURCE = auto()
-    MAKEFILE = auto()
-    OTHER = auto()
-
-    @classmethod
-    def from_file(cls, file: File):
-        if file.ext == 'c' or file.ext == 'h':
-            return cls.SOURCE
-
-        if file.ext == 'mk' or file.name == 'Makefile':
-            return cls.MAKEFILE
-
-        return cls.OTHER
-
-
-HEADERS = {
-    FileType.SOURCE: Path(".github/templates/c.header").read_text(),
-    FileType.MAKEFILE: Path(".github/templates/mk.header").read_text()
-}
-
-
-@dataclass
-class File:
-    dir: str
-    name: str
-    ext: str
-
-    def __post_init__(self):
-        self.type: FileType = FileType.from_file(self)
-
-    @property
-    def fullname(self):
-        if not self.ext:
-            return self.name
-
-        return f"{self.name}.{self.ext}"
-
-    @property
-    def path(self):
-        if not self.dir or self.dir == '.':
-            return self.fullname
-
-        return f"{self.dir}/{self.fullname}"
-
-    def read(self):
-        with open(self.path) as f:
-            return f.read()
+class HFile(File):
 
     def fix_header(self):
         header_template = HEADERS.get(self.type)
@@ -137,7 +95,7 @@ def main():
         for filename in files:
             filename, ext = os.path.splitext(filename)
 
-            file = File(directory, filename, ext[1::])
+            file = HFile(directory, filename, ext[1::])
             file.fix_header()
 
 

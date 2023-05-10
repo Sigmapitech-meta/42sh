@@ -43,6 +43,12 @@ SRC += main.c
 SRC += prompt.c
 SRC += shell.c
 
+VPATH += src/alias
+SRC += alias_list.c
+SRC += alias_resolver.c
+SRC += alias_mgmt.c
+SRC += alias_utils.c
+
 VPATH += src/base
 SRC += str_split.c
 SRC += str_replace.c
@@ -55,20 +61,20 @@ SRC += list_remove.c
 
 VPATH += src/commands
 SRC += builtins.c
+SRC += builtin_alias.c
 SRC += command_runner.c
 SRC += change_directory.c
 SRC += env_manipulation.c
 SRC += location_builtins.c
 
 VPATH += src/utils
-SRC += parameters.c
 SRC += path.c
 SRC += status.c
 
 VPATH += tests
-TSRC := test_sentinel.c
-TSRC += run_shell.c
+TSRC := run_shell.c
 TSRC += std_redirect.c
+TSRC += test_sentinel.c
 
 VPATH += tests/commands
 TSRC += test_cd.c
@@ -89,13 +95,17 @@ TSRC += test_where.c
 TSRC += test_which.c
 TSRC += test_whitespace.c
 
+VPATH += tests/commands/alias
+TSRC += test_alias_print.c
+TSRC += test_simple_alias.c
+TSRC += test_double_alias.c
+
 VPATH += tests/mocks
 TSRC += mock_getline.c
 TSRC += mock_isatty.c
 TSRC += mock_malloc.c
 TSRC += mock_read.c
 TSRC += mock_stat.c
-
 TSRC += mock_gethostname.c
 TSRC += mock_getcwd.c
 TSRC += mock_getenv.c
