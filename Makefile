@@ -25,14 +25,13 @@ endif
 BUILD_DIR := .build
 DOCS := .doxygen
 
-NAME_BATCH := batch_runner
 NAME_DEBUG := debug
 NAME_ANGRY := angry
 NAME_AFL := $(NAME)_afl
 
 TESTS := run_tests
 
-BINS := $(NAME) $(NAME_BATCH)
+BINS := $(NAME)
 BINS += $(NAME_DEBUG) $(NAME_ANGRY)
 BINS += $(NAME_AFL) $(TESTS)
 
@@ -137,13 +136,6 @@ DSRC := $(SRC)
 DSRC += debug_colorize.c
 DSRC += debug_builtins.c
 
-# ↓ Batch runner sources
-BSRC += $(filter-out %main.c, $(DSRC))
-BSRC += tests/run_shell.c
-
-VPATH += batch
-BSRC += batch_main.c
-
 ASRC := $(SRC)
 ASRC += mock_execve.c
 
@@ -172,7 +164,6 @@ ANGRY_OBJ := $(DSRC:%.c=$(BUILD_DIR)/angry/%.o)
 TEST_OBJ := $(TSRC:%.c=$(BUILD_DIR)/tests/%.o)
 TEST_OBJ += $(filter-out %main.o, $(SRC:%.c=$(BUILD_DIR)/tests/%.o))
 
-BATCH_OBJ := $(BSRC:%.c=$(BUILD_DIR)/batch/%.o)
 AFL_OBJ := $(ASRC:%.c=$(BUILD_DIR)/afl/%.o)
 
 OBJS := $(OBJ) $(AFL_OBJ)
@@ -380,22 +371,6 @@ cov: tests_run
 	$Q gcovr . --exclude tests
 
 .PHONY: cov
-
-batch: $(NAME_BATCH)
-
-.PHONY: batch
-
-$(BUILD_DIR)/batch/%.o: HEADER += "batch"
-$(BUILD_DIR)/batch/%.o: %.c
-	@ mkdir -p $(dir $@)
-	$Q $(CC) $(CFLAGS) -c $< -o $@
-	$(call LOG,":c" $(notdir $@))
-
-$(NAME_BATCH): CFLAGS += -iquote tests/include
-$(NAME_BATCH): CFLAGS += -D DEBUG_MODE
-$(NAME_BATCH): $(BATCH_OBJ)
-	$Q $(CC) -o $@ $^ $(CFLAGS) $(LDLIBS) $(LDFLAGS)
-	$(call LOG,":g$@")
 
 bundle: $(BINS)
 	@+ $(MAKE) -sC bin
