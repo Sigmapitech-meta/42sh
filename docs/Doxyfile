@@ -1,0 +1,24 @@
+PROJECT_NAME           = 42sh
+PROJECT_BRIEF          = man tcsh
+
+OUTPUT_DIRECTORY       = .build/
+FULL_PATH_NAMES        = NO
+
+OPTIMIZE_OUTPUT_FOR_C  = YES
+EXTRACT_ALL            = NO
+EXTRACT_PRIVATE        = YES
+EXTRACT_STATIC         = YES
+WARN_IF_UNDOCUMENTED   = NO
+
+INPUT                  = ..
+RECURSIVE              = YES
+
+EXCLUDE_PATTERNS       = */bin/*
+EXCLUDE_PATTERNS       += */batch/*
+EXCLUDE_PATTERNS       += */debug_colorize.c
+EXCLUDE_PATTERNS       += */tests/*
+EXCLUDE_PATTERNS       += */venv/*
+
+GENERATE_HTML          = NO
+GENERATE_LATEX         = NO
+GENERATE_XML           = YES
