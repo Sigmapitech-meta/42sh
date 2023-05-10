@@ -126,7 +126,6 @@ jobs:
         run: nix develop --command make -j bundle
   
   run_tests:
-    needs: [run_epitech_coding_style_checker]
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
