@@ -2,7 +2,7 @@
 ** EPITECH PROJECT, 2023
 ** 42sh
 ** File description:
-** test_alias.c
+** test_simple_alias.c
 */
 
 #include "epitech.h"
