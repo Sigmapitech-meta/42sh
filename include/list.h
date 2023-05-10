@@ -8,6 +8,15 @@
 #ifndef LIST_H_
     #define LIST_H_
 
+/**
+ * @file list.h
+ * @author Gabriel Hosquet (gabriel.hosquet@epitech.eu)
+ * @author Yohann Boniface(edhyjox@gmail.com)
+ * @brief List
+ * @version 0.1
+ *
+ */
+
     #include "coding_style_fix.h"
     #include "utils/attributes.h"
 
@@ -34,16 +43,24 @@ struct list_s {
     ssize_t size;
 };
 
+/** @brief append a value to the list */
 ssize_t list_append(list_t *list, void *value);
+/** @brief append a node to the list */
 ssize_t list_append_node(list_t *list, list_node_t *node);
 
+/** @brief get a value from the list */
 void *list_get(list_t *list, uint_t index);
+/** @brief get a node from the list */
 list_node_t *list_get_node(list_t *list, uint_t index);
 
+/** @brief remove a value from the list */
 void list_remove(list_t *list, uint_t index);
+/** @brief remove a node from the list */
 void list_remove_node(list_t *list, list_node_t *node);
+/** @brief clear the list */
 void list_clear(list_t *list);
 
+/** @brief create a list */
 static inline
 USED list_t *list_create(void)
 {

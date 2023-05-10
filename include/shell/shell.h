@@ -14,6 +14,10 @@ extern char **environ;
 
 static const size_t MINIMAL_INPUT_CHECK = 2;
 
+/**
+ * @brief Prints the usage of the shell
+ *
+ */
 static const char USAGE[] = (
     "Minishell 2 - Usage: ./mysh [-h]\n"
     "\nAll commands in the path are available.\n"
@@ -37,29 +41,38 @@ typedef struct command_s {
 } command_t;
 
 typedef struct context_s {
-    command_t *cmd;
-    unsigned short status;
     bool_t is_running;
     bool_t ran_from_tty;
-    char *user_input;
-    char *prev_dir;
-    size_t input_size;
+    command_t *cmd;
     char **original_env;
+    char *prev_dir;
+    char *user_input;
+    size_t input_size;
+    unsigned short status;
     aliases_t *aliases;
 } context_t;
 
+/** @brief Run a command in the shell */
 int command_run_subprocess(context_t *ctx);
 
+/** @brief main loop */
 int shell_run_from_env(char **env);
+/** @brief run a command in the shell* */
 void shell_run_from_ctx(context_t *ctx);
 
+/** @brief read user input */
 bool_t shell_read_line(context_t *ctx);
+/** @brief run a command in the shell */
 void shell_evaluate(context_t *ctx);
 
+/** @brief display prompt */
 void prompt_display(void);
 
+/** @brief Retrieve string composed by `$key = $val` */
 char *env_get_setter(char *key, char *value);
+/** @brief free a key */
 void env_free_key(char *key, char **original_env);
+/** @brief free the env */
 void env_free(char **original_env);
 
 #endif /* !SHELL_H */

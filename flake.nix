@@ -21,6 +21,7 @@
             gcovr
             ltrace
             gnumake
+            kitty
             man-pages
             python311
             tcsh

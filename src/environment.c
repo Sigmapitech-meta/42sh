@@ -61,7 +61,7 @@ void env_free_key(char *key, char **original_env)
     if (!line_start)
         return;
     size = strlen(line_start);
-    for (; strncmp(environ[i], line_start, size); i++)
+    for (; environ[i] && (bool_t)strncmp(environ[i], line_start, size); i++)
         ;
     if (environ[i] != original_env[i]) {
         transaction_ptr = environ[i];

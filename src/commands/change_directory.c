@@ -28,11 +28,14 @@ void move_relative(context_t *ctx, char *relative_path)
     char *old_dir;
 
     DEBUG("Solving rel path: [%s]", relative_path);
-    if (!realpath(relative_path, target_path))
+    if (!realpath(relative_path, target_path)) {
+        ctx->status = EXIT_FAILURE;
         return perror(cmd->argv[1]);
+    }
     old_dir = getcwd(ctx->prev_dir, 0);
     if (IS_SENTINEL(chdir(target_path))) {
         EPRINTF("%s: %s.\n", cmd->argv[1], strerror(errno));
+        ctx->status = EXIT_FAILURE;
         return;
     }
     free(ctx->prev_dir);
@@ -48,6 +51,7 @@ void move_to_home(context_t *ctx)
 
     if (!home) {
         EPRINTF("No $home variable set\n");
+        ctx->status = EXIT_FAILURE;
         return;
     }
     if (cmd->argc != 2 || strlen(cmd->argv[1]) <= 2)
@@ -64,6 +68,7 @@ void builtin_cd(context_t *ctx)
 
     if (cmd->argc > 2) {
         EPRINTF("cd: Too many arguments.\n");
+        ctx->status = EXIT_FAILURE;
         return;
     }
     if (

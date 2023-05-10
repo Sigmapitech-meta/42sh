@@ -18,43 +18,37 @@
 
 void builtin_exit(context_t *ctx)
 {
-    unsigned char status;
     command_t *cmd = ctx->cmd;
+    unsigned char status = (cmd->argc == 2) ? atoi(cmd->argv[1]) : 0;
+    bool_t fail = cmd->argc > 2;
 
-    if (cmd->argc > 2) {
+    fail |= ((!status && cmd->argc == 2 && cmd->argv[1][0] != '0'));
+    if (fail)
         EPRINTF("exit: Expression Syntax.\n");
-        return;
-    }
-    if (cmd->argc == 1) {
+    else
         ctx->is_running = FALSE;
-        return;
-    }
-    status = atoi(cmd->argv[1]);
-    if (!status && cmd->argv[1][0] != '0') {
-        EPRINTF("exit: Expression Syntax.\n");
-        return;
-    }
-    ctx->status = status;
-    ctx->is_running = FALSE;
+    ctx->status = status | fail;
 }
 
-void builtin_echo(context_t *ctx)
+int get_builtin_id(char *cmd_name)
 {
-    command_run_subprocess(ctx);
+    for (int i = 0; i < BUILTIN_COUNT; i++)
+        if (!strcmp(cmd_name, BUILTINS[i].name))
+            return i;
+    return SENTINEL;
 }
 
 bool_t builtins_check(context_t *ctx)
 {
-    char *builtin_name;
     command_t *cmd = ctx->cmd;
+    int i;
 
-    for (int i = 0; i < BUILTIN_COUNT; i++) {
-        builtin_name = BUILTINS[i].name;
-        if (!strcmp(cmd->argv[0], builtin_name)) {
-            DEBUG("Executing [%s] built-in", BUILTINS[i].name);
-            BUILTINS[i].handler(ctx);
-            return TRUE;
-        }
-    }
-    return FALSE;
+    if (!cmd->argc || !cmd->argv[0])
+        return FALSE;
+    i = get_builtin_id(cmd->argv[0]);
+    if (IS_SENTINEL(i))
+        return FALSE;
+    DEBUG("Executing [%s] built-in", BUILTINS[i].name);
+    BUILTINS[i].handler(ctx);
+    return TRUE;
 }

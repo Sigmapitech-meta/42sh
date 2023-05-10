@@ -17,7 +17,7 @@
 #include "shell/shell.h"
 #include "utils/sentinel.h"
 
-void putenv_safe(char *key, char *value, char **original_env)
+bool_t putenv_safe(char *key, char *value, char **original_env)
 {
     char *env_setter;
 
@@ -25,9 +25,12 @@ void putenv_safe(char *key, char *value, char **original_env)
         env_free_key(key, original_env);
     env_setter = env_get_setter(key, value);
     if (!env_setter)
-        return;
-    if (putenv(env_setter) == SENTINEL)
+        return FALSE;
+    if (putenv(env_setter) == SENTINEL) {
         printf("setenv: %s", strerror(errno));
+        return FALSE;
+    }
+    return TRUE;
 }
 
 static
@@ -65,10 +68,13 @@ void builtin_setenv(context_t *ctx)
         return command_run_env(ctx);
     if (cmd->argc > 3) {
         EPRINTF("setenv: Too many arguments.\n");
+        ctx->status = EXIT_FAILURE;
         return;
     }
-    if (is_valid_env_key_case(cmd->argv[1]))
-        putenv_safe(cmd->argv[1], cmd->argv[2], ctx->original_env);
+    ctx->status = !(
+        is_valid_env_key_case(cmd->argv[1])
+        && putenv_safe(cmd->argv[1], cmd->argv[2], ctx->original_env)
+    );
 }
 
 void builtin_unsetenv(context_t *ctx)
@@ -77,9 +83,9 @@ void builtin_unsetenv(context_t *ctx)
 
     if (cmd->argc == 1) {
         EPRINTF("unsetenv: Too few arguments.\n");
+        ctx->status = EXIT_FAILURE;
         return;
     }
     for (int i = 1; i < cmd->argc; i++)
-        if (IS_SENTINEL(unsetenv(cmd->argv[i])))
-            EPRINTF("unsetenv: %s", strerror(errno));
+        env_free_key(cmd->argv[i], ctx->original_env);
 }

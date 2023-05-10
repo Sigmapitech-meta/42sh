@@ -1,5 +1,7 @@
 # Binaries
 div_zero
+floating_exeption
+floating_exeption_core_dump
 double_free
 free_invalid_pointer
 segfault

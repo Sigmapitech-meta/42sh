@@ -40,6 +40,8 @@ char *command_get_full_path(char **params)
     char *target_path = params[0];
     AUTOFREE char *dir = NULL;
 
+    if (!target_path)
+        return NULL;
     if (target_path[0] == '/')
         return strdup(target_path);
     if (target_path[0] == '~') {
@@ -60,7 +62,7 @@ static void command_run_internal(context_t *ctx, char *cmd_path, char **env)
 
     if (last_arg[0] == '|' && !last_arg[1]) {
         EPRINTF("Invalid null command.\n");
-        return;
+        exit(SENTINEL);
     }
     DEBUG("running [%s]", cmd_path);
     execve(cmd_path, cmd->argv, env);
@@ -77,7 +79,9 @@ void command_run(context_t *ctx)
     command_t *cmd = ctx->cmd;
     AUTOFREE char *cmd_path = command_get_full_path(cmd->argv);
 
-    if (!cmd_path || access(cmd_path, F_OK)) {
+    if (!cmd_path)
+        exit(SENTINEL);
+    if (access(cmd_path, F_OK)) {
         EPRINTF("%s: Command not found.\n", cmd->argv[0]);
         exit(SENTINEL);
     }
@@ -90,7 +94,6 @@ int command_run_subprocess(context_t *ctx)
     pid_t pid = fork();
 
     DEBUG("PID [%d | %d]", pid, getpid());
-    ctx->user_input[ctx->input_size - 1] = '\0';
     if (!pid)
         command_run(ctx);
     DEBUG("%d | WAIT START", pid);

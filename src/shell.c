@@ -18,7 +18,6 @@
 #include "shell/alias.h"
 #include "shell/builtins.h"
 #include "shell/shell.h"
-
 #include "shell/utils.h"
 #include "utils/debug_mode.h"
 #include "utils/sentinel.h"
@@ -42,7 +41,7 @@ bool_t shell_read_line(context_t *ctx)
         return FALSE;
     ctx->user_input[ctx->input_size - 1] = '\0';
     for (int i = 0; ctx->user_input[i]; i++)
-        if (!isspace(ctx->user_input[i]))
+        if (!isspace(ctx->user_input[i]) && ctx->user_input[i] != ';')
             return TRUE;
     return FALSE;
 }
@@ -52,7 +51,7 @@ int shell_evaluate_expression(context_t *ctx)
     DEBUG_USED command_t *cmd = ctx->cmd;
 
     if (builtins_check(ctx))
-        return EXIT_OK;
+        return ctx->status;
     DEBUG("Running [%s] as command", cmd->argv[0]);
     ctx->status = command_run_subprocess(ctx);
     if (!ctx->status || ctx->ran_from_tty)
@@ -109,11 +108,14 @@ int shell_run_from_env(char **env)
 {
     command_t cmd = { 0 };
     context_t ctx = {
-        .original_env = env,
-        .ran_from_tty = isatty(STDIN_FILENO),
-        .prev_dir = getcwd(NULL, 0),
         .is_running = TRUE,
+        .ran_from_tty = isatty(STDIN_FILENO),
         .cmd = &cmd,
+        .original_env = env,
+        .prev_dir = getcwd(NULL, 0),
+        .user_input = NULL,
+        .input_size = 0,
+        .status = 0
     };
 
     if (!ctx.prev_dir)
