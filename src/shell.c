@@ -55,7 +55,7 @@ int shell_evaluate_expression(context_t *ctx)
         return ctx->status;
     DEBUG("Running [%s] as command", cmd->argv[0]);
     ctx->status = command_run_subprocess(ctx);
-    if (!ctx->ran_from_tty)
+    if (ctx->status && !ctx->ran_from_tty)
         ctx->is_running = FALSE;
     if (ctx->status == SENTINEL_DETECT)
         ctx->status = EXIT_FAILURE;
