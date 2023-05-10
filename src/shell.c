@@ -22,6 +22,8 @@
 #include "utils/debug_mode.h"
 #include "utils/sentinel.h"
 
+char *prepars(context_t *ctx);
+
 bool_t shell_read_line(context_t *ctx)
 {
     ctx->input_size = get_line(&ctx->user_input);
@@ -54,9 +56,8 @@ int shell_evaluate_expression(context_t *ctx)
         return ctx->status;
     DEBUG("Running [%s] as command", cmd->argv[0]);
     ctx->status = command_run_subprocess(ctx);
-    if (!ctx->status || ctx->ran_from_tty)
-        return EXIT_OK;
-    ctx->is_running = FALSE;
+    if (!ctx->ran_from_tty)
+        ctx->is_running = FALSE;
     if (ctx->status == SENTINEL_DETECT)
         ctx->status = EXIT_FAILURE;
     if (ctx->status == SEGFAULT)
@@ -67,14 +68,15 @@ int shell_evaluate_expression(context_t *ctx)
 void shell_evaluate(context_t *ctx)
 {
     char *checkpoint;
-    char *copy = strdup(ctx->user_input);
-    char *copy_ptr = copy;
+    char *copy;
+    char *copy_ptr;
     command_t *cmd = ctx->cmd;
 
-    if (!copy)
-        return;
-    copy = strtok_r(copy, ";", &checkpoint);
-    while (ctx->is_running && copy) {
+    ctx->user_input = prepars(ctx);
+    copy = NULL_OR(ctx->user_input, strdup(ctx->user_input));
+    copy = NULL_OR(copy, strtok_r(copy, ";", &checkpoint));
+    copy_ptr = copy;
+    while (copy && ctx->is_running) {
         cmd->argc = str_count_tok(copy, " \t");
         cmd->argv = str_split(copy, " \t");
         alias_resolve(ctx->aliases, cmd);
@@ -83,7 +85,8 @@ void shell_evaluate(context_t *ctx)
         copy = strtok_r(NULL, ";", &checkpoint);
         free(cmd->argv);
     }
-    free(copy_ptr);
+    if (copy_ptr)
+        free(copy_ptr);
 }
 
 void shell_run_from_ctx(context_t *ctx)

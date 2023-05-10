@@ -40,6 +40,8 @@ BINS += $(NAME_AFL) $(TESTS)
 VPATH += src
 SRC += environment.c
 SRC += main.c
+SRC += pars_var.c
+SRC += prepars.c
 SRC += prompt.c
 SRC += shell.c
 
