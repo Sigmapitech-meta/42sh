@@ -31,28 +31,28 @@ bool_t is_alias(char *str)
     );
 }
 
+static
+void alias_print_value(alias_t *al)
+{
+    printf("%s\t", al->key);
+    for (size_t i = 0; i < al->member_count; i++) {
+        if (i)
+            printf(" ");
+        printf("%s", al->members[i]);
+    }
+    printf("\n");
+}
+
 void alias_list_print(aliases_t *aliases)
 {
-    alias_t *al;
-    list_t *pool;
+    list_t *pool = NULL_OR(aliases, aliases->pool);
 
-    if (!aliases)
-        return;
-    pool = aliases->pool;
     if (!pool)
         return;
     if (!pool->size) {
         printf("No aliases found.\n");
         return;
     }
-    LIST_FOREACH(aliases->pool, node) {
-        al = (alias_t *)(node->value);
-        printf("%s\t", al->key);
-        for (size_t i = 0; i < al->member_count; i++) {
-            if (i)
-                printf(" ");
-            printf("%s", al->members[i]);
-        }
-        printf("\n");
-    }
+    LIST_FOREACH(pool, node)
+        alias_print_value(node->value);
 }

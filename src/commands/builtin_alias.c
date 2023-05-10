@@ -66,5 +66,5 @@ void builtin_alias(context_t *ctx)
         return;
     out = alias_translate(ctx);
     if (!out || !alias_add(ctx->aliases, out))
-        ctx->status = out &&  EXIT_FAILURE;
+        ctx->status = out && EXIT_FAILURE;
 }
