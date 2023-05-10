@@ -8,7 +8,7 @@
 SPHINX_OPTS ?=
 SPHINX_BUILD ?= sphinx-build
 SCR_DIR := .
-BUILD_DIR := _build
+BUILD_DIR := .build
 
 SPHINX = $(SPHINX_BUILD) -M $(1)
 SPHINX += "$(SCR_DIR)" "$(BUILD_DIR)" $(SPHINX_OPTS) $(O)

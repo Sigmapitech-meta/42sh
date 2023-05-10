@@ -16,6 +16,7 @@
             afl
             cs.packages.${system}.report
             criterion
+            doxygen
             gcc12
             glibc
             gcovr

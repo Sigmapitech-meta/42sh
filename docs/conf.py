@@ -30,7 +30,7 @@ breathe_projects = {"42sh": ".build/xml"}
 breathe_default_project = "42sh"
 breathe_default_members = ('members', 'undoc-members')
 
-exclude_patterns = ['_build', 'Thumbs.db', '.DS_Store']
+exclude_patterns = ['.build', 'Thumbs.db', '.DS_Store']
 
 html_theme = "furo"
 html_theme_options = {
@@ -49,5 +49,5 @@ html_theme_options = {
 
 default_dark_mode = True
 
-html_static_path = ["static"]
+html_static_path = ["_static"]
 html_css_files = ["custom.css"]
