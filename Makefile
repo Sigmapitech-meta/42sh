@@ -43,6 +43,7 @@ SRC += pars_var.c
 SRC += prepars.c
 SRC += prompt.c
 SRC += shell.c
+SRC += save.c
 
 VPATH += src/alias
 SRC += alias_list.c

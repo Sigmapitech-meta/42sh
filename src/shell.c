@@ -20,6 +20,7 @@
 #include "shell/utils.h"
 #include "utils/debug_mode.h"
 #include "utils/sentinel.h"
+#include "list.h"
 
 char *prepars(context_t *ctx);
 
@@ -93,14 +94,24 @@ void shell_run_from_ctx(context_t *ctx)
     ctx->aliases = alias_list_create();
     if (!ctx->aliases)
         return;
+    ctx->history = list_create();
+    if (!ctx->history)
+        return;
     DEBUG_MSG("Entering main loop.");
+    shell_save_history(ctx->history);
     while (ctx->is_running) {
         if (ctx->ran_from_tty)
             prompt_display();
-        if (shell_read_line(ctx))
+        if (shell_read_line(ctx)) {
+            list_append(ctx->history, strdup(ctx->user_input));
+            DEBUG_MSG("display history list");
+            DEBUG_CALL(list_display, ctx->history);
             shell_evaluate(ctx);
+        }
     }
     alias_list_destroy(ctx->aliases);
+    shell_save_history(ctx->history);
+    list_destroy(ctx->history);
     free(ctx->user_input);
 }
 

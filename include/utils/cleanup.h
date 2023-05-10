@@ -41,6 +41,9 @@
     #define AUTOCLOSE ON_CLEANUP(close_file)
     #define $$ ({}) /* Fix your coding style lmao */
 
+    #define AUTOCLOSE_FILE ON_CLEANUP(file_close)
+    #define $$ ({}) /* Fix your coding style lmao */
+
     #define AUTOFREE ON_CLEANUP(free_stack)
     #define $$ ({}) /* Fix your coding style lmao */
 
@@ -63,6 +66,15 @@ static inline void close_file(void *fd_ptr)
 
     if (fd)
         close(fd);
+}
+
+ALWAYS_INLINE USED
+static inline void file_close(void *fd_ptr)
+{
+    FILE *fd = *(FILE **)fd_ptr;
+
+    if (fd)
+        fclose(fd);
 }
 
 #endif /* !CLEAN_UP_H */

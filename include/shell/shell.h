@@ -21,12 +21,12 @@ static const size_t MINIMAL_INPUT_CHECK = 2;
  *
  */
 static const char USAGE[] = (
-    "Minishell 2 - Usage: ./mysh [-h]\n"
+    "42sh - Usage: ./42sh [-h]\n"
     "\nAll commands in the path are available.\n"
     "Within the shell, press CTRL+D or enter exit to quit.\n"
     "Alternatively, you can provide commands from standard input.\n\n"
     "The following builtins are present:\n"
-    "- env, unsetenv, cd, exit\n\n"
+    "- env, unsetenv, setenv, cd, exit\n\n"
     "As long as the following operators:\n"
     "- ; | > < >> <<\n"
 );
@@ -52,6 +52,7 @@ typedef struct context_s {
     size_t input_size;
     unsigned short status;
     aliases_t *aliases;
+    list_t *history;
 } context_t;
 
 /** @brief Run a command in the shell */
@@ -77,6 +78,9 @@ void env_free_key(char *key, char **original_env);
 /** @brief free the env */
 void env_free(char **original_env);
 
+/** @brief open & save history */
+int shell_save_history(list_t *list);
+/** @brief replace env variables */
 char *replace_var(context_t *ctx, char *input);
 
 #endif /* !SHELL_H */

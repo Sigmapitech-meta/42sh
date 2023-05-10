@@ -16,6 +16,7 @@ batch_runner
 
 # Config
 .42shrc
+.42sh_history
 
 # Lib
 *.a

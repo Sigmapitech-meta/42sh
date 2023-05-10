@@ -19,7 +19,9 @@
 
     #include "coding_style_fix.h"
     #include "utils/attributes.h"
+    #include "utils/debug_mode.h"
 
+    #include <stdio.h>
     #include <stdlib.h>
 
     #define LIST_FOREACH(l, n) for (list_node_t *n EQ l->head; n; n EQ n->next)
@@ -67,6 +69,15 @@ USED list_t *list_create(void)
     return calloc(1, sizeof(list_t));
 }
 
+
+/** @brief display a list */
+static inline
+DEBUG_USED void list_display(list_t *list)
+{
+    LIST_FOREACH(list, node)
+        printf("%s\n", (char *)node->value);
+}
+/** @brief destroy a list */
 static inline
 USED void list_destroy(list_t *list)
 {
