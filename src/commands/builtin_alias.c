@@ -29,9 +29,9 @@ char *alias_cut_value(context_t *ctx)
     if (!out)
         return NULL;
     for (int i = 2; i < cmd->argc; i++) {
-        strcat(out + offset, cmd->argv[i]);
+        strcpy(out + offset, cmd->argv[i]);
         offset += strlen(cmd->argv[i]);
-        out[offset++] = ' ';
+        out[++offset] = ' ';
     }
     return out;
 }
@@ -52,14 +52,12 @@ char *alias_translate(context_t *ctx)
     if (!out)
         return NULL;
     written = snprintf(out, len + 1, "alias %s=%s", cmd->argv[1], value);
-    if (IS_SENTINEL(written))
-        return NULL;
-    return strdup(out);
+    return (IS_SENTINEL(written)) ? NULL : strdup(out);
 }
 
 void builtin_alias(context_t *ctx)
 {
-    char *out;
+    AUTOFREE char *out = NULL;
     command_t *cmd = ctx->cmd;
 
     if (cmd->argc == 1)
@@ -67,11 +65,6 @@ void builtin_alias(context_t *ctx)
     if (cmd->argc == 2)
         return;
     out = alias_translate(ctx);
-    DEBUG("-> out: %s", out);
-    if (out) {
-        if (alias_add(ctx->aliases, out))
-            return;
-        free(out);
-    }
-    ctx->status = EXIT_FAILURE;
+    if (!out || !alias_add(ctx->aliases, out))
+        ctx->status = out &&  EXIT_FAILURE;
 }

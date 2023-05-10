@@ -13,11 +13,11 @@
 static
 void setup_mocks(void)
 {
-    static char *input = "alias kek echo;kek baguette";
+    static char *input = "alias kek echo;kek baguette\n";
 
     GETLINE_DATA->mode = TABLE;
     GETLINE_DATA->table = (char **)&input;
-    //redirect_all_std();
+    redirect_all_std();
 }
 
 static
@@ -30,6 +30,6 @@ TEST(run_command_alias, simple_alias, TEST_USE(setup_mocks, teardown_mocks))
 $ {
     int ret = shell_run_from_env(environ);
 
-    //CR_ASSERT_STDOUT_EQ_STR("baguette");
+    CR_ASSERT_STDOUT_EQ_STR("baguette\n");
     CR_ASSERT_EQ(ret, EXIT_OK);
 }
