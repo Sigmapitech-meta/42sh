@@ -21,7 +21,7 @@ bool_t alias_init(aliases_t *aliases)
 
     aliases->config_file = file_read(".42shrc");
     if (!aliases->config_file)
-        return FALSE;
+        return TRUE;
     count_lines = str_count_tok(aliases->config_file, "\n");
     aliases->lines = str_split(aliases->config_file, "\n");
     for (int i = 0; i < count_lines; i++) {
@@ -45,6 +45,7 @@ aliases_t *alias_list_create(void)
         free(aliases);
         return NULL;
     }
+    aliases->lines = NULL;
     if (!alias_init(aliases)) {
         free(aliases);
         return NULL;
@@ -66,6 +67,7 @@ void alias_list_destroy(aliases_t *aliases)
     }
     list_destroy(aliases->pool);
     free(aliases->config_file);
-    free(aliases->lines);
+    if (aliases->lines)
+        free(aliases->lines);
     free(aliases);
 }
