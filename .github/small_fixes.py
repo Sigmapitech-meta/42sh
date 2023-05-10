@@ -12,12 +12,12 @@ def remove_spaces(match: str) -> str:
     return match.replace(' ', '')
 
 
-def remove_last(match: str) -> str:
+def remove_last(_match: str) -> str:
     return ';'
 
 
 PATCHES: List[Patch] = [
-    (re.compile(r"(\w+\s+\+{2})"), remove_spaces),
+    (re.compile(r"(\w+\s+\+{2}\W)"), remove_spaces),
     (re.compile(r"(\+{2}\s+\w+)"), remove_spaces),
     (re.compile(r"(;{2})"), remove_last)
 ]
