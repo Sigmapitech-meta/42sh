@@ -1,8 +1,8 @@
 /*
 ** EPITECH PROJECT, 2023
-** my_rpg
+** 42sh
 ** File description:
-** open_save.c
+** save.c
 */
 
 #include <stdlib.h>
