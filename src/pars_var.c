@@ -5,8 +5,8 @@
 ** pars_var.c
 */
 
-#include <string.h>
 #include <ctype.h>
+#include <string.h>
 
 #include "base.h"
 #include "shell/shell.h"

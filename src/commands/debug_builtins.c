@@ -10,6 +10,8 @@
 #include "base.h"
 #include "shell/shell.h"
 #include "utils/debug_mode.h"
+#include "shell/alias.h"
+#include "epitech.h"
 
 DEBUG_USED
 void builtin_getenv(context_t *ctx)
@@ -19,6 +21,7 @@ void builtin_getenv(context_t *ctx)
 
     if (cmd->argc == 1) {
         EPRINTF("Not enough arguments.\n");
+        ctx->status = EXIT_FAILURE;
         return;
     }
     for (int i = 1; i < cmd->argc; i++) {
@@ -35,4 +38,5 @@ DEBUG_USED
 void builtin_prev_dir(context_t *ctx)
 {
     printf("-> %s\n", ctx->prev_dir);
+    ctx->status = EXIT_KO;
 }

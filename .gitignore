@@ -14,6 +14,9 @@ batch_runner
 # Coverage
 *.gc??
 
+# Config
+.42shrc
+
 # Lib
 *.a
 
@@ -26,5 +29,12 @@ tests/generated
 # Logs
 *.log
 
+# Python cache (github action)
+__pycache__
+*.pyc
+
 # Tests
 run_tests
+
+# Docs
+.doxygen/
