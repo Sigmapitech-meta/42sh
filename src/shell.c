@@ -13,7 +13,6 @@
 #include <ctype.h>
 
 #include "base.h"
-#include "epitech.h"
 
 #include "shell/alias.h"
 #include "shell/builtins.h"
@@ -74,8 +73,8 @@ void shell_evaluate(context_t *ctx)
 
     ctx->user_input = prepars(ctx);
     copy = NULL_OR(ctx->user_input, strdup(ctx->user_input));
-    copy = NULL_OR(copy, strtok_r(copy, ";", &checkpoint));
     copy_ptr = copy;
+    copy = NULL_OR(copy, strtok_r(copy, ";", &checkpoint));
     while (copy && ctx->is_running) {
         cmd->argc = str_count_tok(copy, " \t");
         cmd->argv = str_split(copy, " \t");
@@ -92,10 +91,8 @@ void shell_evaluate(context_t *ctx)
 void shell_run_from_ctx(context_t *ctx)
 {
     ctx->aliases = alias_list_create();
-    if (!ctx->aliases) {
-        free(ctx->prev_dir);
+    if (!ctx->aliases)
         return;
-    }
     DEBUG_MSG("Entering main loop.");
     while (ctx->is_running) {
         if (ctx->ran_from_tty)

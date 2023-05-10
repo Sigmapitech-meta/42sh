@@ -38,7 +38,7 @@ char *replace_status(context_t *ctx, char *input)
 
     return NULL_OR(
         raw && !IS_SENTINEL(pid_size),
-        replace(ctx, "$$", status, ctx->user_input)
+        replace(ctx, "$?", status, input)
     );
 }
 
