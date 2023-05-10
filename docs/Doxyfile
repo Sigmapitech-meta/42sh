@@ -300,7 +300,7 @@ VERBATIM_HEADERS       = YES
 
 ALPHABETICAL_INDEX     = YES
 
-IGNORE_PREFIX          = 
+IGNORE_PREFIX          =
 
 GENERATE_HTML          = YES
 
