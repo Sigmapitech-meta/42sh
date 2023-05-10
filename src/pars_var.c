@@ -20,13 +20,11 @@ char *get_key(char *input)
     int i = 1;
     char *dup = strstr(input, "$");
 
+    dup = NULL_OR(dup, strdup(dup));
     if (!dup)
         return NULL;
-    dup = strdup(dup);
-    if (!dup)
-        return NULL;
-    for (; dup[i] && isalnum(dup[i]); i++)
-        ;
+    while (dup[i] && isalnum(dup[i]))
+        i++;
     dup[i] = '\0';
     return dup;
 }
@@ -36,19 +34,19 @@ char *env_get_key(char *input)
 {
     AUTOFREE char *dup = get_key(input);
     char *checkpoint;
-    char *cpy;
+    char *copy;
     char *var_present = NULL;
     int i = 0;
 
     if (!dup)
         return NULL;
     do {
-        cpy = strdup(environ[i]);
-        if (!cpy)
+        copy = strdup(environ[i]);
+        if (!copy)
             return NULL;
-        cpy = strtok_r(cpy, "=", &checkpoint);
-        var_present = strstr(dup, cpy);
-        free(cpy);
+        copy = strtok_r(copy, "=", &checkpoint);
+        var_present = strstr(dup, copy);
+        free(copy);
         i++;
     } while (!var_present && environ[i]);
     return NULL_OR(var_present, strdup(var_present));
@@ -60,9 +58,7 @@ char *key_replace(context_t *ctx, char *from, char *value, char *input)
     AUTOFREE char *raw = strdup(input);
     char *out;
 
-    if (!raw)
-        return NULL;
-    out = str_replace(raw, from, value);
+    out = NULL_OR(raw, str_replace(raw, from, value));
     if (!out)
         return NULL;
     if (out == raw)
@@ -78,15 +74,17 @@ char *replace_a_var(context_t *ctx, char *input)
     AUTOFREE char *from = NULL;
     AUTOFREE char *key = env_get_key(input);
     char *value;
+    size_t len;
 
     if (!key)
         return input;
     value = getenv(key);
     if (!value)
         return NULL;
-    from = malloc((1 + strlen(key) + 1) * sizeof(char));
+    len = (1 + strlen(key) + 1);
+    from = malloc(len * sizeof(char));
     return NULL_OR(
-        from && !IS_SENTINEL(snprintf(from, 1 + strlen(key) + 1, "$%s", key)),
+        from && !IS_SENTINEL(snprintf(from, len, "$%s", key)),
         key_replace(ctx, from, value, input)
     );
 }
