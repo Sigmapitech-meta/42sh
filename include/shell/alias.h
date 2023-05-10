@@ -14,6 +14,10 @@ typedef struct list_s list_t;
 typedef struct command_s command_t;
 typedef struct context_s context_t;
 
+    #define STATIC_LEN(str) (sizeof (str) - 1)
+
+static const int ALIAS_FMT_SIZE = STATIC_LEN("alias =");
+
 typedef struct aliases_s {
     char *config_file;
     char **lines;

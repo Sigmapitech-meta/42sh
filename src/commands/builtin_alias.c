@@ -42,16 +42,16 @@ char *alias_translate(context_t *ctx)
     AUTOFREE char *out = NULL;
     AUTOFREE char *value = alias_cut_value(ctx);
     command_t *cmd = ctx->cmd;
-    size_t len;
+    size_t raw_len;
     int written;
 
     if (!value)
         return NULL;
-    len = strlen(value) + strlen(cmd->argv[1]) + 8;
-    out = malloc((len + 1) * sizeof (char));
+    raw_len = strlen(value) + strlen(cmd->argv[1]) + ALIAS_FMT_SIZE + 1;
+    out = malloc(raw_len * sizeof (char));
     if (!out)
         return NULL;
-    written = snprintf(out, len + 1, "alias %s=%s", cmd->argv[1], value);
+    written = snprintf(out, raw_len, "alias %s=%s", cmd->argv[1], value);
     return (IS_SENTINEL(written)) ? NULL : strdup(out);
 }
 
