@@ -8,14 +8,14 @@
 #include <string.h>
 #include <ctype.h>
 
-#include "utils/sentinel.h"
-#include "utils/cleanup.h"
-#include "shell/shell.h"
 #include "base.h"
+#include "shell/shell.h"
+#include "utils/cleanup.h"
 #include "utils/debug_mode.h"
+#include "utils/sentinel.h"
 
 static
-char *cut(char *input)
+char *get_key(char *input)
 {
     int i = 1;
     char *dup = strstr(input, "$");
@@ -34,11 +34,11 @@ char *cut(char *input)
 static
 char *env_get_key(char *input)
 {
-    char *cpy;
+    AUTOFREE char *dup = get_key(input);
     char *checkpoint;
-    int i = 0;
+    char *cpy;
     char *var_present = NULL;
-    AUTOFREE char *dup = cut(input);
+    int i = 0;
 
     if (!dup)
         return NULL;
@@ -51,13 +51,11 @@ char *env_get_key(char *input)
         free(cpy);
         i++;
     } while (!var_present && environ[i]);
-    if (var_present)
-        var_present = strdup(var_present);
-    return var_present;
+    return NULL_OR(var_present, strdup(var_present));
 }
 
 static
-char *var_replace(context_t *ctx, char *from, char *value, char *input)
+char *key_replace(context_t *ctx, char *from, char *value, char *input)
 {
     AUTOFREE char *raw = strdup(input);
     char *out;
@@ -89,7 +87,7 @@ char *replace_a_var(context_t *ctx, char *input)
     from = malloc((1 + strlen(key) + 1) * sizeof(char));
     return NULL_OR(
         from && !IS_SENTINEL(snprintf(from, 1 + strlen(key) + 1, "$%s", key)),
-        var_replace(ctx, from, value, input)
+        key_replace(ctx, from, value, input)
     );
 }
 

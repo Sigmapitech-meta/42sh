@@ -8,22 +8,27 @@
 #include <stdlib.h>
 #include <string.h>
 
-#include "shell/shell.h"
 #include "base.h"
-#include "utils/sentinel.h"
+#include "shell/shell.h"
 #include "utils/cleanup.h"
 #include "utils/debug_mode.h"
+#include "utils/sentinel.h"
+
+#define MAX_SHORT_LENGTH 6
+#define MAX_INT_LENGTH 12
 
 static
 char *replace_status(context_t *ctx, char *input)
 {
-    static char buff_status[7] = { 0 };
-    char *out;
+    static char status[MAX_SHORT_LENGTH] = { '\0' };
     AUTOFREE char *raw = strdup(input);
+    char *out;
 
-    if (!raw || IS_SENTINEL(snprintf(buff_status, 7, "%i", ctx->status)))
+    if (!raw
+        || IS_SENTINEL(snprintf(status, MAX_SHORT_LENGTH, "%i", ctx->status))
+        )
         return NULL;
-    out = str_replace(raw, "$?", buff_status);
+    out = str_replace(raw, "$?", status);
     if (!out)
         return NULL;
     if (out == raw)
@@ -36,11 +41,13 @@ char *replace_status(context_t *ctx, char *input)
 static
 char *replace_pid(context_t *ctx)
 {
-    static char buff_pid[12] = { 0 };
-    char *out;
+    static char buff_pid[MAX_INT_LENGTH] = { '\0' };
     AUTOFREE char *raw = strdup(ctx->user_input);
+    char *out;
 
-    if (!buff_pid[0] && IS_SENTINEL(snprintf(buff_pid, 12, "%i", getpid())))
+    if (!buff_pid[0]
+        && IS_SENTINEL(snprintf(buff_pid, MAX_INT_LENGTH, "%i", getpid()))
+        )
         return NULL;
     if (!raw)
         return NULL;
@@ -56,9 +63,21 @@ char *replace_pid(context_t *ctx)
 
 char *prepars(context_t *ctx)
 {
-    char *out1 = replace_pid(ctx);
-    char *out2 = replace_status(ctx, out1);
-    char *out3 = replace_var(ctx, out2);
+    char *out = replace_pid(ctx);
 
-    return out3;
+    if (!out) {
+        ctx->input_size = SENTINEL;
+        return NULL;
+    }
+    out = replace_status(ctx, out);
+    DEBUG("%s", out);
+    if (!out) {
+        ctx->input_size = SENTINEL;
+        return NULL;
+    }
+    out = replace_var(ctx, out);
+    DEBUG("%s", out);
+    if (!out)
+        ctx->input_size = SENTINEL;
+    return out;
 }
