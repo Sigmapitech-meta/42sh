@@ -2,7 +2,7 @@ Shell
 =====
 
 alias.h
-------
+-------
 
 .. doxygenfile:: alias.h
   :project: 42sh

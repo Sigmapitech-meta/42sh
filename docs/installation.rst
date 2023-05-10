@@ -2,7 +2,7 @@ Installing
 ==========
 
 Compilation
-------------------------
+-----------
 
 In order to compile the binaries,
 you'll need a recent of the `gcc` compiler and the `gnu-make` toolchain.
