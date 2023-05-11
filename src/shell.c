@@ -29,11 +29,8 @@ bool_t shell_read_line(context_t *ctx)
     ctx->input_size = get_line(&ctx->user_input);
     DEBUG("[%d] characters entered", ctx->input_size);
     if (IS_SENTINEL_OF(ctx->input_size, size_t)) {
-        if (errno == ENOMEM) {
-            ctx->is_running = FALSE;
+        if (errno == ENOMEM)
             ctx->status = EXIT_FAILURE;
-            return FALSE;
-        }
         if (ctx->ran_from_tty)
             printf("exit\n");
         ctx->is_running = FALSE;
