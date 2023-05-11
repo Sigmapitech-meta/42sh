@@ -78,7 +78,7 @@ TSRC := run_shell.c
 TSRC += std_redirect.c
 TSRC += test_sentinel.c
 
-VPATH += tests/commands
+VPATH += tests/e2e
 TSRC += test_cd.c
 TSRC += test_cd_errors.c
 TSRC += test_command_invalid.c
@@ -98,7 +98,7 @@ TSRC += test_where.c
 TSRC += test_which.c
 TSRC += test_whitespace.c
 
-VPATH += tests/commands/alias
+VPATH += tests/e2e/alias
 TSRC += test_alias_print.c
 TSRC += test_simple_alias.c
 TSRC += test_double_alias.c
