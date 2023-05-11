@@ -47,6 +47,14 @@
     #define ALWAYS_INLINE ATTR(always_inline)
     #define $$ ({}) /* Fix your coding style lmao */
 
+/**
+ * When you define a AUTOFREE variable that isn't used by anything else
+ * than the freeing function, it may appears as a "non-used" variable.
+ *
+ * This macro tell to do evaluate the expression causing it to be used.
+ **/
+    #define IS_USED_BY_AUTOFREE(var) (void)(var)
+
 ALWAYS_INLINE USED
 static inline void free_stack(void *ptr_ptr)
 {

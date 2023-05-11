@@ -20,6 +20,7 @@
 #include "shell/utils.h"
 #include "utils/debug_mode.h"
 #include "utils/sentinel.h"
+#include "utils/cleanup.h"
 
 char *prepars(context_t *ctx);
 
@@ -67,24 +68,22 @@ int shell_evaluate_expression(context_t *ctx)
 void shell_evaluate(context_t *ctx)
 {
     char *checkpoint;
-    char *copy;
-    char *copy_ptr;
     char *user_input = prepars(ctx);
+    char *copy = NULL_OR(user_input, strdup(user_input));
+    AUTOFREE char *copy_ptr = copy;
+    command_t *cmd = ctx->cmd;
 
-    copy = NULL_OR(user_input, strdup(user_input));
-    copy_ptr = copy;
+    IS_USED_BY_AUTOFREE(copy_ptr);
     copy = NULL_OR(copy, strtok_r(copy, ";", &checkpoint));
     while (copy && ctx->is_running) {
-        ctx->cmd->argc = str_count_tok(copy, " \t");
-        ctx->cmd->argv = str_split(copy, " \t");
-        alias_resolve(ctx->aliases, ctx->cmd);
-        DEBUG("Found %d arguments", ctx->cmd->argc);
+        cmd->argc = str_count_tok(copy, " \t");
+        cmd->argv = str_split(copy, " \t");
+        alias_resolve(ctx->aliases, cmd);
+        DEBUG("Found %d arguments", cmd->argc);
         shell_evaluate_expression(ctx);
         copy = strtok_r(NULL, ";", &checkpoint);
-        free(ctx->cmd->argv);
+        free(cmd->argv);
     }
-    if (copy_ptr)
-        free(copy_ptr);
     ctx->user_input = user_input;
 }
 
