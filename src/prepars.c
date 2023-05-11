@@ -14,8 +14,7 @@
 #include "utils/debug_mode.h"
 #include "utils/sentinel.h"
 
-static
-char *replace(context_t *ctx, char *from, char *to, char *input)
+char *pre_parse_replace(context_t *ctx, char *from, char *to, char *input)
 {
     AUTOFREE char *raw = strdup(input);
     char *out = NULL_OR(raw, str_replace(raw, from, to));
@@ -37,7 +36,7 @@ char *replace_status(context_t *ctx, char *input)
 
     return NULL_OR(
         !IS_SENTINEL(pid_size),
-        replace(ctx, "$?", status, input)
+        pre_parse_replace(ctx, "$?", status, input)
     );
 }
 
@@ -51,7 +50,7 @@ char *replace_pid(context_t *ctx)
         pid_size = snprintf(pid, MAX_INT_LEN, "%i", getpid());
     return NULL_OR(
         !IS_SENTINEL(pid_size),
-        replace(ctx, "$$", pid, ctx->user_input)
+        pre_parse_replace(ctx, "$$", pid, ctx->user_input)
     );
 }
 

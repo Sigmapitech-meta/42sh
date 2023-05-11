@@ -7,9 +7,10 @@
 
 #include "base.h"
 #include "coding_style_fix.h"
-#include "sputnik.h"
-#include "shell/utils.h"
 #include "epitech.h"
+
+#include "sputnik.h"
+#include "shell/shell.h"
 
 TEST_STD(status_show, exit_ko)
 $ {

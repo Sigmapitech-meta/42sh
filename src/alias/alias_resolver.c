@@ -12,6 +12,20 @@
 #include "shell/shell.h"
 #include "utils/debug_mode.h"
 
+bool_t is_alias(char *str)
+{
+    AUTOFREE char **words = NULL;
+    AUTOFREE char *dup = strdup(str);
+
+    if (!dup)
+        return FALSE;
+    words = str_split(dup, " =");
+    return (
+        words && words[1] && words[2]
+        && !strcmp(words[0], "alias")
+    );
+}
+
 static
 alias_t *alias_get_from_key(aliases_t *aliases, char *name)
 {

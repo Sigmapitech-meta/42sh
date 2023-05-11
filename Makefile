@@ -38,27 +38,22 @@ BINS += $(NAME_AFL) $(TESTS)
 # ↓ Sources
 VPATH += src
 SRC += environment.c
+SRC += lists.c
 SRC += main.c
 SRC += pars_var.c
+SRC += path_solver.c
 SRC += prepars.c
-SRC += prompt.c
 SRC += shell.c
 
 VPATH += src/alias
 SRC += alias_mgmt.c
 SRC += alias_resolver.c
-SRC += alias_utils.c
 
 VPATH += src/base
 SRC += str_split.c
 SRC += str_replace.c
 SRC += file_reader.c
 SRC += get_line.c
-
-VPATH += src/list
-SRC += list_append.c
-SRC += list_get.c
-SRC += list_remove.c
 
 VPATH += src/commands
 SRC += builtins.c
@@ -67,10 +62,6 @@ SRC += command_runner.c
 SRC += change_directory.c
 SRC += env_manipulation.c
 SRC += location_builtins.c
-
-VPATH += src/utils
-SRC += path.c
-SRC += status.c
 
 VPATH += tests
 TSRC := run_shell.c
@@ -134,7 +125,6 @@ TSRC += test_get_line_broken.c
 
 DSRC := $(SRC)
 DSRC += debug_colorize.c
-DSRC += debug_builtins.c
 
 ASRC := $(SRC)
 ASRC += mock_execve.c

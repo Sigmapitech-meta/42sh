@@ -53,22 +53,6 @@ char *env_get_key(char *input)
 }
 
 static
-char *key_replace(context_t *ctx, char *from, char *value, char *input)
-{
-    AUTOFREE char *raw = strdup(input);
-    char *out;
-
-    out = NULL_OR(raw, str_replace(raw, from, value));
-    if (!out)
-        return NULL;
-    if (out == raw)
-        return input;
-    ctx->input_size = strlen(out);
-    free(input);
-    return out;
-}
-
-static
 char *replace_a_var(context_t *ctx, char *input)
 {
     AUTOFREE char *from = NULL;
@@ -85,7 +69,7 @@ char *replace_a_var(context_t *ctx, char *input)
     from = malloc(len * sizeof(char));
     return NULL_OR(
         from && !IS_SENTINEL(snprintf(from, len, "$%s", key)),
-        key_replace(ctx, from, value, input)
+        pre_parse_replace(ctx, from, value, input)
     );
 }
 

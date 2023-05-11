@@ -13,7 +13,6 @@
 
 #include "base.h"
 #include "shell/shell.h"
-#include "shell/utils.h"
 
 #include "utils/debug_mode.h"
 #include "utils/sentinel.h"
