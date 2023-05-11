@@ -2,7 +2,7 @@
 ** EPITECH PROJECT, 2023
 ** 42sh
 ** File description:
-** path.c
+** path_solver.c
 */
 
 #include <stdio.h>

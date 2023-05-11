@@ -2,7 +2,7 @@
 ** EPITECH PROJECT, 2023
 ** 42sh
 ** File description:
-** list_append.c
+** lists.c
 */
 
 #include <stdlib.h>
