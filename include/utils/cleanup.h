@@ -12,6 +12,7 @@
     #include <stdlib.h>
     #include <unistd.h>
 
+    #include "base.h"
     #include "utils/attributes.h"
 
 /* The coding style uses the following regex to check for function names:
@@ -79,7 +80,7 @@ static inline void close_file(void *fd_ptr)
 ALWAYS_INLINE USED
 static inline void file_close(void *fd_ptr)
 {
-    FILE *fd = *(FILE **)fd_ptr;
+    file_t *fd = *(file_t **)fd_ptr;
 
     if (fd)
         fclose(fd);
