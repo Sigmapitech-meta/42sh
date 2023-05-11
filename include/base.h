@@ -8,14 +8,6 @@
 #ifndef BASE_H_
     #define BASE_H_
 
-/**
- * @file base.h
- * @author Gabriel Hosquet (gabriel.hosquet@epitech.eu)
- * @author Yohann Boniface (edhyjox@gmail.com)
- * @version 0.1
- *
- */
-
     #include <stdio.h>
     #include <unistd.h>
     #include "utils/attributes.h"
@@ -28,9 +20,6 @@
 
 /** @brief Get the input source `FILE *` */
     #define GET_SOURCE_LOCATION (*source_location())
-
-/** @brief retrieve the fd from a `FILE *` */
-    #define fd _fileno
 
 typedef struct stat stat_t;
 typedef FILE file_t;
@@ -60,20 +49,22 @@ file_t **source_location(void);
 
 /** @brief Count the number of tokens in a string */
 int str_count_tok(char *string, char *delim);
+
 /** @brief Split a string */
 char **str_split(char *string, char *delim);
-/** @brief Split n string */
-char **str_nsplit(char *string, char *delim, int n);
 
 /** @brief Replace a string */
 char *str_replace(char *src, char *from, char *to);
+
 /** @brief Replace n char in a string */
 char *str_nreplace(char *src, char *from, char *to, int n);
+
 /** @brief Count the number of char in a string */
 int str_count(char *src, char *from);
 
 /** @brief Read a file */
 char *file_read_fd(int fd, size_t filesize);
+
 /** @brief Read a file without fd */
 char *file_read(char const *filepath);
 

@@ -94,12 +94,6 @@ DEBUG_EXPR(
      * @param ctx : context
      */
     void builtin_getenv(context_t *ctx);
-    /**
-     * @brief prevdir command
-     *
-     * @param ctx : context
-     */
-    void builtin_prev_dir(context_t *ctx);
 );
 
 USED
@@ -114,7 +108,6 @@ static const builtin_t BUILTINS[] = {
     {"where", &builtin_where},
     DEBUG_EXPR(
         {"getenv", &builtin_getenv},
-        {"prevdir", &builtin_prev_dir}
     )
 };
 

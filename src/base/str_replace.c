@@ -9,14 +9,13 @@
 #include <string.h>
 
 #include "base.h"
-#include "utils/debug_mode.h"
 
 int str_count(char *src, char *from)
 {
     int count = 0;
     size_t len = strlen(from);
 
-    for (int i = 0; src[i]; i++) {
+    for (ulong i = 0; src[i]; i++) {
         if (!strncmp(src + i, from, len)) {
             i += (len - 1);
             count++;
@@ -28,11 +27,11 @@ int str_count(char *src, char *from)
 static
 char *str_replace_fill(char *out, char *src, char *from, char *to)
 {
-    int write_index = 0;
+    ulong write_index = 0;
     size_t len = strlen(from);
     size_t len_to = strlen(to);
 
-    for (int i = 0; src[i]; i++) {
+    for (ulong i = 0; src[i]; i++) {
         if (!strncmp(src + i, from, len)) {
             strcpy(out + write_index, to);
             write_index += len_to;

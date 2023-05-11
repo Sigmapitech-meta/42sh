@@ -18,7 +18,6 @@
 #include "utils/debug_mode.h"
 #include "utils/sentinel.h"
 #include "utils/cleanup.h"
-#include "shell/utils.h"
 
 static
 void move_relative(context_t *ctx, char *relative_path)

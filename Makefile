@@ -38,29 +38,23 @@ BINS += $(NAME_AFL) $(TESTS)
 # ↓ Sources
 VPATH += src
 SRC += environment.c
+SRC += lists.c
 SRC += main.c
 SRC += pars_var.c
+SRC += path_solver.c
 SRC += prepars.c
-SRC += prompt.c
 SRC += shell.c
 SRC += save.c
 
 VPATH += src/alias
-SRC += alias_list.c
-SRC += alias_resolver.c
 SRC += alias_mgmt.c
-SRC += alias_utils.c
+SRC += alias_resolver.c
 
 VPATH += src/base
 SRC += str_split.c
 SRC += str_replace.c
 SRC += file_reader.c
 SRC += get_line.c
-
-VPATH += src/list
-SRC += list_append.c
-SRC += list_get.c
-SRC += list_remove.c
 
 VPATH += src/commands
 SRC += builtins.c
@@ -70,16 +64,12 @@ SRC += change_directory.c
 SRC += env_manipulation.c
 SRC += location_builtins.c
 
-VPATH += src/utils
-SRC += path.c
-SRC += status.c
-
 VPATH += tests
 TSRC := run_shell.c
 TSRC += std_redirect.c
 TSRC += test_sentinel.c
 
-VPATH += tests/commands
+VPATH += tests/e2e
 TSRC += test_cd.c
 TSRC += test_cd_errors.c
 TSRC += test_command_invalid.c
@@ -99,7 +89,7 @@ TSRC += test_where.c
 TSRC += test_which.c
 TSRC += test_whitespace.c
 
-VPATH += tests/commands/alias
+VPATH += tests/e2e/alias
 TSRC += test_alias_print.c
 TSRC += test_simple_alias.c
 TSRC += test_double_alias.c
@@ -136,7 +126,6 @@ TSRC += test_get_line_broken.c
 
 DSRC := $(SRC)
 DSRC += debug_colorize.c
-DSRC += debug_builtins.c
 
 ASRC := $(SRC)
 ASRC += mock_execve.c

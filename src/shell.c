@@ -13,14 +13,14 @@
 #include <ctype.h>
 
 #include "base.h"
+#include "list.h"
 
 #include "shell/alias.h"
 #include "shell/builtins.h"
 #include "shell/shell.h"
-#include "shell/utils.h"
 #include "utils/debug_mode.h"
 #include "utils/sentinel.h"
-#include "list.h"
+#include "utils/cleanup.h"
 
 char *prepars(context_t *ctx);
 
@@ -29,11 +29,8 @@ bool_t shell_read_line(context_t *ctx)
     ctx->input_size = get_line(&ctx->user_input);
     DEBUG("[%d] characters entered", ctx->input_size);
     if (IS_SENTINEL_OF(ctx->input_size, size_t)) {
-        if (errno == ENOMEM) {
-            ctx->is_running = FALSE;
+        if (errno == ENOMEM)
             ctx->status = EXIT_FAILURE;
-            return FALSE;
-        }
         if (ctx->ran_from_tty)
             printf("exit\n");
         ctx->is_running = FALSE;
@@ -68,13 +65,12 @@ int shell_evaluate_expression(context_t *ctx)
 void shell_evaluate(context_t *ctx)
 {
     char *checkpoint;
-    char *copy;
-    char *copy_ptr;
+    char *user_input = prepars(ctx);
+    char *copy = NULL_OR(user_input, strdup(user_input));
+    AUTOFREE char *copy_ptr = copy;
     command_t *cmd = ctx->cmd;
 
-    ctx->user_input = prepars(ctx);
-    copy = NULL_OR(ctx->user_input, strdup(ctx->user_input));
-    copy_ptr = copy;
+    IS_USED_BY_AUTOFREE(copy_ptr);
     copy = NULL_OR(copy, strtok_r(copy, ";", &checkpoint));
     while (copy && ctx->is_running) {
         cmd->argc = str_count_tok(copy, " \t");
@@ -85,8 +81,7 @@ void shell_evaluate(context_t *ctx)
         copy = strtok_r(NULL, ";", &checkpoint);
         free(cmd->argv);
     }
-    if (copy_ptr)
-        free(copy_ptr);
+    ctx->user_input = user_input;
 }
 
 void shell_run_from_ctx(context_t *ctx)
@@ -120,7 +115,7 @@ int shell_run_from_env(char **env)
     command_t cmd = { 0 };
     context_t ctx = {
         .is_running = TRUE,
-        .ran_from_tty = isatty(GET_SOURCE_LOCATION->fd),
+        .ran_from_tty = isatty(GET_SOURCE_LOCATION->_fileno),
         .cmd = &cmd,
         .original_env = env,
         .prev_dir = getcwd(NULL, 0),

@@ -14,7 +14,6 @@
 #include "epitech.h"
 #include "shell/builtins.h"
 #include "shell/shell.h"
-#include "shell/utils.h"
 #include "utils/cleanup.h"
 
 static

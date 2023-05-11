@@ -9,7 +9,6 @@
 #include "coding_style_fix.h"
 #include "sputnik.h"
 #include "shell/shell.h"
-#include "shell/prompt.h"
 
 #include "mocks/getcwd.h"
 #include "mocks/getenv.h"
