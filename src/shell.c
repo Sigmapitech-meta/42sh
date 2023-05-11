@@ -7,9 +7,7 @@
 
 #include <stdlib.h>
 #include <stdio.h>
-#include <stdlib.h>
 #include <string.h>
-#include <sys/wait.h>
 #include <unistd.h>
 #include <errno.h>
 #include <ctype.h>
@@ -61,11 +59,8 @@ int shell_evaluate_expression(context_t *ctx)
         ctx->is_running = FALSE;
     if (ctx->status == SENTINEL_DETECT)
         ctx->status = EXIT_FAILURE;
-    if (!WCOREDUMP(ctx->status)) {//&& !WIFEXITED(ctx->status) && WIFSIGNALED(ctx->status)) {
-        DEBUG("%i", ctx->status);
-        ctx->status = ctx->status % 255 + 128;
-        DEBUG("%i", ctx->status);
-    }
+    if (ctx->status == SEGFAULT)
+        ctx->status = SEGFAULT_CORE_DUMP;
     return ctx->status;
 }
 
