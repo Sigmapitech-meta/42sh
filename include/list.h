@@ -47,6 +47,7 @@ struct list_s {
 
 /** @brief append a value to the list */
 ssize_t list_append(list_t *list, void *value);
+
 /** @brief append a node to the list */
 ssize_t list_append_node(list_t *list, list_node_t *node);
 
@@ -55,6 +56,7 @@ list_node_t *list_get_node(list_t *list, uint_t index);
 
 /** @brief remove a value from the list */
 void list_remove(list_t *list, uint_t index);
+
 /** @brief remove a node from the list */
 void list_remove_node(list_t *list, list_node_t *node);
 
@@ -64,6 +66,7 @@ USED list_t *list_create(void)
 {
     return calloc(1, sizeof(list_t));
 }
+
 /** @brief display a list */
 static inline
 DEBUG_USED void list_display(list_t *list)

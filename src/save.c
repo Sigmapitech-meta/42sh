@@ -5,9 +5,7 @@
 ** save.c
 */
 
-#include <stdlib.h>
 #include <stdio.h>
-#include <unistd.h>
 #include <string.h>
 
 #include "list.h"
@@ -31,13 +29,13 @@ bool_t save_to_file(list_t *list)
     if (!fd)
         return TRUE;
     LIST_FOREACH(list, buffer) {
-        if (strstr((char *)buffer->value, "\n")) {
+        if (strstr(buffer->value, "\n")) {
             line = (char *)buffer->value;
-            line[strlen((char *)buffer->value) - 1] = '\0';
+            line[strlen(line) - 1] = '\0';
         }
         if (IS_SENTINEL(fprintf(fd, "%s\n", (char *)buffer->value)))
             return TRUE;
-        }
+    }
     return FALSE;
 }
 
@@ -49,8 +47,10 @@ int save_open(list_t *list)
 
     if (!fd)
         return SENTINEL;
-    while (!IS_SENTINEL_OF(get_saved_line(&line, fd), size_t))
-        list_append(list, strdup(line));
+    while (
+        !IS_SENTINEL_OF(get_saved_line(&line, fd), size_t)
+        && !IS_SENTINEL_OF(list_append(list, strdup(line)), ssize_t)
+    );
     return EXIT_OK;
 }
 
