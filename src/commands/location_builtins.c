@@ -19,7 +19,7 @@
 static
 void check_access(char *path, char *cmd_name)
 {
-    AUTOFREE char *cmd_path = path_concat(path, cmd_name);
+    AUTO_FREE char *cmd_path = path_concat(path, cmd_name);
 
     if (!cmd_path)
         return;
@@ -29,7 +29,7 @@ void check_access(char *path, char *cmd_name)
 
 void builtin_which_each(char *cmd, char *path)
 {
-    AUTOFREE char *cmd_path = NULL;
+    AUTO_FREE char *cmd_path = NULL;
 
     if (!IS_SENTINEL(get_builtin_id(cmd))) {
         printf("%s: shell built-in command.\n", cmd);
@@ -62,7 +62,7 @@ void builtin_which(context_t *ctx)
 static
 bool_t builtin_where_search(char *cmd_name)
 {
-    AUTOFREE char *path_copy = NULL;
+    AUTO_FREE char *path_copy = NULL;
     char *path = getenv("PATH");
     char *search_path;
     char *checkpoint;

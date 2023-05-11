@@ -67,7 +67,7 @@ void shell_evaluate(context_t *ctx)
     char *checkpoint;
     char *user_input = prepars(ctx);
     char *copy = NULL_OR(user_input, strdup(user_input));
-    AUTOFREE char *copy_ptr = copy;
+    AUTO_FREE char *copy_ptr = copy;
     command_t *cmd = ctx->cmd;
 
     IS_USED_BY_AUTOFREE(copy_ptr);

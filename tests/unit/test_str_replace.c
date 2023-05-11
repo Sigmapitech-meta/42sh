@@ -12,7 +12,7 @@
 
 TEST(str_replace, replace_with_last_command)
 $ {
-    AUTOFREE char *out = str_replace("sudo !!", "!!", "ls -alr");
+    AUTO_FREE char *out = str_replace("sudo !!", "!!", "ls -alr");
 
     if (!out)
         return;
@@ -26,7 +26,7 @@ $ {
 
 TEST(str_replace, multiple_occurences)
 $ {
-    AUTOFREE char *out = str_replace("!! | !!", "!!", "mysh");
+    AUTO_FREE char *out = str_replace("!! | !!", "!!", "mysh");
 
     if (!out)
         return;

@@ -19,7 +19,7 @@ void is_ptr_null(char *ptr)
 
 TEST_STD(autofree, malloced)
 $ {
-    AUTOFREE char *dup = strdup("hello world!");
+    AUTO_FREE char *dup = strdup("hello world!");
 
     if (!dup)
         return;
@@ -29,7 +29,7 @@ $ {
 
 TEST_STD(autofree, null)
 $ {
-    AUTOFREE char *ptr = NULL;
+    AUTO_FREE char *ptr = NULL;
 
     is_ptr_null(ptr);
     CR_ASSERT_STDOUT_EQ_STR("yes");

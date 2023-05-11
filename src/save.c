@@ -23,7 +23,7 @@ size_t get_saved_line(char **line, FILE *fd)
 static
 bool_t save_to_file(list_t *list)
 {
-    AUTOCLOSE_FILE FILE *fd = fopen(".42sh_history" , "w+");
+    AUTO_FCLOSE FILE *fd = fopen(".42sh_history" , "w+");
     char *line;
 
     if (!fd)
@@ -42,8 +42,8 @@ bool_t save_to_file(list_t *list)
 static
 int save_open(list_t *list)
 {
-    AUTOCLOSE_FILE FILE *fd = fopen(".42sh_history", "r");
-    AUTOFREE char *line = NULL;
+    AUTO_FCLOSE FILE *fd = fopen(".42sh_history", "r");
+    AUTO_FREE char *line = NULL;
 
     if (!fd)
         return SENTINEL;

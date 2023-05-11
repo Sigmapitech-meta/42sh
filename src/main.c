@@ -16,22 +16,17 @@
 
 int run_script_file(char *filepath, char **env)
 {
-    int ret;
-    file_t *file = fopen(filepath, "r");
+    AUTO_FREE char *line;
+    AUTO_FCLOSE file_t *file = fopen(filepath, "r");
     size_t byte_read;
-    char *line;
 
     if (!file)
         return EXIT_KO;
     set_getline_source(file);
     byte_read = get_line(&line);
-    if (byte_read && line && !strncmp(line, "#!", 2)) {
-        free(line);
-        ret = shell_run_from_env(env);
-        fclose(file);
-    } else
-        ret = EXIT_KO;
-    return ret;
+    if (!byte_read || !line || strncmp(line, "#!", 2))
+        return EXIT_KO;
+    return shell_run_from_env(env);
 }
 
 int main(int argc, char **argv, char **env)

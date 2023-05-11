@@ -37,7 +37,7 @@ char *command_get_full_path(char **params)
 {
     char *path;
     char *target_path = params[0];
-    AUTOFREE char *dir = NULL;
+    AUTO_FREE char *dir = NULL;
 
     if (!target_path)
         return NULL;
@@ -76,7 +76,7 @@ static void command_run_internal(context_t *ctx, char *cmd_path, char **env)
 void command_run(context_t *ctx)
 {
     command_t *cmd = ctx->cmd;
-    AUTOFREE char *cmd_path = command_get_full_path(cmd->argv);
+    AUTO_FREE char *cmd_path = command_get_full_path(cmd->argv);
 
     if (!cmd_path)
         exit(SENTINEL);

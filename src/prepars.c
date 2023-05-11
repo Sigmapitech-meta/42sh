@@ -16,7 +16,7 @@
 
 char *pre_parse_replace(context_t *ctx, char *from, char *to, char *input)
 {
-    AUTOFREE char *raw = strdup(input);
+    AUTO_FREE char *raw = strdup(input);
     char *out = NULL_OR(raw, str_replace(raw, from, to));
 
     if (!out)

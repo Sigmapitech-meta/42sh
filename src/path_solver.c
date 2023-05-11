@@ -32,7 +32,7 @@ char *path_concat(char *left, char *right)
 char *path_find_access(char *path, char *cmd)
 {
     char *rest;
-    AUTOFREE char *p_copy = strdup(path);
+    AUTO_FREE char *p_copy = strdup(path);
     char *p_search = NULL_OR(p_copy, strtok_r(p_copy + 5, ":", &rest));
     char *cmd_path = path_concat((p_search) ? p_search : p_copy, cmd);
 
@@ -51,7 +51,7 @@ char *path_find_access(char *path, char *cmd)
 
 char *path_find_cmd(char *cmd)
 {
-    AUTOFREE char *cur_dir = NULL;
+    AUTO_FREE char *cur_dir = NULL;
     char *path = getenv("PATH");
     char *cmd_path;
 

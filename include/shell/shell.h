@@ -150,7 +150,7 @@ USED void status_show(int status)
 static inline
 USED void prompt_display(void)
 {
-    AUTOFREE char *current_dir = getcwd(NULL, 0);
+    AUTO_FREE char *current_dir = getcwd(NULL, 0);
     char hostname[HOSTNAME_MAX_LEN];
     char *username = getenv("USER");
 

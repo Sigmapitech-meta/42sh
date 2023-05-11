@@ -14,8 +14,8 @@
 
 bool_t is_alias(char *str)
 {
-    AUTOFREE char **words = NULL;
-    AUTOFREE char *dup = strdup(str);
+    AUTO_FREE char **words = NULL;
+    AUTO_FREE char *dup = strdup(str);
 
     if (!dup)
         return FALSE;

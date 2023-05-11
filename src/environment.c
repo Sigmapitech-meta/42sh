@@ -54,7 +54,7 @@ USED
 void env_free_key(char *key, char **original_env)
 {
     char *transaction_ptr;
-    AUTOFREE char *line_start = env_get_setter(key, NULL);
+    AUTO_FREE char *line_start = env_get_setter(key, NULL);
     size_t size;
     int i = 0;
 
