@@ -4,7 +4,7 @@
 ** File description:
 ** history.h
 */
-#ifndef HISTORY_H_
+
     #define HISTORY_H_
 
     #include "list.h"
