@@ -15,6 +15,7 @@
 #include "base.h"
 #include "list.h"
 
+#include "shell/history.h"
 #include "shell/alias.h"
 #include "shell/builtins.h"
 #include "shell/shell.h"
@@ -89,24 +90,22 @@ void shell_run_from_ctx(context_t *ctx)
     ctx->aliases = alias_list_create();
     if (!ctx->aliases)
         return;
-    ctx->history = list_create();
+    ctx->history = history_create();
     if (!ctx->history)
         return;
     DEBUG_MSG("Entering main loop.");
-    shell_save_history(ctx->history);
     while (ctx->is_running) {
         if (ctx->ran_from_tty)
             prompt_display();
         if (shell_read_line(ctx)) {
-            list_append(ctx->history, strdup(ctx->user_input));
+            history_append(ctx->history, strdup(ctx->user_input));
             DEBUG_MSG("display history list");
-            DEBUG_CALL(list_display, ctx->history);
+            DEBUG_CALL(list_display, ctx->history->pool);
             shell_evaluate(ctx);
         }
     }
     alias_list_destroy(ctx->aliases);
-    shell_save_history(ctx->history);
-    list_destroy(ctx->history);
+    history_destroy(ctx->history);
     free(ctx->user_input);
 }
 

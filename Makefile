@@ -44,6 +44,9 @@ SRC += pars_var.c
 SRC += path_solver.c
 SRC += prepars.c
 SRC += shell.c
+
+VPATH += src/history
+SRC += history_mgmt.c
 SRC += save.c
 
 VPATH += src/alias

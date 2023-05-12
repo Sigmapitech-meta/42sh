@@ -64,6 +64,7 @@ typedef unsigned long size_t;
 
 typedef struct list_s list_t;
 typedef struct aliases_s aliases_t;
+typedef struct history_s history_t;
 
 typedef struct command_s {
     int argc;
@@ -80,7 +81,7 @@ typedef struct context_s {
     size_t input_size;
     unsigned short status;
     aliases_t *aliases;
-    list_t *history;
+    history_t *history;
 } context_t;
 
 /** @brief Run a command in the shell */
@@ -107,8 +108,6 @@ void env_free_key(char *key, char **original_env);
 /** @brief free the env */
 void env_free(char **original_env);
 
-/** @brief open & save history */
-int shell_save_history(list_t *list);
 /** @brief replace env variables */
 char *replace_var(context_t *ctx, char *input);
 
@@ -158,6 +157,5 @@ USED void prompt_display(void)
     gethostname(hostname, HOSTNAME_MAX_LEN - 1);
     printf(FORMAT_PROMPT, username, hostname, current_dir);
 }
-
 
 #endif /* !SHELL_H */
