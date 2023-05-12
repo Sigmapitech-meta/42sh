@@ -75,6 +75,20 @@ DEBUG_USED void list_display(list_t *list)
         printf("%s\n", (char *)node->value);
 }
 
+/** @brief get index from a node */
+static inline
+USED int list_get_index(list_t *list, list_node_t *node)
+{
+    int i = 0;
+
+    LIST_FOREACH(list, n) {
+        if (n == node)
+            return i;
+        i++;
+    }
+    return SENTINEL;
+}
+
 /** @brief get an element from a list */
 static inline
 USED void *list_get(list_t *list, uint_t index)
