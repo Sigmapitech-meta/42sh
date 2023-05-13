@@ -13,6 +13,7 @@
 #include "utils/cleanup.h"
 #include "utils/debug_mode.h"
 #include "utils/sentinel.h"
+#include "shell/history.h"
 
 char *pre_parse_replace(context_t *ctx, char *from, char *to, char *input)
 {
@@ -41,7 +42,7 @@ char *replace_status(context_t *ctx, char *input)
 }
 
 static
-char *replace_pid(context_t *ctx)
+char *replace_pid(context_t *ctx, char *input)
 {
     static char pid[MAX_INT_LEN] = { '\0' };
     static int pid_size = SENTINEL;
@@ -50,14 +51,31 @@ char *replace_pid(context_t *ctx)
         pid_size = snprintf(pid, MAX_INT_LEN, "%i", getpid());
     return NULL_OR(
         !IS_SENTINEL(pid_size),
-        pre_parse_replace(ctx, "$$", pid, ctx->user_input)
+        pre_parse_replace(ctx, "$$", pid, input)
     );
+}
+
+static
+char *replace_bang(context_t *ctx)
+{
+    char *last_cmd;
+
+    if (ctx->history->pool->tail)
+        last_cmd = ctx->history->pool->tail->value;
+    else
+        last_cmd = ctx->user_input;
+    return pre_parse_replace(ctx, "!!", last_cmd, ctx->user_input);
 }
 
 char *prepars(context_t *ctx)
 {
-    char *out = replace_pid(ctx);
+    char *out = replace_bang(ctx);
 
+    if (!out)
+        return NULL;
+    history_append(ctx->history, strdup(out));
+    DEBUG_CALL(list_display, ctx->history->pool);
+    out = replace_pid(ctx, out);
     if (!out)
         return NULL;
     out = replace_status(ctx, out);

@@ -5,6 +5,7 @@
 ** history.h
 */
 
+#ifndef HISTORY_H_
     #define HISTORY_H_
 
     #include "list.h"
@@ -25,4 +26,4 @@ void history_destroy(history_t *hist);
 
 list_t *save_open(void);
 
-#endif /*HISTORY_H_*/
+#endif /* !HISTORY_H_ */

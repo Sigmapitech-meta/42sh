@@ -40,6 +40,7 @@ void history_append(history_t *hist, char *input)
 history_t *history_create()
 {
     history_t *hist = malloc(sizeof(*hist));
+
     if (!hist)
         return NULL;
     hist->pool = save_open();

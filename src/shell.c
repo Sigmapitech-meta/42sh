@@ -13,7 +13,6 @@
 #include <ctype.h>
 
 #include "base.h"
-#include "list.h"
 
 #include "shell/history.h"
 #include "shell/alias.h"
@@ -97,12 +96,8 @@ void shell_run_from_ctx(context_t *ctx)
     while (ctx->is_running) {
         if (ctx->ran_from_tty)
             prompt_display();
-        if (shell_read_line(ctx)) {
-            history_append(ctx->history, strdup(ctx->user_input));
-            DEBUG_MSG("display history list");
-            DEBUG_CALL(list_display, ctx->history->pool);
+        if (shell_read_line(ctx))
             shell_evaluate(ctx);
-        }
     }
     alias_list_destroy(ctx->aliases);
     history_destroy(ctx->history);
