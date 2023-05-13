@@ -55,7 +55,6 @@ context_t *run_shell_command(char *command)
     ctx->ran_from_tty = isatty(STDIN_FILENO);
     ctx->is_running = TRUE;
     ctx->original_env = ENV_STORE(&store_env);
-    ctx->prev_dir = getcwd(NULL, 0);
     if (!context_fill(ctx, command)) {
         context_destroy(ctx);
         return NULL;

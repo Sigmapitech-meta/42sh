@@ -113,16 +113,13 @@ int shell_run_from_env(char **env)
         .ran_from_tty = isatty(GET_SOURCE_LOCATION->_fileno),
         .cmd = &cmd,
         .original_env = env,
-        .prev_dir = getcwd(NULL, 0),
         .user_input = NULL,
         .input_size = 0,
         .status = 0
     };
 
-    if (!ctx.prev_dir)
-        return EXIT_FAILURE;
     DEBUG_MSG_IF(ctx.ran_from_tty, "stdin is a tty");
-    DEBUG("Running in [%s]", ctx.prev_dir);
+    DEBUG("Running in [%s]", getenv("PWD"));
     shell_run_from_ctx(&ctx);
     free(ctx.prev_dir);
     env_free(ctx.original_env);
