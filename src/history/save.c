@@ -21,14 +21,14 @@ ssize_t get_saved_line(char **line, FILE *fd)
 
 list_t *save_open(void)
 {
-    AUTO_FCLOSE FILE *fd = fopen(".42sh_history", "r");
+    AUTO_FCLOSE file_t *file = fopen(".42sh_history", "r");
     AUTO_FREE char *line = NULL;
     list_t *list = list_create();
     char *tmp;
 
     if (!list)
         return NULL;
-    if (!fd)
+    if (!file)
         return list;
     while (!IS_SENTINEL_OF(get_saved_line(&line, fd), ssize_t)) {
         tmp = strstr(line, "\n");
