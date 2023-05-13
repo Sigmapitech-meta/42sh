@@ -89,8 +89,9 @@ void shell_run_from_ctx(context_t *ctx)
     ctx->aliases = alias_list_create();
     if (!ctx->aliases)
         return;
-    ctx->history = history_create();
-    if (!ctx->history)
+    if (ctx->ran_from_tty)
+        ctx->history = history_create();
+    if (ctx->ran_from_tty && !ctx->history)
         return;
     DEBUG_MSG("Entering main loop.");
     while (ctx->is_running) {

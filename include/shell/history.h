@@ -15,7 +15,7 @@ typedef struct command_s command_t;
 typedef struct context_s context_t;
 
 typedef struct history_s {
-    FILE *write_stream;
+    file_t *write_stream;
     list_t *pool;
 } history_t;
 
