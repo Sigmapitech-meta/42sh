@@ -76,8 +76,7 @@ char *prepars(context_t *ctx)
         return NULL;
     if (ctx->history) {
         history_append(ctx->history, strdup(out));
-        DEBUG("hist size [%d], last cmd [%s]",
-              pool->size, pool->tail->value);
+        DEBUG("hist size [%d], last cmd [%s]", pool->size, pool->tail->value);
     }
     out = replace_pid(ctx, out);
     if (!out)
