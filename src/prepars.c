@@ -69,12 +69,14 @@ char *replace_bang(context_t *ctx)
 
 char *prepars(context_t *ctx)
 {
+    DEBUG_USED list_t *pool = ctx->history->pool;
     char *out = replace_bang(ctx);
 
     if (!out)
         return NULL;
     history_append(ctx->history, strdup(out));
-    DEBUG_CALL(list_display, ctx->history->pool);
+    DEBUG("hist size [%d], last cmd [%s]",
+          pool->size, pool->tail->value);
     out = replace_pid(ctx, out);
     if (!out)
         return NULL;
