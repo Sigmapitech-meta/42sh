@@ -58,10 +58,11 @@ char *replace_pid(context_t *ctx, char *input)
 static
 char *replace_bang(context_t *ctx)
 {
+    history_t *his = ctx->history;
     char *last_cmd;
 
-    if (ctx->history && ctx->history->pool && ctx->history->pool->tail)
-        last_cmd = ctx->history->pool->tail->value;
+    if (his && his->pool && his->pool->tail)
+        last_cmd = his->pool->tail->value;
     else
         last_cmd = ctx->user_input;
     return pre_parse_replace(ctx, "!!", last_cmd, ctx->user_input);
@@ -69,7 +70,7 @@ char *replace_bang(context_t *ctx)
 
 char *prepars(context_t *ctx)
 {
-    DEBUG_USED list_t *pool = ctx->history ? ctx->history->pool : NULL;
+    DEBUG_USED list_t *pool = STRUCT_MEMBER(ctx->history, pool);
     char *out = replace_bang(ctx);
 
     if (!out)

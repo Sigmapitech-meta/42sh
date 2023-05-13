@@ -12,7 +12,6 @@
 #include <ctype.h>
 
 #include "base.h"
-#include "epitech.h"
 
 #include "shell/shell.h"
 #include "utils/sentinel.h"

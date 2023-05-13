@@ -6,7 +6,6 @@
 */
 
 #include <string.h>
-#include <stdio.h>
 
 #include "utils/cleanup.h"
 #include "utils/sentinel.h"

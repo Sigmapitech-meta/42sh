@@ -17,6 +17,7 @@
 
 /** @brief do the expression if cond is not NULL */
     #define NULL_OR(cond, expr) ((cond) ? expr : NULL)
+    #define STRUCT_MEMBER(struct_, member) (struct_ ? struct_->member : NULL)
 
 /** @brief Get the input source `FILE *` */
     #define GET_SOURCE_LOCATION (*source_location())

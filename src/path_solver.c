@@ -53,11 +53,8 @@ char *path_find_cmd(char *cmd)
 {
     AUTO_FREE char *cur_dir = NULL;
     char *path = getenv("PATH");
-    char *cmd_path;
+    char *cmd_path = NULL_OR(path, path_find_access(path, cmd));
 
-    if (!path)
-        return NULL;
-    cmd_path = path_find_access(path, cmd);
     if (!cmd_path) {
         cur_dir = getcwd(NULL, 0);
         cmd_path = path_concat(cur_dir, cmd);
