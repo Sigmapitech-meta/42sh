@@ -18,6 +18,9 @@ batch_runner
 .42shrc
 .42sh_history
 
+## Cores files
+*core.*
+
 # Lib
 *.a
 

@@ -305,6 +305,7 @@ clean:
 			| grep "removed" | cut -d ' ' -f 2))
 	$(call LOG,                                                    \
 		$(if $(REMOVED), "removed:c" $(REMOVED), "no file removed."))
+	@-$(RM) *core.*
 
 fclean:
 	$(call LOG,                                                    \
@@ -318,6 +319,7 @@ fclean:
 	$(call LOG,                                                    \
 		$(if $(REMOVED),"removed:g" $(REMOVED), "no binary to remove."))
 	@ $(MAKE) -sC bin fclean
+	@-$(RM) *core.*
 
 .PHONY: clean fclean
 
