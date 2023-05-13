@@ -31,13 +31,14 @@ void move_relative(context_t *ctx, char *relative_path)
         ctx->status = EXIT_FAILURE;
         return perror(cmd->argv[1]);
     }
-    old_dir = getcwd(ctx->prev_dir, 0);
+    old_dir = getcwd(NULL, 0);
     if (IS_SENTINEL(chdir(target_path))) {
         EPRINTF("%s: %s.\n", cmd->argv[1], strerror(errno));
         ctx->status = EXIT_FAILURE;
         return;
     }
-    free(ctx->prev_dir);
+    if (ctx->prev_dir)
+        free(ctx->prev_dir);
     ctx->prev_dir = old_dir;
 }
 
