@@ -12,6 +12,7 @@
 #include "utils/sentinel.h"
 #include "utils/cleanup.h"
 
+static
 ssize_t get_saved_line(char **line, FILE *fd)
 {
     static size_t zero = 0;
@@ -30,7 +31,7 @@ list_t *save_open(void)
         return NULL;
     if (!file)
         return list;
-    while (!IS_SENTINEL_OF(get_saved_line(&line, fd), ssize_t)) {
+    while (!IS_SENTINEL_OF(get_saved_line(&line, file), ssize_t)) {
         tmp = strstr(line, "\n");
         if (tmp)
             line[tmp - line] = '\0';
