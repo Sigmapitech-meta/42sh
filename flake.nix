@@ -2,7 +2,7 @@
   description = "42sh";
 
   inputs = {
-    nixpkgs.url = "github:NixOS/nixpkgs/nixos-22.11";
+    nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
     cs.url = "github:Sigmanificient/coding-style-checker/user";
     cs.inputs.nixpkgs.follows = "nixpkgs";
     utils.url = "github:numtide/flake-utils";
@@ -13,7 +13,7 @@
       with import nixpkgs { inherit system; }; {
         devShells.default = mkShell {
           packages = [
-            afl
+            aflplusplus
             cs.packages.${system}.report
             criterion
             doxygen
