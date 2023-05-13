@@ -21,7 +21,7 @@ void is_fd_sentinel(int fd)
 
 TEST_STD(autoclose, opened)
 $ {
-    AUTOCLOSE int fd = open("/dev/zero", O_RDONLY);
+    AUTO_CLOSE int fd = open("/dev/zero", O_RDONLY);
 
     if (!fd)
         return;
@@ -31,7 +31,7 @@ $ {
 
 TEST_STD(autoclose, null)
 $ {
-    AUTOCLOSE int fd = SENTINEL;
+    AUTO_CLOSE int fd = SENTINEL;
 
     is_fd_sentinel(fd);
     CR_ASSERT_STDOUT_EQ_STR("yes");

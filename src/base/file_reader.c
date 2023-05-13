@@ -42,7 +42,7 @@ char *file_read_fd(int fd, size_t filesize)
 
 char *file_read(char const *filepath)
 {
-    AUTOCLOSE int fd = open(filepath, O_RDONLY);
+    AUTO_CLOSE int fd = open(filepath, O_RDONLY);
 
     return (
         IS_SENTINEL(fd) ?

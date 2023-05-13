@@ -41,12 +41,12 @@ static const size_t MINIMAL_INPUT_CHECK = 2;
  *
  */
 static const char USAGE[] = (
-    "Minishell 2 - Usage: ./mysh [-h]\n"
+    "42sh - Usage: ./42sh [-h]\n"
     "\nAll commands in the path are available.\n"
     "Within the shell, press CTRL+D or enter exit to quit.\n"
     "Alternatively, you can provide commands from standard input.\n\n"
     "The following builtins are present:\n"
-    "- env, unsetenv, cd, exit\n\n"
+    "- env, unsetenv, setenv, cd, exit\n\n"
     "As long as the following operators:\n"
     "- ; | > < >> <<\n"
 );
@@ -64,6 +64,7 @@ typedef unsigned long size_t;
 
 typedef struct list_s list_t;
 typedef struct aliases_s aliases_t;
+typedef struct history_s history_t;
 
 typedef struct command_s {
     int argc;
@@ -80,6 +81,7 @@ typedef struct context_s {
     size_t input_size;
     unsigned short status;
     aliases_t *aliases;
+    history_t *history;
 } context_t;
 
 /** @brief Run a command in the shell */
@@ -106,6 +108,7 @@ void env_free_key(char *key, char **original_env);
 /** @brief free the env */
 void env_free(char **original_env);
 
+/** @brief replace env variables */
 char *replace_var(context_t *ctx, char *input);
 
 /** @brief Concatenate two paths */
@@ -146,7 +149,7 @@ USED void status_show(int status)
 static inline
 USED void prompt_display(void)
 {
-    AUTOFREE char *current_dir = getcwd(NULL, 0);
+    AUTO_FREE char *current_dir = getcwd(NULL, 0);
     char hostname[HOSTNAME_MAX_LEN];
     char *username = getenv("USER");
 
@@ -154,6 +157,5 @@ USED void prompt_display(void)
     gethostname(hostname, HOSTNAME_MAX_LEN - 1);
     printf(FORMAT_PROMPT, username, hostname, current_dir);
 }
-
 
 #endif /* !SHELL_H */

@@ -39,8 +39,8 @@ char *alias_cut_value(context_t *ctx)
 static
 char *alias_translate(context_t *ctx)
 {
-    AUTOFREE char *out = NULL;
-    AUTOFREE char *value = alias_cut_value(ctx);
+    AUTO_FREE char *out = NULL;
+    AUTO_FREE char *value = alias_cut_value(ctx);
     command_t *cmd = ctx->cmd;
     size_t raw_len;
     int written;
@@ -57,7 +57,7 @@ char *alias_translate(context_t *ctx)
 
 void builtin_alias(context_t *ctx)
 {
-    AUTOFREE char *out = NULL;
+    AUTO_FREE char *out = NULL;
     command_t *cmd = ctx->cmd;
 
     if (cmd->argc == 1)

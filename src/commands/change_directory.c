@@ -45,7 +45,7 @@ static
 void move_to_home(context_t *ctx)
 {
     command_t *cmd = ctx->cmd;
-    AUTOFREE char *abs_dir = NULL;
+    AUTO_FREE char *abs_dir = NULL;
     char *home = getenv("HOME");
 
     if (!home) {

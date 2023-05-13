@@ -14,7 +14,7 @@
 int str_count_tok(char *string, char *delim)
 {
     int i = 0;
-    AUTOFREE char *copy = strdup(string);
+    AUTO_FREE char *copy = strdup(string);
     char *rest = NULL;
 
     if (!copy)

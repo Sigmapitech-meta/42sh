@@ -20,7 +20,9 @@
     #include "base.h"
     #include "coding_style_fix.h"
     #include "utils/attributes.h"
+    #include "utils/debug_mode.h"
 
+    #include <stdio.h>
     #include <stdlib.h>
 
     #define LIST_FOREACH(l, n) for (list_node_t *n EQ l->head; n; n EQ n->next)
@@ -45,6 +47,7 @@ struct list_s {
 
 /** @brief append a value to the list */
 ssize_t list_append(list_t *list, void *value);
+
 /** @brief append a node to the list */
 ssize_t list_append_node(list_t *list, list_node_t *node);
 
@@ -53,6 +56,7 @@ list_node_t *list_get_node(list_t *list, uint_t index);
 
 /** @brief remove a value from the list */
 void list_remove(list_t *list, uint_t index);
+
 /** @brief remove a node from the list */
 void list_remove_node(list_t *list, list_node_t *node);
 
@@ -61,6 +65,20 @@ static inline
 USED list_t *list_create(void)
 {
     return calloc(1, sizeof(list_t));
+}
+
+/** @brief get index from a node */
+static inline
+USED int list_get_index(list_t *list, list_node_t *node)
+{
+    int i = 0;
+
+    LIST_FOREACH(list, n) {
+        if (n == node)
+            return i;
+        i++;
+    }
+    return SENTINEL;
 }
 
 /** @brief get an element from a list */
@@ -80,6 +98,7 @@ USED void list_clear(list_t *list)
         list_remove_node(list, list->tail);
 }
 
+/** @brief destroy a list */
 static inline
 USED void list_destroy(list_t *list)
 {

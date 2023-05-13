@@ -32,7 +32,7 @@ char *get_key(char *input)
 static
 char *env_get_key(char *input)
 {
-    AUTOFREE char *dup = get_key(input);
+    AUTO_FREE char *dup = get_key(input);
     char *checkpoint;
     char *copy;
     char *var_present = NULL;
@@ -55,8 +55,8 @@ char *env_get_key(char *input)
 static
 char *replace_a_var(context_t *ctx, char *input)
 {
-    AUTOFREE char *from = NULL;
-    AUTOFREE char *key = env_get_key(input);
+    AUTO_FREE char *from = NULL;
+    AUTO_FREE char *key = env_get_key(input);
     char *value;
     size_t len;
 

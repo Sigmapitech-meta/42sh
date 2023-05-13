@@ -45,6 +45,10 @@ SRC += path_solver.c
 SRC += prepars.c
 SRC += shell.c
 
+VPATH += src/history
+SRC += history_mgmt.c
+SRC += save.c
+
 VPATH += src/alias
 SRC += alias_mgmt.c
 SRC += alias_resolver.c
@@ -358,7 +362,7 @@ tests_run: $(TESTS)
 cov: tests_run
 	$(call CHECK_CMD, gcovr)
 	$Q $(call CHECK_CMD, gcovr)
-	$Q gcovr . --exclude tests
+	$Q gcovr . --exclude tests --exclude-directories .direnv
 
 .PHONY: cov
 

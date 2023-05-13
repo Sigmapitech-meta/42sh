@@ -14,6 +14,7 @@
 
 #include "base.h"
 
+#include "shell/history.h"
 #include "shell/alias.h"
 #include "shell/builtins.h"
 #include "shell/shell.h"
@@ -66,7 +67,7 @@ void shell_evaluate(context_t *ctx)
     char *checkpoint;
     char *user_input = prepars(ctx);
     char *copy = NULL_OR(user_input, strdup(user_input));
-    AUTOFREE char *copy_ptr = copy;
+    AUTO_FREE char *copy_ptr = copy;
     command_t *cmd = ctx->cmd;
 
     IS_USED_BY_AUTOFREE(copy_ptr);
@@ -88,6 +89,10 @@ void shell_run_from_ctx(context_t *ctx)
     ctx->aliases = alias_list_create();
     if (!ctx->aliases)
         return;
+    if (ctx->ran_from_tty)
+        ctx->history = history_create();
+    if (ctx->ran_from_tty && !ctx->history)
+        return;
     DEBUG_MSG("Entering main loop.");
     while (ctx->is_running) {
         if (ctx->ran_from_tty)
@@ -96,6 +101,7 @@ void shell_run_from_ctx(context_t *ctx)
             shell_evaluate(ctx);
     }
     alias_list_destroy(ctx->aliases);
+    history_destroy(ctx->history);
     free(ctx->user_input);
 }
 
