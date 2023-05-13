@@ -7,6 +7,7 @@
 
 #include <unistd.h>
 
+#include "base.h"
 #include "epitech.h"
 #include "mocks/stat.h"
 
@@ -17,9 +18,9 @@ bool_t *switch_stat(void)
     return &state;
 }
 
-void *wrap_stat(size_t size)
+int wrap_stat(const char *file, stat_t *buf)
 {
-    return (IS_STAT_BROKEN) ? NULL : real_stat(size);
+    return (IS_STAT_BROKEN) ? SENTINEL : real_stat(file, buf);
 }
 
 void fix_stat(void)

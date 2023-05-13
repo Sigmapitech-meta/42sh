@@ -17,8 +17,8 @@ typedef _Bool bool_t;
 
 bool_t *switch_stat(void);
 
-void *wrap_stat(size_t size);
-void *real_stat(size_t size);
+int wrap_stat(const char *file, stat_t *buf);
+extern int real_stat(const char *file, stat_t *buf);
 
 void fix_stat(void);
 void break_stat(void);
