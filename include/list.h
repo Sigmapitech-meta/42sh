@@ -67,14 +67,6 @@ USED list_t *list_create(void)
     return calloc(1, sizeof(list_t));
 }
 
-/** @brief display a list */
-static inline
-DEBUG_USED void list_display(list_t *list)
-{
-    LIST_FOREACH(list, node)
-        printf("%s\n", (char *)node->value);
-}
-
 /** @brief get index from a node */
 static inline
 USED int list_get_index(list_t *list, list_node_t *node)

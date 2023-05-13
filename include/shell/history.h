@@ -19,8 +19,7 @@ typedef struct history_s {
     list_t *pool;
 } history_t;
 
-
-history_t *history_create();
+history_t *history_create(void);
 void history_append(history_t *hist, char *input);
 void history_destroy(history_t *hist);
 

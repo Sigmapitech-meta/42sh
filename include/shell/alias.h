@@ -41,7 +41,7 @@ bool_t is_alias(char *str);
 void alias_resolve(aliases_t *aliases, command_t *cmd);
 
 static inline
-void alias_print_value(alias_t *al)
+USED void alias_print_value(alias_t *al)
 {
     printf("%s\t", al->key);
     for (size_t i = 0; i < al->member_count; i++) {

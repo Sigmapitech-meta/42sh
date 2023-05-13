@@ -37,7 +37,7 @@ void history_append(history_t *hist, char *input)
     fprintf(hist->write_stream, "%s\n", input);
 }
 
-history_t *history_create()
+history_t *history_create(void)
 {
     history_t *hist = malloc(sizeof(*hist));
 
