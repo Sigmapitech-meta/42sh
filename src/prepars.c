@@ -60,7 +60,7 @@ char *replace_bang(context_t *ctx)
 {
     char *last_cmd;
 
-    if (ctx->history->pool->tail)
+    if (ctx->history && ctx->history->pool && ctx->history->pool->tail)
         last_cmd = ctx->history->pool->tail->value;
     else
         last_cmd = ctx->user_input;
@@ -69,14 +69,16 @@ char *replace_bang(context_t *ctx)
 
 char *prepars(context_t *ctx)
 {
-    DEBUG_USED list_t *pool = ctx->history->pool;
+    DEBUG_USED list_t *pool = ctx->history ? ctx->history->pool : NULL;
     char *out = replace_bang(ctx);
 
     if (!out)
         return NULL;
-    history_append(ctx->history, strdup(out));
-    DEBUG("hist size [%d], last cmd [%s]",
-          pool->size, pool->tail->value);
+    if (ctx->history) {
+        history_append(ctx->history, strdup(out));
+        DEBUG("hist size [%d], last cmd [%s]",
+              pool->size, pool->tail->value);
+    }
     out = replace_pid(ctx, out);
     if (!out)
         return NULL;
